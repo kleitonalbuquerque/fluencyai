@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 
+import { SocialAuthButtons } from "./SocialAuthButtons";
 import { useLogin } from "../hooks/useLogin";
 import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
@@ -83,16 +84,7 @@ export function LoginForm() {
           <span>Ou continue com</span>
         </div>
 
-        <div className="social-grid">
-          <button className="social-button" type="button">
-            <span aria-hidden="true">G</span>
-            Google
-          </button>
-          <button className="social-button" type="button">
-            <span aria-hidden="true">GH</span>
-            GitHub
-          </button>
-        </div>
+        <SocialAuthButtons />
       </form>
     </section>
   );
