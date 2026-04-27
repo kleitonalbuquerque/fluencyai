@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#2a2a2c",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#d1a1ff",
+                        "secondary-fixed-dim": "#ddb8ff",
+                        "on-tertiary-fixed-variant": "#005047",
+                        "on-secondary-fixed": "#2c0051",
+                        "on-surface-variant": "#c6c5d5",
+                        "outline-variant": "#454653",
+                        "surface": "#131315",
+                        "tertiary-fixed": "#62fae3",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#62259b",
+                        "secondary-container": "#62259b",
+                        "surface-container-low": "#1c1b1d",
+                        "surface-container": "#201f22",
+                        "secondary": "#ddb8ff",
+                        "primary": "#bdc2ff",
+                        "on-tertiary-fixed": "#00201c",
+                        "outline": "#908f9e",
+                        "surface-variant": "#353437",
+                        "surface-container-lowest": "#0e0e10",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "inverse-on-surface": "#313032",
+                        "on-tertiary": "#003731",
+                        "tertiary-fixed-dim": "#3cddc7",
+                        "tertiary-container": "#00a896",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#bdc2ff",
+                        "tertiary": "#3cddc7",
+                        "primary-fixed": "#e0e0ff",
+                        "on-tertiary-container": "#00352e",
+                        "on-primary": "#131e8c",
+                        "on-primary-fixed": "#000767",
+                        "background": "#131315",
+                        "on-secondary": "#490081",
+                        "primary-container": "#818cf8",
+                        "inverse-primary": "#4953bc",
+                        "on-primary-fixed-variant": "#2f3aa3",
+                        "on-background": "#e5e1e4",
+                        "surface-dim": "#131315",
+                        "surface-container-highest": "#353437",
+                        "on-surface": "#e5e1e4",
+                        "surface-bright": "#39393b",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#f0dbff",
+                        "inverse-surface": "#e5e1e4",
+                        "on-primary-container": "#101b8a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "4px",
+                        "card-gap": "16px",
+                        "container-padding": "32px",
+                        "section-margin": "48px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "headline-xl": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(18, 18, 23, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="font-body-md antialiased">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 border-r border-white/10 fixed left-0 top-0 bg-[#09090B] flex flex-col py-8 px-4 font-manrope tracking-tight z-50">
+<div class="mb-10 px-2">
+<h1 class="text-indigo-400 font-extrabold text-xl">Polyglot Pro</h1>
+<p class="text-xs text-neutral-500 mt-1 uppercase tracking-widest">Level 24 Learner</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-indigo-400 bg-indigo-400/10 border-r-2 border-indigo-400 font-semibold transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span>Immersion Plan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span>AI Chat</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span>Memorization</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="theater_comedy">theater_comedy</span>
+<span>Role Play</span>
+</a>
+</nav>
+<div class="mt-auto pt-8 border-t border-white/10 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span>Global Ranking</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="w-full h-16 border-b border-white/10 fixed top-0 z-40 bg-[#09090B]/80 backdrop-blur-md flex items-center justify-between pl-8 pr-8 right-0 left-64">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 text-sm" data-icon="search">search</span>
+<input class="w-full bg-white/5 border-none rounded-full py-1.5 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary/50 text-on-surface placeholder-neutral-500" placeholder="Search lessons..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full hover:bg-white/5 text-neutral-400">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+<button class="p-2 rounded-full hover:bg-white/5 text-neutral-400 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+</div>
+<button class="bg-primary text-on-primary font-bold px-6 py-2 rounded-full text-sm hover:opacity-90 transition-opacity">
+                    Start Lesson
+                </button>
+<img alt="User avatar" class="w-8 h-8 rounded-full border border-white/10" data-alt="Close-up portrait of a professional man with a kind smile, clean lighting, blurred office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIr2cp4Dl8MwlH_dCQtfZ8C-zbna6jHEzUbI9Hj7LuKHqaO1NQZozFqwEuOWSV-KebK5VDVNr5xEN75bs-Mqo8zIGY_QftAXrz0aUVz0CJmCnDG8UbJwl3Fe7FzzzKVbBBO7kYBvkyfMTZUPSzgEgprCnO-BkUIUg4z3lfBEz5qFj4nGL6grf5qWEVU63EmBdLG2I3ZvooT7NvCfoPOGL3XOY1LuByTta8dPexrXTiyTRzna7WjMB9YnGrXZR6O_NOshF4MtBHe97r"/>
+</div>
+</header>
+<!-- Content Area -->
+<div class="pt-24 px-container-padding pb-section-margin max-w-[1280px] mx-auto">
+<!-- Hero Section -->
+<section class="mb-section-margin relative overflow-hidden rounded-3xl p-12 bg-gradient-to-br from-indigo-900/20 to-surface-container-low border border-white/5">
+<div class="relative z-10">
+<h2 class="font-headline-xl text-headline-xl text-white mb-2">Continue sua imersão de idiomas</h2>
+<p class="text-neutral-400 font-body-lg text-body-lg">contato@polyglotpro.com</p>
+<div class="mt-8 flex gap-4">
+<div class="flex -space-x-3">
+<img alt="Learner" class="w-10 h-10 rounded-full border-2 border-background" data-alt="Portrait of a young woman smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP3ocwexjSCjEYhx6m30l9jPF2-aeAlRge-DrRYn8xS1W7mgIcf_gKLvgcq13npJuzFhBM7lc_oDoOCxQ1mQwRRWTy5_SAOtaoaaIUTp0dgzoWVA-HujssNhQArrx3asf1R4FyrTRzmNrai9adakrhMEqbk5F49VLuhokXw-81yjJgHxlAnhvtQFRJIr0-KTaLiFbec57t6x7-iVQNEeBsf9W5099WY1Cn0P6FjkqZuwDdiR8gxKBcnQXUMa6s0PrP-V6lc66tqeYB"/>
+<img alt="Learner" class="w-10 h-10 rounded-full border-2 border-background" data-alt="Portrait of a young man smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDb5-hAaqSYZ1C-FQi9aUBj6XIiviFHiEgOPf52FpkKrbqCQP0wYvczqqXixeghVAr3dcnHg5wTO7yt9aI1wyNJ7Ab8CGR2E9RUwf4HpxP4P7TyDG5WOUmyV97wI1Umij7G_XuewmvQEBlUYDz_2UAHztIFi9cHXhVBeLrWN8xyN0lN_9Nf2IgAWxcG5Epv6wwWJsM50qPYQVYxRQdzeEBYkc0P7sbEh75-Vx0vR36iOk6iU0KhVg8Muyo7xR8-i49zyK59FCVAta9Y"/>
+<img alt="Learner" class="w-10 h-10 rounded-full border-2 border-background" data-alt="Portrait of a woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD79BowsIlCGPlimkitkWoquiwUHj56-uUrPr9i1x9sFAuwEvzfuHgRyx0Bzkb79LSOi4MJFkJiTrR-kMPWI9ZxOdclEZzb_HuXug7wI_T05VAM-X5ZcNh1-RZuFzLu5OyZGioBFcaydp-FTvFje9UsHkyJso6QyL_aAVUoF6AjybIzY-ZrT6MnWXA2lBnfiuRZCX5pD4RznZQU9qPVBapgoNomayxzQsotdQlP3TwOYy-zkD9OBXW5yNI6XXvk3AisrMMG8CFqaxsZ"/>
+<div class="w-10 h-10 rounded-full border-2 border-background bg-surface-container-high flex items-center justify-center text-xs font-bold">+12k</div>
+</div>
+<p class="text-sm text-neutral-400 flex items-center">Join 12,000+ active polyglots today</p>
+</div>
+</div>
+<!-- Decorative element -->
+<div class="absolute right-0 top-0 w-1/3 h-full opacity-20 pointer-events-none">
+<img alt="Books" class="object-cover h-full w-full grayscale" data-alt="Stack of vintage books in a dark library, moody lighting, shallow depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlDyABNtwnamQmgtgGNU7HRo-8E5WbnkyypTj_q29ynsrEn9ErO2oKmsxMSEKhIXo_ULbW2nLwgVafxs86wE9WVnMSE85VLDVHUJmUuwnq50CicoeiWxSb3Zq7IZg07f55sYDP4jkQsdYnliQKg1G9povTJRJkbzXTS0UZHV5n6qgWN9Uy6HUuoJbRfkrfC2zdE9Xtc6YClrql7WZ-uAc-MSLihW3xob8TPnSZjI901SRNc4A-inHP018_O3P9T518ZgI1QEqhknpL"/>
+</div>
+</section>
+<!-- Stats Row -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-card-gap mb-section-margin">
+<div class="glass-card p-6 rounded-2xl flex items-center justify-between">
+<div>
+<p class="text-label-caps font-label-caps text-neutral-500 mb-2 uppercase">TOTAL EXPERIENCE</p>
+<h3 class="text-headline-lg font-headline-lg text-primary">12.450 <span class="text-sm font-medium text-neutral-500">XP</span></h3>
+</div>
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="military_tech">military_tech</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex items-center justify-between border-primary/20">
+<div>
+<p class="text-label-caps font-label-caps text-neutral-500 mb-2 uppercase">CURRENT LEVEL</p>
+<h3 class="text-headline-lg font-headline-lg text-secondary">Level 24</h3>
+</div>
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl" data-icon="trending_up">trending_up</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex items-center justify-between">
+<div>
+<p class="text-label-caps font-label-caps text-neutral-500 mb-2 uppercase">ACTIVE STREAK</p>
+<h3 class="text-headline-lg font-headline-lg text-tertiary">42 <span class="text-sm font-medium text-neutral-500">Days</span></h3>
+</div>
+<div class="w-12 h-12 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-3xl" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+</div>
+</section>
+<!-- Grid of Action Cards -->
+<section>
+<div class="flex items-center justify-between mb-8">
+<h3 class="text-headline-md font-headline-md text-white">Your Learning Path</h3>
+<a class="text-primary text-sm font-semibold hover:underline" href="#">View All Activities</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Plano de Imersão -->
+<div class="glass-card p-8 rounded-3xl hover:border-primary/50 transition-all duration-300 group cursor-pointer">
+<div class="mb-6 w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="auto_stories">auto_stories</span>
+</div>
+<h4 class="text-xl font-bold text-white mb-2">Plano de Imersão</h4>
+<p class="text-neutral-400 text-sm leading-relaxed mb-6">A customized roadmap based on your current level and personal learning goals.</p>
+<div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[65%]"></div>
+</div>
+<p class="text-[10px] text-neutral-500 mt-2 font-bold uppercase tracking-wider">65% COMPLETED</p>
+</div>
+<!-- Conversa com IA -->
+<div class="glass-card p-8 rounded-3xl hover:border-secondary/50 transition-all duration-300 group cursor-pointer border-secondary/10">
+<div class="mb-6 w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="smart_toy">smart_toy</span>
+</div>
+<h4 class="text-xl font-bold text-white mb-2">Conversa com IA</h4>
+<p class="text-neutral-400 text-sm leading-relaxed mb-6">Practice real-time conversation with our advanced language model assistant.</p>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-xs text-neutral-300">Live now: English, French, Spanish</span>
+</div>
+</div>
+<!-- Memorização -->
+<div class="glass-card p-8 rounded-3xl hover:border-tertiary/50 transition-all duration-300 group cursor-pointer">
+<div class="mb-6 w-14 h-14 rounded-2xl bg-tertiary/10 flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="psychology">psychology</span>
+</div>
+<h4 class="text-xl font-bold text-white mb-2">Memorização</h4>
+<p class="text-neutral-400 text-sm leading-relaxed mb-6">Spaced repetition system to lock vocabulary into your long-term memory.</p>
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-bold text-neutral-400 uppercase tracking-widest">240 Words Pending</span>
+</div>
+<!-- Role Play -->
+<div class="glass-card p-8 rounded-3xl hover:border-primary/50 transition-all duration-300 group cursor-pointer">
+<div class="mb-6 w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="theater_comedy">theater_comedy</span>
+</div>
+<h4 class="text-xl font-bold text-white mb-2">Role Play</h4>
+<p class="text-neutral-400 text-sm leading-relaxed mb-6">Simulate real-world scenarios like ordering coffee or attending a job interview.</p>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full bg-primary/20 border border-white/10 flex items-center justify-center text-[10px] font-bold">A1</div>
+<div class="w-8 h-8 rounded-full bg-secondary/20 border border-white/10 flex items-center justify-center text-[10px] font-bold">B2</div>
+<div class="w-8 h-8 rounded-full bg-tertiary/20 border border-white/10 flex items-center justify-center text-[10px] font-bold">C1</div>
+</div>
+</div>
+<!-- Ranking Global -->
+<div class="glass-card p-8 rounded-3xl hover:border-on-secondary-container/50 transition-all duration-300 group cursor-pointer">
+<div class="mb-6 w-14 h-14 rounded-2xl bg-on-secondary-container/10 flex items-center justify-center text-on-secondary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="leaderboard">leaderboard</span>
+</div>
+<h4 class="text-xl font-bold text-white mb-2">Ranking Global</h4>
+<p class="text-neutral-400 text-sm leading-relaxed mb-6">Compete with learners worldwide and climb the seasonal diamond league.</p>
+<div class="flex items-center justify-between text-xs font-bold">
+<span class="text-neutral-500">Current Rank</span>
+<span class="text-on-secondary-container">#128 / 5,400</span>
+</div>
+</div>
+<!-- Compartilhamento Social -->
+<div class="glass-card p-8 rounded-3xl hover:border-primary/50 transition-all duration-300 group cursor-pointer bg-gradient-to-br from-primary/5 to-transparent">
+<div class="mb-6 w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="share">share</span>
+</div>
+<h4 class="text-xl font-bold text-white mb-2">Compartilhamento Social</h4>
+<p class="text-neutral-400 text-sm leading-relaxed mb-6">Share your progress with friends or invite them to a learning challenge.</p>
+<button class="w-full py-2 bg-white/5 border border-white/10 rounded-xl text-xs font-bold hover:bg-white/10 transition-colors">Generate Report</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

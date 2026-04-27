@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { AppHeader } from "./AppHeader";
+import { Sidebar } from "./Sidebar";
 import { useAuthSession } from "../hooks/useAuthSession";
 
 export function AppHome() {
@@ -24,62 +25,83 @@ export function AppHome() {
   const { user } = session;
 
   return (
-    <main className="app-shell">
-      <AppHeader user={user} />
+    <div className="min-h-screen bg-background text-on-background">
+      <Sidebar user={user} />
+      <AppHeader user={user} title="Dashboard" />
+      
+      <main className="lg:pl-64 pt-16 min-h-screen">
+        <div className="max-w-6xl mx-auto px-8 py-12">
+          <section className="mb-12">
+            <h2 className="text-[32px] font-bold text-white mb-2">Welcome back, {user.email.split('@')[0]}</h2>
+            <p className="text-neutral-400 text-lg">Continue your language immersion journey.</p>
+          </section>
 
-      <section className="dashboard-hero">
-        <p className="eyebrow">Plano diário</p>
-        <h1>Continue sua imersão de idiomas</h1>
-        <p>{user.email}</p>
-      </section>
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <article className="p-6 rounded-2xl bg-surface-container-high border border-white/5 flex flex-col gap-2">
+              <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-neutral-500">XP Earned</span>
+              <strong className="text-[32px] font-bold text-white">{user.xp} XP</strong>
+            </article>
+            <article className="p-6 rounded-2xl bg-surface-container-high border border-white/5 flex flex-col gap-2">
+              <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-neutral-500">Current Level</span>
+              <strong className="text-[32px] font-bold text-white">{user.level}</strong>
+            </article>
+            <article className="p-6 rounded-2xl bg-surface-container-high border border-white/5 flex flex-col gap-2">
+              <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-neutral-500">Day Streak</span>
+              <strong className="text-[32px] font-bold text-white">{user.streak} days</strong>
+            </article>
+          </section>
 
-      <section className="metric-grid" aria-label="Resumo de progresso">
-        <article className="metric-card">
-          <span>XP</span>
-          <strong>{user.xp} XP</strong>
-        </article>
-        <article className="metric-card">
-          <span>Nível</span>
-          <strong>{user.level}</strong>
-        </article>
-        <article className="metric-card">
-          <span>Streak</span>
-          <strong>{user.streak} dias</strong>
-        </article>
-      </section>
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link href="/app/plan" className="group p-6 rounded-2xl bg-surface-container border border-white/5 hover:border-primary/50 transition-all">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="material-symbols-outlined text-primary">auto_stories</span>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Immersion Plan</h3>
+              <p className="text-neutral-500">7-day roadmap with phrases, vocabulary, and grammar.</p>
+            </Link>
 
-      <section className="feature-grid" aria-label="Funcionalidades do produto">
-        <Link className="feature-card" href="/app/plan" aria-label="Plano de imersão">
-          <span>01</span>
-          <strong>Plano de imersão</strong>
-          <p>7 dias com frases, vocabulário, gramática, fala e quiz.</p>
-        </Link>
-        <Link className="feature-card" href="/app/chat" aria-label="Conversa com IA">
-          <span>02</span>
-          <strong>Conversa com IA</strong>
-          <p>Pratique uma conversa fluida com correção e vocabulário melhor.</p>
-        </Link>
-        <Link className="feature-card" href="/app/memorization" aria-label="Memorização">
-          <span>03</span>
-          <strong>Memorização</strong>
-          <p>20 palavras por sessão com definição, exemplo e truque de memória.</p>
-        </Link>
-        <Link className="feature-card" href="/app/role-play" aria-label="Role Play">
-          <span>04</span>
-          <strong>Role Play</strong>
-          <p>Situações reais como entrevista, café e viagem.</p>
-        </Link>
-        <Link className="feature-card" href="/app/ranking" aria-label="Ranking global">
-          <span>05</span>
-          <strong>Ranking global</strong>
-          <p>Acompanhe XP, streak, nível e sua posição.</p>
-        </Link>
-        <Link className="feature-card" href="/app/social" aria-label="Compartilhamento social">
-          <span>06</span>
-          <strong>Compartilhamento social</strong>
-          <p>Gere textos para compartilhar progresso e ranking.</p>
-        </Link>
-      </section>
-    </main>
+            <Link href="/app/chat" className="group p-6 rounded-2xl bg-surface-container border border-white/5 hover:border-primary/50 transition-all">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="material-symbols-outlined text-primary">smart_toy</span>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">AI Chat</h3>
+              <p className="text-neutral-500">Practice natural conversations with real-time feedback.</p>
+            </Link>
+
+            <Link href="/app/memorization" className="group p-6 rounded-2xl bg-surface-container border border-white/5 hover:border-primary/50 transition-all">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="material-symbols-outlined text-primary">psychology</span>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Memorization</h3>
+              <p className="text-neutral-500">Flashcards and memory tricks for rapid vocabulary growth.</p>
+            </Link>
+
+            <Link href="/app/role-play" className="group p-6 rounded-2xl bg-surface-container border border-white/5 hover:border-primary/50 transition-all">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="material-symbols-outlined text-primary">theater_comedy</span>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Role Play</h3>
+              <p className="text-neutral-500">Simulate real-world situations like coffee shops or airports.</p>
+            </Link>
+
+            <Link href="/app/ranking" className="group p-6 rounded-2xl bg-surface-container border border-white/5 hover:border-primary/50 transition-all">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="material-symbols-outlined text-primary">leaderboard</span>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Global Ranking</h3>
+              <p className="text-neutral-500">See how you stack up against other learners worldwide.</p>
+            </Link>
+
+            <Link href="/app/settings" className="group p-6 rounded-2xl bg-surface-container border border-white/5 hover:border-primary/50 transition-all">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="material-symbols-outlined text-primary">settings</span>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Settings</h3>
+              <p className="text-neutral-500">Configure your profile, learning goals, and account.</p>
+            </Link>
+          </section>
+        </div>
+      </main>
+    </div>
   );
 }

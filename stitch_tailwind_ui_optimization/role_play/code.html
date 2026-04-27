@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FluencyAI - Role Play Scenarios</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#00a896",
+                        "on-surface-variant": "#c6c5d5",
+                        "on-secondary-fixed": "#2c0051",
+                        "on-secondary": "#490081",
+                        "on-background": "#e5e1e4",
+                        "secondary": "#ddb8ff",
+                        "on-primary-container": "#101b8a",
+                        "inverse-surface": "#e5e1e4",
+                        "secondary-container": "#62259b",
+                        "surface": "#131315",
+                        "tertiary-fixed-dim": "#3cddc7",
+                        "on-tertiary-container": "#00352e",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#908f9e",
+                        "on-tertiary-fixed-variant": "#005047",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#ddb8ff",
+                        "on-primary-fixed": "#000767",
+                        "tertiary": "#3cddc7",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#62fae3",
+                        "surface-container-high": "#2a2a2c",
+                        "surface-container-low": "#1c1b1d",
+                        "secondary-fixed": "#f0dbff",
+                        "surface-bright": "#39393b",
+                        "inverse-primary": "#4953bc",
+                        "surface-variant": "#353437",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "surface-dim": "#131315",
+                        "primary-container": "#818cf8",
+                        "outline-variant": "#454653",
+                        "on-primary-fixed-variant": "#2f3aa3",
+                        "surface-container-lowest": "#0e0e10",
+                        "on-secondary-fixed-variant": "#62259b",
+                        "inverse-on-surface": "#313032",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#003731",
+                        "surface-tint": "#bdc2ff",
+                        "primary": "#bdc2ff",
+                        "on-secondary-container": "#d1a1ff",
+                        "surface-container-highest": "#353437",
+                        "background": "#131315",
+                        "on-primary": "#131e8c",
+                        "surface-container": "#201f22",
+                        "primary-fixed": "#e0e0ff",
+                        "on-surface": "#e5e1e4",
+                        "on-tertiary-fixed": "#00201c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "card-gap": "16px",
+                        "base": "4px",
+                        "gutter": "24px",
+                        "container-padding": "32px",
+                        "section-margin": "48px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-xl": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "headline-lg": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-glass {
+            background: rgba(18, 18, 23, 0.7);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 border-r border-white/10 fixed left-0 top-0 bg-[#09090B] font-manrope antialiased tracking-tight flex flex-col py-8 px-4 z-50">
+<div class="mb-10 px-4">
+<span class="text-indigo-400 font-extrabold text-xl">FluencyAI</span>
+<p class="text-neutral-400 text-xs mt-1">Level 24 Learner</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-headline-md text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-headline-md text-sm">Immersion Plan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-headline-md text-sm">AI Chat</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-headline-md text-sm">Memorization</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-indigo-400 bg-indigo-400/10 border-r-2 border-indigo-400 font-semibold scale-95 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="theater_comedy">theater_comedy</span>
+<span class="font-headline-md text-sm">Role Play</span>
+</a>
+</nav>
+<div class="mt-auto space-y-2 pt-4 border-t border-white/5">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-headline-md text-sm">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-headline-md text-sm">Global Ranking</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="w-full h-16 border-b border-white/10 fixed top-0 z-40 bg-[#09090B]/80 backdrop-blur-md flex items-center justify-between pl-72 pr-8">
+<div class="flex items-center gap-8">
+<h1 class="text-indigo-400 font-extrabold text-lg">Learning Dashboard</h1>
+<div class="flex items-center gap-4 text-xs font-label-caps tracking-widest text-neutral-400">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span> Level 24</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span> 1,240 XP</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span> 15 Day Streak</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<button class="p-2 text-neutral-400 hover:text-white transition-opacity opacity-80 hover:opacity-100">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+<button class="p-2 text-neutral-400 hover:text-white transition-opacity opacity-80 hover:opacity-100 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-indigo-400 rounded-full"></span>
+</button>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-headline-md text-sm hover:brightness-110 transition-all">
+                Start Lesson
+            </button>
+<img alt="User profile photo" class="w-8 h-8 rounded-full border border-white/20" data-alt="Close-up portrait of a professional man with friendly expression in soft office lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfsU6JNvCYG6pzgKQvNjvmDucxMabb3WQNJMK4gLGI0LcFNcPKqdpWr_UM2hdThitHNnsx6_U6Qn88TtpXzpHIUCpoSvvhlGaTgcOTkTK0gadlZRebl_4cHH5XkvOdSeO4NObXIlNpGi40F7xW5jMjN5z7byCY2jlTOru3heEYLQDoPWv5h-A0woorYmHf5-mf0YUcYDK0Y3zDI1wrMK-6GhauCDSnpBKv0neLXtC8h9B3KolhQQRWH34uTL_6BWIGpft6SFF8cmBv"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-16 min-h-screen">
+<div class="max-w-[1280px] mx-auto p-container-padding">
+<!-- Header Section -->
+<section class="mb-section-margin">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<span class="text-primary font-label-caps mb-2 block">SIMULATED CONVERSATIONS</span>
+<h2 class="font-headline-xl text-on-surface">Interactive Scenarios</h2>
+<p class="text-on-surface-variant max-w-xl mt-4 font-body-lg">
+                            Practice real-world situations with our advanced AI. Get real-time corrections and improve your conversational flow in a safe environment.
+                        </p>
+</div>
+<div class="flex gap-3">
+<div class="bg-surface-container-high border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary" data-icon="verified">verified</span>
+<div>
+<p class="text-[10px] text-neutral-400 font-label-caps">WEEKLY PROGRESS</p>
+<p class="text-on-surface font-headline-md text-sm">8/10 Completed</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Scenarios Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Large Featured Scenario -->
+<div class="md:col-span-8 bg-surface-container border border-white/10 rounded-xl overflow-hidden group hover:border-primary/30 transition-all duration-300">
+<div class="relative h-64">
+<img alt="Job Interview Scenario" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="Modern corporate office setting with minimalist furniture and city view through large windows in cool daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1EicA93tfvV5jETXSnfYdS7Qstj7UQGYjZa4WdZfU6MfbhwFVbYz5E3UXukpevtj51fWqxZEwRuvtoUcJtINbYoo5xVX3misfztjo8yT61Iea9ZGPEozhaNVXZbh6KYwTZhbzF6dj_oxogl2W6hBfEyYnQHeCI0fwfbn5PnO7k9d36mOu62lVHmMRXV_Su9fPuWfFOpWYG4sqERDsg0RW4B_lvGfq-vVxF_hsVSKguGESgqbjNRbZJmIDKuMVAKm8m3Omg184m3IV"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container via-transparent to-transparent"></div>
+<div class="absolute top-4 left-4 flex gap-2">
+<span class="bg-indigo-400 text-on-primary-container text-[10px] font-bold px-2 py-1 rounded">ADVANCED</span>
+<span class="bg-surface-container-lowest/80 backdrop-blur-md text-on-surface text-[10px] font-bold px-2 py-1 rounded">20 MIN</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline-lg text-on-surface">The High-Stakes Job Interview</h3>
+<p class="text-on-surface-variant text-body-md mt-1">Practice articulating your strengths and negotiating your salary for a Tech Lead role.</p>
+</div>
+<button class="bg-primary text-on-primary font-headline-md text-sm px-6 py-3 rounded-xl hover:brightness-110 active:scale-95 transition-all">
+                                Start Scenario
+                            </button>
+</div>
+<div class="flex gap-4 border-t border-white/5 pt-4">
+<div class="flex items-center gap-2 text-xs text-neutral-400">
+<span class="material-symbols-outlined text-sm" data-icon="record_voice_over">record_voice_over</span>
+<span>Voice Recommended</span>
+</div>
+<div class="flex items-center gap-2 text-xs text-neutral-400">
+<span class="material-symbols-outlined text-sm" data-icon="stars">stars</span>
+<span>+250 XP Reward</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Small Scenario 1 -->
+<div class="md:col-span-4 bg-surface-container-low border border-white/10 rounded-xl p-6 flex flex-col group hover:border-primary/30 transition-all">
+<div class="bg-surface-container-high w-12 h-12 rounded-lg flex items-center justify-center mb-6 text-primary border border-white/5">
+<span class="material-symbols-outlined text-3xl" data-icon="coffee">coffee</span>
+</div>
+<h3 class="font-headline-md text-on-surface mb-2">Ordering Coffee</h3>
+<p class="text-on-surface-variant text-sm mb-6 flex-1">Casual conversation at a busy downtown café. Focus on speed and pronunciation.</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-label-caps text-neutral-500">BEGINNER • 5 MIN</span>
+<button class="text-primary font-bold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            PRACTICE <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Small Scenario 2 -->
+<div class="md:col-span-4 bg-surface-container-low border border-white/10 rounded-xl p-6 flex flex-col group hover:border-primary/30 transition-all">
+<div class="bg-surface-container-high w-12 h-12 rounded-lg flex items-center justify-center mb-6 text-tertiary border border-white/5">
+<span class="material-symbols-outlined text-3xl" data-icon="flight_takeoff">flight_takeoff</span>
+</div>
+<h3 class="font-headline-md text-on-surface mb-2">Airport Travel</h3>
+<p class="text-on-surface-variant text-sm mb-6 flex-1">Navigate customs, ask for directions to your gate, and handle a flight delay.</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-label-caps text-neutral-500">INTERMEDIATE • 12 MIN</span>
+<button class="text-primary font-bold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            PRACTICE <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Small Scenario 3 -->
+<div class="md:col-span-4 bg-surface-container-low border border-white/10 rounded-xl p-6 flex flex-col group hover:border-primary/30 transition-all">
+<div class="bg-surface-container-high w-12 h-12 rounded-lg flex items-center justify-center mb-6 text-secondary border border-white/5">
+<span class="material-symbols-outlined text-3xl" data-icon="medical_services">medical_services</span>
+</div>
+<h3 class="font-headline-md text-on-surface mb-2">Doctor's Appointment</h3>
+<p class="text-on-surface-variant text-sm mb-6 flex-1">Describe symptoms, understand medical advice, and book a follow-up.</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-label-caps text-neutral-500">INTERMEDIATE • 15 MIN</span>
+<button class="text-primary font-bold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            PRACTICE <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Simulation Overlay Placeholder -->
+<div class="md:col-span-4 bg-surface-container border border-indigo-400/30 rounded-xl overflow-hidden flex flex-col">
+<div class="bg-indigo-400/10 px-4 py-2 border-b border-white/10 flex items-center justify-between">
+<span class="text-[10px] font-label-caps text-indigo-400 flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-pulse"></span> LIVE SIMULATION
+                        </span>
+<button class="text-neutral-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="close">close</span>
+</button>
+</div>
+<div class="flex-1 p-6 flex flex-col justify-end gap-4 relative">
+<!-- AI Speech Bubble -->
+<div class="bg-surface-container-high border border-white/5 p-4 rounded-2xl rounded-bl-none max-w-[90%]">
+<p class="text-xs text-indigo-400 font-label-caps mb-1">INTERVIEWER</p>
+<p class="text-sm text-on-surface">"Where do you see yourself professionally in the next five years?"</p>
+</div>
+<!-- Real-time correction overlay -->
+<div class="bg-[#09090B]/90 border border-secondary/30 p-3 rounded-xl backdrop-blur-md animate-in slide-in-from-bottom-2">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="auto_awesome">auto_awesome</span>
+<div>
+<p class="text-[10px] font-label-caps text-secondary mb-1">AI CORRECTION</p>
+<p class="text-xs text-on-surface">Try using <span class="text-secondary italic">"aspire to"</span> instead of "want to" for a more professional tone.</p>
+</div>
+</div>
+</div>
+<!-- User Waveform UI -->
+<div class="flex items-center gap-3 bg-surface-container-lowest border border-white/5 p-3 rounded-xl">
+<div class="flex items-center gap-1">
+<div class="w-1 h-3 bg-primary rounded-full"></div>
+<div class="w-1 h-5 bg-primary rounded-full"></div>
+<div class="w-1 h-8 bg-primary rounded-full"></div>
+<div class="w-1 h-4 bg-primary rounded-full"></div>
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+</div>
+<span class="text-xs text-neutral-400">Listening to your response...</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Gamified Feedback Section -->
+<section class="mt-section-margin bg-surface-container rounded-2xl border border-white/10 p-8">
+<div class="flex flex-col md:flex-row items-center gap-8">
+<div class="relative w-40 h-40">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-white/5" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-tertiary" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-dasharray="440" stroke-dashoffset="66" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-headline-lg text-on-surface">85%</span>
+<span class="text-[10px] font-label-caps text-neutral-400">FLUENCY</span>
+</div>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-lg text-on-surface mb-2">Scenario Complete!</h3>
+<p class="text-on-surface-variant mb-6 font-body-md">Your confidence is growing. You successfully navigated 92% of the critical dialogue paths in 'Ordering Coffee'.</p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container-high border border-white/5 p-4 rounded-xl text-center">
+<p class="text-[10px] font-label-caps text-neutral-500 mb-1">STREAK</p>
+<p class="text-on-surface font-headline-md">15 Days</p>
+</div>
+<div class="bg-surface-container-high border border-white/5 p-4 rounded-xl text-center">
+<p class="text-[10px] font-label-caps text-neutral-500 mb-1">XP EARNED</p>
+<p class="text-primary font-headline-md">+150 XP</p>
+</div>
+<div class="bg-surface-container-high border border-white/5 p-4 rounded-xl text-center">
+<p class="text-[10px] font-label-caps text-neutral-500 mb-1">VOCABULARY</p>
+<p class="text-on-surface font-headline-md">+12 New</p>
+</div>
+<div class="bg-surface-container-high border border-white/5 p-4 rounded-xl text-center">
+<p class="text-[10px] font-label-caps text-neutral-500 mb-1">PRONUNCIATION</p>
+<p class="text-tertiary font-headline-md">A- Grade</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<button class="bg-primary text-on-primary px-6 py-3 rounded-xl font-headline-md text-sm hover:brightness-110 transition-all">Review Errors</button>
+<button class="bg-surface-container-highest text-on-surface border border-white/10 px-6 py-3 rounded-xl font-headline-md text-sm hover:bg-white/5 transition-all">Next Scenario</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Contextual FAB (Hidden on Scenario selection but visible on Home) -->
+<!-- Suppression logic: Screen is 'Details' or 'Task-focused', so no FAB -->
+</body></html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Immersion Plan - FluencyAI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#00a896",
+                    "on-surface-variant": "#c6c5d5",
+                    "on-secondary-fixed": "#2c0051",
+                    "on-secondary": "#490081",
+                    "on-background": "#e5e1e4",
+                    "secondary": "#ddb8ff",
+                    "on-primary-container": "#101b8a",
+                    "inverse-surface": "#e5e1e4",
+                    "secondary-container": "#62259b",
+                    "surface": "#131315",
+                    "tertiary-fixed-dim": "#3cddc7",
+                    "on-tertiary-container": "#00352e",
+                    "on-error-container": "#ffdad6",
+                    "outline": "#908f9e",
+                    "on-tertiary-fixed-variant": "#005047",
+                    "error": "#ffb4ab",
+                    "secondary-fixed-dim": "#ddb8ff",
+                    "on-primary-fixed": "#000767",
+                    "tertiary": "#3cddc7",
+                    "on-error": "#690005",
+                    "tertiary-fixed": "#62fae3",
+                    "surface-container-high": "#2a2a2c",
+                    "surface-container-low": "#1c1b1d",
+                    "secondary-fixed": "#f0dbff",
+                    "surface-bright": "#39393b",
+                    "inverse-primary": "#4953bc",
+                    "surface-variant": "#353437",
+                    "primary-fixed-dim": "#bdc2ff",
+                    "surface-dim": "#131315",
+                    "primary-container": "#818cf8",
+                    "outline-variant": "#454653",
+                    "on-primary-fixed-variant": "#2f3aa3",
+                    "surface-container-lowest": "#0e0e10",
+                    "on-secondary-fixed-variant": "#62259b",
+                    "inverse-on-surface": "#313032",
+                    "error-container": "#93000a",
+                    "on-tertiary": "#003731",
+                    "surface-tint": "#bdc2ff",
+                    "primary": "#bdc2ff",
+                    "on-secondary-container": "#d1a1ff",
+                    "surface-container-highest": "#353437",
+                    "background": "#09090B",
+                    "on-primary": "#131e8c",
+                    "surface-container": "#201f22",
+                    "primary-fixed": "#e0e0ff",
+                    "on-surface": "#e5e1e4",
+                    "on-tertiary-fixed": "#00201c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "card-gap": "16px",
+                    "base": "4px",
+                    "gutter": "24px",
+                    "container-padding": "32px",
+                    "section-margin": "48px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-xl": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "headline-lg": ["Manrope"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 border-r border-white/10 fixed left-0 top-0 flex flex-col py-8 px-4 bg-[#09090B] font-manrope antialiased tracking-tight">
+<div class="mb-10 px-2 flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-xl">language</span>
+</div>
+<span class="text-indigo-400 font-extrabold text-xl">FluencyAI</span>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-200 text-neutral-400 hover:text-white hover:bg-white/5" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-indigo-400 bg-indigo-400/10 border-r-2 border-indigo-400 font-semibold" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="text-body-md">Immersion Plan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-200 text-neutral-400 hover:text-white hover:bg-white/5" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="text-body-md">AI Chat</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-200 text-neutral-400 hover:text-white hover:bg-white/5" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="text-body-md">Memorization</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-200 text-neutral-400 hover:text-white hover:bg-white/5" href="#">
+<span class="material-symbols-outlined">theater_comedy</span>
+<span class="text-body-md">Role Play</span>
+</a>
+</nav>
+<div class="pt-8 mt-8 border-t border-white/10 space-y-2">
+<div class="px-3 mb-4">
+<p class="text-label-caps text-neutral-500 uppercase">Profile</p>
+<div class="mt-4 flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-white/20" data-alt="Portrait of a young professional learner with a focused expression, warm indoor lighting, dark aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDupc2GrhaBvFyh8Y1B4OLPFRPUzsvWuCW1vPedxclgNmJNZgIhPwLTkx8QIcOGjiij74jedK9RxClBoul35XfoCyceFDgXKBDNzGD7ZdPxmpWWg6-MkvlDEGCesJUKazr7ygRpDaKsp0oGwmxGiOuvuq5yeWGTutGobDBup7WHExcQe2xT8JfAd0aov4PpvnJP-KzRxGrQkxD7QOhmyrJMs6BWY8qelH5M3wcYBOxWqQbAoYCEVXJ-ljb_vdKH5xzMSP9GUXHUfuO8"/>
+<div>
+<p class="text-white font-bold text-sm">Level 24 Learner</p>
+<p class="text-neutral-500 text-xs">Premium Member</p>
+</div>
+</div>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="text-body-md">Global Ranking</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="w-full h-16 border-b border-white/10 fixed top-0 z-40 bg-[#09090B]/80 backdrop-blur-md flex items-center justify-between pl-72 pr-8 font-manrope">
+<div class="flex items-center gap-4">
+<h1 class="text-headline-md text-white">Immersion Plan</h1>
+<div class="h-4 w-[1px] bg-white/10"></div>
+<div class="flex gap-4 text-neutral-400">
+<span class="text-label-caps flex items-center gap-1"><span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">star</span> Level 24</span>
+<span class="text-label-caps flex items-center gap-1"><span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span> 1,240 XP</span>
+<span class="text-label-caps flex items-center gap-1"><span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span> 15 Day Streak</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-neutral-400 hover:text-white transition-opacity opacity-80 hover:opacity-100">
+<span class="material-symbols-outlined">dark_mode</span>
+</button>
+<button class="p-2 text-neutral-400 hover:text-white transition-opacity opacity-80 hover:opacity-100">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity">
+                Start Lesson
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-16 min-h-screen">
+<div class="max-w-6xl mx-auto px-container-padding py-section-margin">
+<!-- 7-Day Roadmap Header -->
+<section class="mb-section-margin">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="text-headline-lg text-white mb-2">Weekly Roadmap</h2>
+<p class="text-neutral-400 text-body-md">Your personalized path to fluency for the week of Oct 24th.</p>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low p-1 rounded-xl border border-white/5">
+<button class="px-4 py-2 text-label-caps text-neutral-500 hover:text-white">Previous</button>
+<button class="px-4 py-2 text-label-caps bg-primary/20 text-primary rounded-lg border border-primary/30">Current Week</button>
+<button class="px-4 py-2 text-label-caps text-neutral-500 hover:text-white">Next</button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-4">
+<!-- Day 1 (Completed) -->
+<div class="relative p-6 rounded-2xl bg-surface-container-high border border-white/5 flex flex-col items-center gap-3">
+<span class="text-label-caps text-neutral-500">MON</span>
+<div class="w-12 h-12 rounded-full bg-tertiary/20 flex items-center justify-center border border-tertiary/30">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+</div>
+<span class="font-headline-md text-white">24</span>
+</div>
+<!-- Day 2 (Completed) -->
+<div class="relative p-6 rounded-2xl bg-surface-container-high border border-white/5 flex flex-col items-center gap-3">
+<span class="text-label-caps text-neutral-500">TUE</span>
+<div class="w-12 h-12 rounded-full bg-tertiary/20 flex items-center justify-center border border-tertiary/30">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+</div>
+<span class="font-headline-md text-white">25</span>
+</div>
+<!-- Day 3 (Current) -->
+<div class="relative p-6 rounded-2xl bg-indigo-900/20 border-2 border-indigo-400 flex flex-col items-center gap-3 shadow-[0_0_20px_rgba(129,140,248,0.15)]">
+<div class="absolute -top-3 px-3 py-1 bg-indigo-400 text-on-primary-fixed rounded-full text-label-caps">TODAY</div>
+<span class="text-label-caps text-indigo-400">WED</span>
+<div class="w-12 h-12 rounded-full bg-indigo-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed">play_arrow</span>
+</div>
+<span class="font-headline-md text-white">26</span>
+</div>
+<!-- Day 4 (Locked) -->
+<div class="relative p-6 rounded-2xl bg-surface-container-lowest border border-white/5 flex flex-col items-center gap-3 opacity-60">
+<span class="text-label-caps text-neutral-600">THU</span>
+<div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-neutral-600">lock</span>
+</div>
+<span class="font-headline-md text-neutral-600">27</span>
+</div>
+<!-- Day 5 -->
+<div class="relative p-6 rounded-2xl bg-surface-container-lowest border border-white/5 flex flex-col items-center gap-3 opacity-60">
+<span class="text-label-caps text-neutral-600">FRI</span>
+<div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-neutral-600">lock</span>
+</div>
+<span class="font-headline-md text-neutral-600">28</span>
+</div>
+<!-- Day 6 -->
+<div class="relative p-6 rounded-2xl bg-surface-container-lowest border border-white/5 flex flex-col items-center gap-3 opacity-60">
+<span class="text-label-caps text-neutral-600">SAT</span>
+<div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-neutral-600">lock</span>
+</div>
+<span class="font-headline-md text-neutral-600">29</span>
+</div>
+<!-- Day 7 -->
+<div class="relative p-6 rounded-2xl bg-surface-container-lowest border border-white/5 flex flex-col items-center gap-3 opacity-60">
+<span class="text-label-caps text-neutral-600">SUN</span>
+<div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-neutral-600">lock</span>
+</div>
+<span class="font-headline-md text-neutral-600">30</span>
+</div>
+</div>
+</section>
+<!-- Learning Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Progress Summary Card -->
+<div class="col-span-12 lg:col-span-4 p-8 rounded-2xl bg-surface-container-high border border-white/5 flex flex-col justify-between">
+<div>
+<h3 class="text-headline-md text-white mb-2">Today's Focus</h3>
+<p class="text-neutral-400 text-body-md mb-6">Business Negotiation &amp; Etiquette</p>
+<div class="space-y-6">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-label-caps text-neutral-500 uppercase">
+<span>Daily Progress</span>
+<span>65%</span>
+</div>
+<div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[65%] rounded-full"></div>
+</div>
+</div>
+<ul class="space-y-4">
+<li class="flex items-center gap-3 text-tertiary">
+<span class="material-symbols-outlined text-xl">check_circle</span>
+<span class="text-body-md">Essential Phrases</span>
+</li>
+<li class="flex items-center gap-3 text-tertiary">
+<span class="material-symbols-outlined text-xl">check_circle</span>
+<span class="text-body-md">Thematic Vocabulary</span>
+</li>
+<li class="flex items-center gap-3 text-neutral-400">
+<span class="material-symbols-outlined text-xl">radio_button_unchecked</span>
+<span class="text-body-md">Grammar Points (2 left)</span>
+</li>
+<li class="flex items-center gap-3 text-neutral-400">
+<span class="material-symbols-outlined text-xl">radio_button_unchecked</span>
+<span class="text-body-md">Final Quiz</span>
+</li>
+</ul>
+</div>
+</div>
+<button class="mt-8 w-full py-4 bg-primary text-on-primary rounded-xl font-bold hover:opacity-90 transition-opacity">Continue Lesson</button>
+</div>
+<!-- Learning Sections Grid -->
+<div class="col-span-12 lg:col-span-8 grid grid-cols-2 gap-gutter">
+<!-- Essential Phrases Section -->
+<div class="col-span-2 md:col-span-1 p-6 rounded-2xl bg-surface-container border-l-4 border-tertiary bg-white/[0.02]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-tertiary/10 rounded-lg">
+<span class="material-symbols-outlined text-tertiary">record_voice_over</span>
+</div>
+<span class="text-label-caps text-tertiary">COMPLETED</span>
+</div>
+<h4 class="text-headline-md text-white mb-1">20 Phrases</h4>
+<p class="text-neutral-500 text-body-md mb-4">Master common business greetings and closings.</p>
+<button class="text-tertiary font-bold text-sm flex items-center gap-1 hover:underline">
+                            Review list <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Thematic Vocabulary Section -->
+<div class="col-span-2 md:col-span-1 p-6 rounded-2xl bg-surface-container border-l-4 border-tertiary bg-white/[0.02]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-tertiary/10 rounded-lg">
+<span class="material-symbols-outlined text-tertiary">menu_book</span>
+</div>
+<span class="text-label-caps text-tertiary">COMPLETED</span>
+</div>
+<h4 class="text-headline-md text-white mb-1">15 Words</h4>
+<p class="text-neutral-500 text-body-md mb-4">Theme: Strategic Partnership Terms.</p>
+<button class="text-tertiary font-bold text-sm flex items-center gap-1 hover:underline">
+                            Review list <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Grammar Points Section -->
+<div class="col-span-2 md:col-span-1 p-6 rounded-2xl bg-surface-container border-l-4 border-primary/50 bg-indigo-900/5">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">rule</span>
+</div>
+<span class="text-label-caps text-primary">3 / 5 COMPLETED</span>
+</div>
+<h4 class="text-headline-md text-white mb-1">Grammar Points</h4>
+<p class="text-neutral-500 text-body-md mb-4">Subjunctive mood in formal requests.</p>
+<button class="bg-primary/20 text-primary border border-primary/30 px-4 py-2 rounded-lg font-bold text-sm hover:bg-primary/30 transition-colors">
+                            Resume Study
+                        </button>
+</div>
+<!-- Speaking Exercise Section -->
+<div class="col-span-2 md:col-span-1 p-6 rounded-2xl bg-surface-container border-l-4 border-secondary/50 bg-white/[0.02]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary/10 rounded-lg">
+<span class="material-symbols-outlined text-secondary">mic</span>
+</div>
+<span class="text-label-caps text-neutral-500">INCOMPLETE</span>
+</div>
+<h4 class="text-headline-md text-white mb-1">Role Play</h4>
+<p class="text-neutral-500 text-body-md mb-4">Practice the "Contract Negotiation" scenario.</p>
+<button class="bg-white/5 border border-white/10 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-white/10 transition-colors">
+                            Begin Practice
+                        </button>
+</div>
+<!-- Final Quiz Section (Full Width in Inner Grid) -->
+<div class="col-span-2 p-8 rounded-2xl bg-gradient-to-br from-surface-container to-[#18181B] border border-white/5 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full -mr-24 -mt-24 blur-3xl group-hover:bg-primary/10 transition-colors"></div>
+<div class="relative z-10 flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 bg-surface-container-high rounded-full border border-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">quiz</span>
+</div>
+<div>
+<h4 class="text-headline-lg text-white mb-1">Day 26 Final Quiz</h4>
+<p class="text-neutral-400 text-body-md">Validate your progress and earn +150 XP bonus.</p>
+</div>
+</div>
+<button class="bg-secondary text-on-secondary px-8 py-3 rounded-xl font-extrabold flex items-center gap-2 hover:scale-[1.02] active:scale-95 transition-all">
+                                Take Final Exam <span class="material-symbols-outlined">bolt</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats / Recommendation Footer -->
+<section class="mt-section-margin grid grid-cols-12 gap-gutter">
+<div class="col-span-12 md:col-span-6 p-6 rounded-2xl border border-white/5 bg-surface-container-low flex items-center gap-6">
+<img class="w-24 h-24 rounded-xl object-cover grayscale opacity-50" data-alt="Close up of high quality noise cancelling headphones on a dark oak desk, moody professional setup" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXZMdRQNKIoxLdW7C-8zNjDlLh6ymM9S3cyec5yPDyfttK2dBtAP6yQenM2AIGW-9VovimZJ_VowLe_tNL3r27zPRihGyJ8weqYKuhPAJNlJcuGcTVVPEPnYKVpmFTHyCztvPRX1mNIIXq0c6iZUWY4VwsrEeIYuBwwACUW9A4yrF8lr7UwNuYDrdlV13vNBp6r7nA_7somFYRNw6mJ4ZY9cPm99w1Tq_hGMPu5D-ekkE9hu58BihYGNriFF5V0OJTFrUgxPClSuON"/>
+<div>
+<span class="text-label-caps text-secondary">Recommended Tool</span>
+<h5 class="text-headline-md text-white mt-1">Immersive Listening</h5>
+<p class="text-neutral-500 text-body-md mt-1">Listen to the Day 26 podcast for 15 mins to boost retention.</p>
+</div>
+</div>
+<div class="col-span-12 md:col-span-6 p-6 rounded-2xl border border-white/5 bg-surface-container-low flex items-center gap-6">
+<div class="w-24 h-24 rounded-xl bg-surface-container-high border border-white/10 flex flex-col items-center justify-center text-center">
+<span class="text-headline-md text-white">94%</span>
+<span class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest">Accuracy</span>
+</div>
+<div>
+<span class="text-label-caps text-tertiary">Weekly Insight</span>
+<h5 class="text-headline-md text-white mt-1">Top Performer</h5>
+<p class="text-neutral-500 text-body-md mt-1">Your grammar accuracy is 12% higher than the global average.</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- FAB (Suppressed based on rules for sub-pages, but included here if needed for primary lesson start) -->
+<!-- Not rendered per "Contextual FAB Suppression" rule for Details/Plan screens -->
+</body></html>

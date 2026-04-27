@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Memorization System - FluencyAI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary-container": "#00a896",
+            "on-surface-variant": "#c6c5d5",
+            "on-secondary-fixed": "#2c0051",
+            "on-secondary": "#490081",
+            "on-background": "#e5e1e4",
+            "secondary": "#ddb8ff",
+            "on-primary-container": "#101b8a",
+            "inverse-surface": "#e5e1e4",
+            "secondary-container": "#62259b",
+            "surface": "#131315",
+            "tertiary-fixed-dim": "#3cddc7",
+            "on-tertiary-container": "#00352e",
+            "on-error-container": "#ffdad6",
+            "outline": "#908f9e",
+            "on-tertiary-fixed-variant": "#005047",
+            "error": "#ffb4ab",
+            "secondary-fixed-dim": "#ddb8ff",
+            "on-primary-fixed": "#000767",
+            "tertiary": "#3cddc7",
+            "on-error": "#690005",
+            "tertiary-fixed": "#62fae3",
+            "surface-container-high": "#2a2a2c",
+            "surface-container-low": "#1c1b1d",
+            "secondary-fixed": "#f0dbff",
+            "surface-bright": "#39393b",
+            "inverse-primary": "#4953bc",
+            "surface-variant": "#353437",
+            "primary-fixed-dim": "#bdc2ff",
+            "surface-dim": "#131315",
+            "primary-container": "#818cf8",
+            "outline-variant": "#454653",
+            "on-primary-fixed-variant": "#2f3aa3",
+            "surface-container-lowest": "#0e0e10",
+            "on-secondary-fixed-variant": "#62259b",
+            "inverse-on-surface": "#313032",
+            "error-container": "#93000a",
+            "on-tertiary": "#003731",
+            "surface-tint": "#bdc2ff",
+            "primary": "#bdc2ff",
+            "on-secondary-container": "#d1a1ff",
+            "surface-container-highest": "#353437",
+            "background": "#131315",
+            "on-primary": "#131e8c",
+            "surface-container": "#201f22",
+            "primary-fixed": "#e0e0ff",
+            "on-surface": "#e5e1e4",
+            "on-tertiary-fixed": "#00201c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "card-gap": "16px",
+            "base": "4px",
+            "gutter": "24px",
+            "container-padding": "32px",
+            "section-margin": "48px"
+          },
+          "fontFamily": {
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "label-caps": ["Inter"],
+            "headline-xl": ["Manrope"],
+            "headline-md": ["Manrope"],
+            "headline-lg": ["Manrope"]
+          },
+          "fontSize": {
+            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+            "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+            "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+            "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .flashcard-inner {
+      perspective: 1000px;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+    }
+  </style>
+</head>
+<body class="bg-[#09090B] text-on-surface font-body-md antialiased overflow-x-hidden">
+<!-- Side Navigation Bar -->
+<aside class="h-screen w-64 border-r border-white/10 fixed left-0 top-0 bg-[#09090B] flex flex-col py-8 px-4 z-50">
+<div class="mb-12 px-2">
+<h1 class="text-indigo-400 font-extrabold text-xl font-headline-md">FluencyAI</h1>
+<p class="text-neutral-400 text-sm mt-1">Level 24 Learner</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-medium">Immersion Plan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-medium">AI Chat</span>
+</a>
+<!-- Active Tab: Memorization -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-indigo-400 bg-indigo-400/10 border-r-2 border-indigo-400 font-semibold transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-medium">Memorization</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="theater_comedy">theater_comedy</span>
+<span class="font-medium">Role Play</span>
+</a>
+</nav>
+<div class="mt-auto pt-8 border-t border-white/10 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-medium">Global Ranking</span>
+</a>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="w-full h-16 border-b border-white/10 fixed top-0 z-40 bg-[#09090B]/80 backdrop-blur-md flex items-center justify-between pl-72 pr-8">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-indigo-400">
+<span class="material-symbols-outlined text-sm" data-icon="workspace_premium">workspace_premium</span>
+<span class="text-label-caps font-label-caps">Level 24</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+<span class="text-label-caps font-label-caps">1,240 XP</span>
+</div>
+<div class="flex items-center gap-2 text-orange-400">
+<span class="material-symbols-outlined text-sm" data-icon="local_fire_department">local_fire_department</span>
+<span class="text-label-caps font-label-caps">15 Day Streak</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<button class="p-2 text-neutral-400 hover:bg-white/5 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+<button class="p-2 text-neutral-400 hover:bg-white/5 rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-indigo-500 rounded-full"></span>
+</button>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-semibold hover:opacity-90 transition-all scale-95 active:scale-90">
+        Start Lesson
+      </button>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-white/20">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="Portrait of a young adult learner with a neutral expression and professional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZK4fHw5NPjdWjBMWpEJzi8PLhEFgBOH6-CYo8T4e39OOHrjlTaJ3AtqFO8h8AytVYI9kbz32SW9y1VEKK8Hf2X_ZhaxrkrzddUf2hQdEgJfTEPMInXLYDj4E0cV3hDHVO_LxTtWnpwudRE2v_MVjRsUi3-wI0N6sVAV7Zgs8vu2cEOqlwedlxxXOrE8o1nFXoIvp51hHuHb4n0K85dFAtWinjUXnqyMCzyv_nK5uRxWoGG1nZfDkjozuyjo5h2lh047FVSapIOq0T"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas Content -->
+<main class="pl-64 pt-16 min-h-screen">
+<div class="max-w-4xl mx-auto px-8 py-12">
+<!-- Session Header & Progress -->
+<section class="mb-12">
+<div class="flex justify-between items-end mb-6">
+<div>
+<span class="text-indigo-400 font-label-caps text-label-caps block mb-2 uppercase tracking-widest">Active Session</span>
+<h2 class="text-headline-lg font-headline-lg">Daily Vocabulary Mastery</h2>
+</div>
+<div class="text-right">
+<span class="text-on-surface-variant font-label-caps text-label-caps">Word 12 of 20</span>
+<p class="text-indigo-400 font-bold text-headline-md">60%</p>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500" style="width: 60%;"></div>
+</div>
+</section>
+<!-- Flashcard Content Area -->
+<section class="relative group">
+<!-- Decoration Background Glow -->
+<div class="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+<!-- Primary Flashcard -->
+<div class="relative bg-[#121217] border border-white/10 rounded-xl overflow-hidden shadow-2xl">
+<!-- Card Header Image -->
+<div class="w-full h-48 relative overflow-hidden">
+<img alt="Memory Concept" class="w-full h-full object-cover opacity-60" data-alt="Conceptual artistic shot of glowing digital neural networks and brain connections in a dark atmosphere with neon indigo highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIMHUpUccDxIstWYauMm3uY-VNtApKEPVl7R6hQtW9B4tbqHB_Lpd0iyUrUFvJJuBnvjTcG-9A1n-a3yhDsiR5esSWaQ8IE2FEGr1pbbBaGLsO5D9O-50Cdr9hLBY9PsapH6rn-_5ow9Fb2Za4jVs4H0OF-dnKUGzBUdOsLR_fNkiiZhVybCvSFyeZbKe9qsyFKkSJq4t2_Y4Z2vz09ffF3s0fMv6D5kJFaTJoFzaw9TNAaL6P4TCNfu5APLRhkEO27zpp3QXQzx6k"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#121217] via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-8">
+<span class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full text-xs font-bold font-label-caps">ADJECTIVE</span>
+</div>
+</div>
+<!-- Card Content -->
+<div class="px-8 pb-10 pt-4">
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-xl font-headline-xl text-white">Ephemeral</h3>
+<button class="p-2 text-neutral-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="volume_up">volume_up</span>
+</button>
+</div>
+<!-- Bento Sections -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Definition & Example -->
+<div class="space-y-6">
+<div>
+<h4 class="text-indigo-400 text-label-caps font-label-caps mb-2">DEFINITION</h4>
+<p class="text-body-lg font-body-lg text-on-surface">Lasting for a very short time; fleeting or transient.</p>
+</div>
+<div>
+<h4 class="text-indigo-400 text-label-caps font-label-caps mb-2">REAL-LIFE EXAMPLE</h4>
+<div class="bg-white/5 border-l-2 border-indigo-500/50 p-4 rounded-r-lg italic text-on-surface-variant leading-relaxed">
+                    "The sunset painting the clouds in shades of pink and orange was beautiful, but its beauty was <span class="text-indigo-300 font-bold">ephemeral</span>, fading into the night within minutes."
+                  </div>
+</div>
+</div>
+<!-- Mnemonic Card -->
+<div class="bg-surface-container-high border border-white/5 p-6 rounded-xl flex flex-col justify-center relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3 opacity-10">
+<span class="material-symbols-outlined text-6xl" data-icon="lightbulb">lightbulb</span>
+</div>
+<h4 class="text-tertiary text-label-caps font-label-caps mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="psychology">psychology</span>
+                  MEMORY TRICK
+                </h4>
+<p class="text-body-md font-body-md text-on-surface leading-relaxed relative z-10">
+                  Think of <span class="font-bold text-tertiary">"E-Phone"</span>: A phone battery that lasts a very short time is <span class="italic">ephemeral</span>.
+                </p>
+<div class="mt-4 flex gap-2">
+<span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold rounded border border-tertiary/20">MNEMONIC</span>
+<span class="px-2 py-1 bg-on-surface-variant/10 text-on-surface-variant text-[10px] font-bold rounded border border-white/10">PHONETIC</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interaction Buttons -->
+<div class="mt-12 flex items-center justify-center gap-6">
+<button class="group flex items-center gap-3 px-8 py-4 bg-surface-container-low border border-white/10 text-neutral-300 rounded-xl font-semibold hover:border-error/40 hover:text-error transition-all scale-95 active:scale-90">
+<span class="material-symbols-outlined transition-transform group-hover:rotate-12" data-icon="history">history</span>
+            Review later
+          </button>
+<button class="group flex items-center gap-3 px-12 py-4 bg-primary text-on-primary rounded-xl font-bold text-lg hover:shadow-[0_0_20px_rgba(189,194,255,0.4)] transition-all scale-95 active:scale-90">
+<span class="material-symbols-outlined font-variation-settings-'FILL' 1" data-icon="check_circle">check_circle</span>
+            I know this
+          </button>
+</div>
+</section>
+<!-- Upcoming Queue (Visual Context) -->
+<section class="mt-16 pt-8 border-t border-white/5">
+<h5 class="text-neutral-500 font-label-caps text-label-caps mb-6 uppercase">Up next in this session</h5>
+<div class="grid grid-cols-4 gap-4 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+<div class="bg-[#121217] border border-white/10 p-4 rounded-lg">
+<p class="text-sm font-bold text-white mb-1">Surreptitious</p>
+<p class="text-[10px] text-neutral-400">Secretive...</p>
+</div>
+<div class="bg-[#121217] border border-white/10 p-4 rounded-lg">
+<p class="text-sm font-bold text-white mb-1">Mellifluous</p>
+<p class="text-[10px] text-neutral-400">Sweet sounding...</p>
+</div>
+<div class="bg-[#121217] border border-white/10 p-4 rounded-lg">
+<p class="text-sm font-bold text-white mb-1">Petrichor</p>
+<p class="text-[10px] text-neutral-400">Scent of rain...</p>
+</div>
+<div class="bg-indigo-500/10 border border-indigo-500/30 p-4 rounded-lg flex items-center justify-center">
+<span class="text-[10px] font-bold text-indigo-400">+15 MORE</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Keyboard Shortcuts Helper -->
+<div class="fixed bottom-6 right-8 flex gap-6 text-[10px] font-label-caps text-neutral-500">
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 bg-white/5 border border-white/10 rounded">SPACE</span>
+<span>FLIP CARD</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 bg-white/5 border border-white/10 rounded">←</span>
+<span>LATER</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 bg-white/5 border border-white/10 rounded">→</span>
+<span>GOT IT</span>
+</div>
+</div>
+</body></html>
