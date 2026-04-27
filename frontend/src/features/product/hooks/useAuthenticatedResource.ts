@@ -11,6 +11,7 @@ type ResourceState<TResource> = {
   error: string | null;
   isLoading: boolean;
   session: AuthSession | null;
+  mutate: () => void;
 };
 
 export function useAuthenticatedResource<TResource>(
@@ -21,6 +22,9 @@ export function useAuthenticatedResource<TResource>(
   const [data, setData] = useState<TResource | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [version, setVersion] = useState(0);
+
+  const mutate = () => setVersion((v) => v + 1);
 
   useEffect(() => {
     if (!session) {
@@ -53,7 +57,7 @@ export function useAuthenticatedResource<TResource>(
     return () => {
       isCurrent = false;
     };
-  }, [loadResource, router, session]);
+  }, [loadResource, router, session, version]);
 
-  return { data, error, isLoading, session };
+  return { data, error, isLoading, session, mutate };
 }

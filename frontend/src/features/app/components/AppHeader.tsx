@@ -2,13 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import type { AuthUser } from "@/features/auth/domain/types";
+import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 type AppHeaderProps = {
   user?: AuthUser | null;
   title?: string;
+  onMenuToggle?: () => void;
 };
 
-export function AppHeader({ user, title = "Dashboard" }: AppHeaderProps) {
+export function AppHeader({ user, title = "Dashboard", onMenuToggle }: AppHeaderProps) {
   const pathname = usePathname();
   
   // Map pathname to title if not provided
@@ -20,34 +22,40 @@ export function AppHeader({ user, title = "Dashboard" }: AppHeaderProps) {
     if (pathname === "/app/role-play") return "Role Play";
     if (pathname === "/app/ranking") return "Global Ranking";
     if (pathname === "/app/settings") return "Settings";
+    if (pathname === "/app/social") return "Social";
+    if (pathname === "/app/knowledge") return "Knowledge Base";
     return "Dashboard";
   };
 
   return (
-    <header className="w-full h-16 border-b border-white/10 fixed top-0 z-40 bg-[#09090B]/80 backdrop-blur-md flex items-center justify-between pl-8 lg:pl-72 pr-8 font-manrope">
+    <header className="w-full h-16 border-b border-white/10 fixed top-0 z-40 bg-[#09090B]/80 backdrop-blur-md flex items-center justify-between pl-4 lg:pl-72 pr-4 lg:pr-8 font-manrope">
       <div className="flex items-center gap-4">
-        <h1 className="text-[24px] font-semibold text-white">{getTitle()}</h1>
+        <button 
+          onClick={onMenuToggle}
+          className="lg:hidden p-2 text-neutral-400 hover:text-white transition-colors"
+        >
+          <span className="material-symbols-outlined">menu</span>
+        </button>
+        <h1 className="text-[18px] lg:text-[24px] font-semibold text-white truncate">{getTitle()}</h1>
         <div className="h-4 w-[1px] bg-white/10 hidden md:block"></div>
         <div className="hidden md:flex gap-4 text-neutral-400">
           <span className="text-[12px] font-bold tracking-[0.1em] uppercase flex items-center gap-1">
-            <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> Level 24
+            <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> Level {user?.level ?? 1}
           </span>
           <span className="text-[12px] font-bold tracking-[0.1em] uppercase flex items-center gap-1">
-            <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span> 1,240 XP
+            <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span> {user?.xp ?? 0} XP
           </span>
           <span className="text-[12px] font-bold tracking-[0.1em] uppercase flex items-center gap-1">
-            <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>local_fire_department</span> 15 Day Streak
+            <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>local_fire_department</span> {user?.streak ?? 0} Day Streak
           </span>
         </div>
       </div>
-      <div className="flex items-center gap-4">
-        <button className="p-2 text-neutral-400 hover:text-white transition-opacity opacity-80 hover:opacity-100">
-          <span className="material-symbols-outlined">dark_mode</span>
-        </button>
+      <div className="flex items-center gap-2 lg:gap-4">
+        <ThemeToggle />
         <button className="p-2 text-neutral-400 hover:text-white transition-opacity opacity-80 hover:opacity-100">
           <span className="material-symbols-outlined">notifications</span>
         </button>
-        <button className="bg-primary text-on-primary px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity hidden sm:block">
+        <button className="bg-primary text-on-primary px-3 py-1.5 lg:px-4 lg:py-2 rounded-lg font-bold text-xs lg:text-sm hover:opacity-90 transition-opacity whitespace-nowrap">
           Start Lesson
         </button>
       </div>

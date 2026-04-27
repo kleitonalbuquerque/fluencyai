@@ -35,8 +35,8 @@ describe("LoginForm", () => {
     render(<LoginForm />);
 
     await user.type(screen.getByLabelText("E-mail"), "ana@example.com");
-    await user.type(screen.getByLabelText("Senha"), "strong-password");
-    await user.click(screen.getByRole("button", { name: "Entrar" }));
+    await user.type(screen.getByLabelText("Password"), "strong-password");
+    await user.click(screen.getByRole("button", { name: "Sign In" }));
 
     expect(loginHookState.login).toHaveBeenCalledWith({
       email: "ana@example.com",
@@ -62,17 +62,17 @@ describe("LoginForm", () => {
     render(<LoginForm />);
 
     await user.type(screen.getByLabelText("E-mail"), "ana@example.com");
-    await user.type(screen.getByLabelText("Senha"), "strong-password");
-    await user.click(screen.getByRole("button", { name: "Entrar" }));
+    await user.type(screen.getByLabelText("Password"), "strong-password");
+    await user.click(screen.getByRole("button", { name: "Sign In" }));
 
     expect(router.push).toHaveBeenCalledWith("/app");
   });
 
   it("shows login errors from the auth hook", () => {
-    loginHookState.error = "Credenciais inválidas";
+    loginHookState.error = "Invalid credentials";
 
     render(<LoginForm />);
 
-    expect(screen.getByRole("alert")).toHaveTextContent("Credenciais inválidas");
+    expect(screen.getByRole("alert")).toHaveTextContent("Invalid credentials");
   });
 });

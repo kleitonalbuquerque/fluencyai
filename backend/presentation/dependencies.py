@@ -4,6 +4,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from application.auth.service import AuthService
+from application.product.service import ProductService
+from application.ai.knowledge_service import KnowledgeService
 from domain.entities.user import User
 from infrastructure.config.settings import Settings, get_settings
 from infrastructure.database.session import get_db_session
@@ -11,6 +13,10 @@ from infrastructure.repositories.sqlalchemy_password_reset_token_repository impo
     SQLAlchemyPasswordResetTokenRepository,
 )
 from infrastructure.repositories.sqlalchemy_user_repository import SQLAlchemyUserRepository
+from infrastructure.repositories.sqlalchemy_learning_repository import (
+    SqlAlchemyLessonRepository,
+    SqlAlchemyUserProgressRepository,
+)
 from infrastructure.security.bcrypt_password_hasher import BcryptPasswordHasher
 from infrastructure.security.jwt_token_service import JwtTokenService
 
@@ -27,6 +33,26 @@ def get_auth_service(
         token_service=JwtTokenService(settings),
         password_reset_token_repository=SQLAlchemyPasswordResetTokenRepository(db),
         password_reset_token_expire_minutes=settings.password_reset_token_expire_minutes,
+    )
+
+
+def get_knowledge_service(
+    settings: Settings = Depends(get_settings),
+) -> KnowledgeService:
+    return KnowledgeService(
+        kb_dir=settings.knowledge_base_dir,
+        api_key=settings.gemini_api_key,
+    )
+
+
+def get_product_service(
+    db: Session = Depends(get_db_session),
+    knowledge_service: KnowledgeService = Depends(get_knowledge_service),
+) -> ProductService:
+    return ProductService(
+        lesson_repository=SqlAlchemyLessonRepository(db),
+        progress_repository=SqlAlchemyUserProgressRepository(db),
+        knowledge_service=knowledge_service,
     )
 
 
@@ -66,3 +92,14 @@ def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Not authenticated",
         ) from exc
+
+
+def get_admin_user(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    if not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Operation not permitted",
+        )
+    return current_user

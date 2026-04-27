@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from infrastructure.config.settings import get_settings
 from presentation.api.routes.auth import router as auth_router
 from presentation.api.routes.product import router as product_router
+from presentation.api.routes.knowledge import router as knowledge_router
 
 
 def create_app() -> FastAPI:
@@ -18,6 +19,7 @@ def create_app() -> FastAPI:
     )
     app.include_router(auth_router)
     app.include_router(product_router)
+    app.include_router(knowledge_router)
     return app
 
 

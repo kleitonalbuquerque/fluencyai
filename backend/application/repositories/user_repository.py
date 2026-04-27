@@ -18,3 +18,6 @@ class UserRepository(Protocol):
 
     def update_avatar_url(self, user_id: str, avatar_url: str) -> User:
         raise NotImplementedError
+
+    def set_admin(self, user_id: str, is_admin: bool) -> User:
+        raise NotImplementedError

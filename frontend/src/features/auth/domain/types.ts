@@ -22,6 +22,7 @@ export type AuthUser = {
   xp: number;
   level: number;
   streak: number;
+  is_admin: boolean;
   avatar_url: string | null;
 };
 

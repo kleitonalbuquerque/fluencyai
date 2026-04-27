@@ -190,7 +190,7 @@ describe("product feature pages", () => {
   it("renders social share progress", async () => {
     render(<SocialSharePage />);
 
-    expect(await screen.findByText("Estou praticando no FluencyAI.")).toBeInTheDocument();
+    expect(await screen.findByText(/"Estou praticando no FluencyAI."/)).toBeInTheDocument();
     expect(screen.getByText("http://localhost:3000/app")).toBeInTheDocument();
   });
 });

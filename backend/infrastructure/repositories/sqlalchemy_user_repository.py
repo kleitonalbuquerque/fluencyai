@@ -44,6 +44,13 @@ class SQLAlchemyUserRepository(UserRepository):
         self._session.refresh(model)
         return self._to_entity(model)
 
+    def set_admin(self, user_id: str, is_admin: bool) -> User:
+        model = self._get_required_model(user_id)
+        model.is_admin = is_admin
+        self._session.commit()
+        self._session.refresh(model)
+        return self._to_entity(model)
+
     def _get_required_model(self, user_id: str) -> UserModel:
         model = self._session.get(UserModel, user_id)
         if model is None:
@@ -59,6 +66,7 @@ class SQLAlchemyUserRepository(UserRepository):
             xp=model.xp,
             level=model.level,
             streak=model.streak,
+            is_admin=model.is_admin,
             avatar_url=model.avatar_url,
             created_at=model.created_at,
             updated_at=model.updated_at,

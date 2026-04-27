@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 
 from application.product.service import ProductService
 from domain.entities.user import User
-from presentation.dependencies import get_current_user
+from presentation.dependencies import get_current_user, get_product_service
 from presentation.schemas.product import (
     AiChatRequest,
     AiChatResponse,
@@ -19,10 +19,6 @@ from presentation.schemas.product import (
 )
 
 router = APIRouter(tags=["product"])
-
-
-def get_product_service() -> ProductService:
-    return ProductService()
 
 
 @router.get("/learning-plan/today", response_model=DailyImmersionPlanResponse)

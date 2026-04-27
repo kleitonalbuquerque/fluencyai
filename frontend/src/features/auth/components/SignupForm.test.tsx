@@ -35,8 +35,8 @@ describe("SignupForm", () => {
     render(<SignupForm />);
 
     await user.type(screen.getByLabelText("E-mail"), "ana@example.com");
-    await user.type(screen.getByLabelText("Senha"), "strong-password");
-    await user.click(screen.getByRole("button", { name: "Criar conta" }));
+    await user.type(screen.getByLabelText("Password"), "strong-password");
+    await user.click(screen.getByRole("button", { name: "Create Account" }));
 
     expect(signupHookState.signup).toHaveBeenCalledWith({
       email: "ana@example.com",
@@ -62,19 +62,19 @@ describe("SignupForm", () => {
     render(<SignupForm />);
 
     await user.type(screen.getByLabelText("E-mail"), "ana@example.com");
-    await user.type(screen.getByLabelText("Senha"), "strong-password");
-    await user.click(screen.getByRole("button", { name: "Criar conta" }));
+    await user.type(screen.getByLabelText("Password"), "strong-password");
+    await user.click(screen.getByRole("button", { name: "Create Account" }));
 
     expect(router.push).toHaveBeenCalledWith("/app");
   });
 
   it("shows duplicate email feedback from the auth hook", () => {
-    signupHookState.error = "Este e-mail já está cadastrado";
+    signupHookState.error = "Email already registered";
 
     render(<SignupForm />);
 
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Este e-mail já está cadastrado",
+      "Email already registered",
     );
   });
 });

@@ -33,6 +33,7 @@ class UserResponse(BaseModel):
     xp: int
     level: int
     streak: int
+    is_admin: bool
     avatar_url: str | None
 
     @classmethod
@@ -43,6 +44,7 @@ class UserResponse(BaseModel):
             xp=user.xp,
             level=user.level,
             streak=user.streak,
+            is_admin=user.is_admin,
             avatar_url=user.avatar_url,
         )
 

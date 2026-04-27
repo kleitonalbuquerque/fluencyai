@@ -2,7 +2,7 @@ function GoogleIcon() {
   return (
     <svg
       aria-hidden="true"
-      className="social-icon"
+      className="w-5 h-5"
       data-testid="google-icon"
       viewBox="0 0 24 24"
     >
@@ -30,7 +30,7 @@ function GitHubIcon() {
   return (
     <svg
       aria-hidden="true"
-      className="social-icon github-icon"
+      className="w-5 h-5 text-white"
       data-testid="github-icon"
       viewBox="0 0 16 16"
     >
@@ -44,12 +44,18 @@ function GitHubIcon() {
 
 export function SocialAuthButtons() {
   return (
-    <div className="social-grid">
-      <button className="social-button" type="button">
+    <div className="grid grid-cols-2 gap-4">
+      <button 
+        className="flex items-center justify-center gap-3 py-3 px-4 bg-surface-container-high border border-white/10 rounded-xl font-bold text-sm text-on-surface hover:bg-white/5 transition-colors" 
+        type="button"
+      >
         <GoogleIcon />
         <span>Google</span>
       </button>
-      <button className="social-button" type="button">
+      <button 
+        className="flex items-center justify-center gap-3 py-3 px-4 bg-surface-container-high border border-white/10 rounded-xl font-bold text-sm text-on-surface hover:bg-white/5 transition-colors" 
+        type="button"
+      >
         <GitHubIcon />
         <span>GitHub</span>
       </button>

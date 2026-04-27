@@ -91,3 +91,14 @@ export type SocialShare = {
   share_text: string;
   share_url: string;
 };
+
+export type KnowledgeSource = {
+  id: string;
+  name: string;
+  type: string;
+  last_updated: string;
+};
+
+export type KnowledgeSourceList = {
+  sources: KnowledgeSource[];
+};

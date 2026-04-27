@@ -9,11 +9,13 @@ import {
   getDailyImmersionPlan,
   getGamificationSummary,
   getGlobalRanking,
+  getKnowledgeSources,
   getMemorizationSession,
   getRolePlayScenarios,
   getSocialProgressShare,
   respondToRolePlay,
   sendAiMessage,
+  uploadKnowledgeDocument,
 } from "../services/productApi";
 import { useAuthSession } from "@/features/app/hooks/useAuthSession";
 
@@ -39,6 +41,38 @@ export function useGlobalRanking() {
 
 export function useSocialProgressShare() {
   return useAuthenticatedResource(getSocialProgressShare);
+}
+
+export function useKnowledgeSources() {
+  return useAuthenticatedResource(getKnowledgeSources);
+}
+
+export function useUploadKnowledgeDocument() {
+  const router = useRouter();
+  const session = useAuthSession();
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
+
+  async function upload(file: File): Promise<boolean> {
+    if (!session) {
+      router.replace("/login");
+      return false;
+    }
+
+    setIsPending(true);
+    setError(null);
+    try {
+      await uploadKnowledgeDocument(session.accessToken, file);
+      return true;
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Upload failed.");
+      return false;
+    } finally {
+      setIsPending(false);
+    }
+  }
+
+  return { error, isPending, upload };
 }
 
 export function useAiConversation() {

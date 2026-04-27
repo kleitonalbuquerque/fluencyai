@@ -48,9 +48,9 @@ describe("AccountSettings", () => {
     const user = userEvent.setup();
     render(<AccountSettings />);
 
-    await user.type(screen.getByLabelText("Senha atual"), "strong-password");
-    await user.type(screen.getByLabelText("Nova senha"), "new-strong-password");
-    await user.click(screen.getByRole("button", { name: "Alterar senha" }));
+    await user.type(screen.getByLabelText("Current Password"), "strong-password");
+    await user.type(screen.getByLabelText("New Password"), "new-strong-password");
+    await user.click(screen.getByRole("button", { name: "Change Password" }));
 
     expect(settingsHookState.changePassword).toHaveBeenCalledWith({
       current_password: "strong-password",
@@ -63,7 +63,8 @@ describe("AccountSettings", () => {
     const file = new File(["avatar"], "avatar.png", { type: "image/png" });
     render(<AccountSettings />);
 
-    await user.upload(screen.getByLabelText("Imagem do avatar"), file);
+    // The label is for the hidden input
+    await user.upload(screen.getByLabelText(/Upload Image/i), file);
 
     expect(settingsHookState.updateAvatar).toHaveBeenCalledWith(file);
   });

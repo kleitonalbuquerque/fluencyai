@@ -7,6 +7,7 @@ import type {
   RolePlayFeedback,
   RolePlayScenarioList,
   SocialShare,
+  KnowledgeSourceList,
 } from "../domain/types";
 import { httpClient } from "@/services/http/client";
 
@@ -51,4 +52,15 @@ export function getGlobalRanking(token: string): Promise<GlobalRanking> {
 
 export function getSocialProgressShare(token: string): Promise<SocialShare> {
   return httpClient.get<SocialShare>("/social/share/progress", { token });
+}
+
+export function getKnowledgeSources(token: string): Promise<KnowledgeSourceList> {
+  return httpClient.get<KnowledgeSourceList>("/knowledge/sources", { token });
+}
+
+export function uploadKnowledgeDocument(token: string, file: File): Promise<{ message: string }> {
+  const formData = new FormData();
+  formData.append("file", file);
+  
+  return httpClient.post<{ message: string }>("/knowledge/upload", formData, { token });
 }

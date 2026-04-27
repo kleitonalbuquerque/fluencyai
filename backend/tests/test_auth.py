@@ -21,6 +21,36 @@ def build_test_client() -> TestClient:
     )
     Base.metadata.create_all(bind=engine)
 
+    # Seed initial data for learning
+    db = TestingSessionLocal()
+    from infrastructure.database.models.learning import (
+        LessonModel, LearningPhraseModel, VocabularyWordModel,
+        GrammarPointModel, QuizModel, QuizQuestionModel
+    )
+    lesson = LessonModel(
+        day=1,
+        title="Essential Daily Conversations",
+        speaking_exercise="Introduce yourself."
+    )
+    db.add(lesson)
+    db.flush()
+    for i in range(1, 21):
+        db.add(LearningPhraseModel(lesson_id=lesson.id, text=f"Phrase {i}", translation=f"T {i}"))
+    for i in range(1, 16):
+        db.add(VocabularyWordModel(
+            lesson_id=lesson.id, word=f"word{i}", theme="T", 
+            definition="D", example_sentence="E", memory_tip="M"
+        ))
+    for i in range(1, 6):
+        db.add(GrammarPointModel(lesson_id=lesson.id, title=f"G {i}", explanation="E", example="EX"))
+    quiz = QuizModel(lesson_id=lesson.id, title="Q")
+    db.add(quiz)
+    db.flush()
+    for i in range(1, 6):
+        db.add(QuizQuestionModel(quiz_id=quiz.id, prompt=f"Q {i}", options=["A", "B"], answer="A"))
+    db.commit()
+    db.close()
+
     app = create_app()
 
     def override_get_db_session():

@@ -28,7 +28,7 @@ describe("PasswordResetRequestForm", () => {
     render(<PasswordResetRequestForm />);
 
     await user.type(screen.getByLabelText("E-mail"), "ana@example.com");
-    await user.click(screen.getByRole("button", { name: "Enviar instruções" }));
+    await user.click(screen.getByRole("button", { name: "Send Reset Link" }));
 
     expect(resetHookState.requestPasswordReset).toHaveBeenCalledWith({
       email: "ana@example.com",
@@ -36,12 +36,12 @@ describe("PasswordResetRequestForm", () => {
   });
 
   it("shows feedback after requesting password reset", () => {
-    resetHookState.message = "Confira seu e-mail para continuar";
+    resetHookState.message = "Check your email to continue";
 
     render(<PasswordResetRequestForm />);
 
     expect(screen.getByRole("status")).toHaveTextContent(
-      "Confira seu e-mail para continuar",
+      "Check your email to continue",
     );
   });
 });

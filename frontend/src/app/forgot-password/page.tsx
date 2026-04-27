@@ -4,6 +4,7 @@ export default function ForgotPasswordPage() {
   return (
     <main className="auth-shell">
       <PasswordResetRequestForm />
+      <div className="auth-image" />
     </main>
   );
 }

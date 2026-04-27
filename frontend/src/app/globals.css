@@ -8,8 +8,10 @@
     --on-background: #e5e1e4;
     --surface: #131315;
     --on-surface: #e5e1e4;
+    --surface-container-low: #1c1b1d;
     --primary: #bdc2ff;
     --on-primary: #131e8c;
+    --primary-container: #2f3aa3;
     --secondary: #ddb8ff;
     --on-secondary: #490081;
     --tertiary: #3cddc7;
@@ -17,57 +19,77 @@
     --outline: #908f9e;
   }
 
+  [data-theme="light"] {
+    --background: #fdfbff;
+    --on-background: #1b1b1f;
+    --surface: #fdfbff;
+    --on-surface: #1b1b1f;
+    --surface-container-low: #f3f3f7;
+    --primary: #4953bc;
+    --on-primary: #ffffff;
+    --primary-container: #e0e0ff;
+    --secondary: #7a46b7;
+    --on-secondary: #ffffff;
+    --tertiary: #006a60;
+    --on-tertiary: #ffffff;
+    --outline: #767680;
+  }
+
   body {
-    @apply bg-background text-on-background font-inter;
+    @apply bg-background text-on-background font-inter antialiased;
     margin: 0;
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-manrope font-bold;
+    @apply font-manrope font-bold tracking-tight;
   }
 }
 
 @layer components {
   .card {
-    @apply bg-surface-container-low border border-white/10 rounded-lg p-spacing-card-gap;
+    @apply bg-surface-container-low border border-white/10 rounded-lg p-card-gap;
   }
 
   .btn-primary {
-    @apply bg-primary text-on-primary font-bold py-2 px-4 rounded-md transition-colors hover:bg-primary-container;
+    @apply bg-primary text-on-primary font-bold py-2 px-4 rounded-md transition-all hover:bg-primary-container active:scale-[0.98] disabled:opacity-50;
   }
 
   .btn-secondary {
-    @apply border border-white/20 text-on-background font-bold py-2 px-4 rounded-md transition-colors hover:bg-white/5;
+    @apply border border-white/20 text-on-background font-bold py-2 px-4 rounded-md transition-all hover:bg-white/5 active:scale-[0.98] disabled:opacity-50;
   }
 
   .btn-ghost {
-    @apply text-on-background font-medium py-2 px-4 rounded-md transition-colors hover:bg-white/5;
+    @apply text-on-background font-medium py-2 px-4 rounded-md transition-all hover:bg-white/5 active:scale-[0.98];
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-white/20;
   }
 }
 
-/* Auth classes - to be migrated to tailwind later but kept for compatibility */
+/* Auth Layout */
 .auth-shell {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(420px, 1.08fr);
-  min-height: 100vh;
+  @apply min-h-screen bg-background grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(420px,1.08fr)];
 }
 
-.auth-shell::after {
+.auth-image {
+  @apply hidden lg:block relative min-h-screen;
   background:
     linear-gradient(rgba(10, 16, 28, 0.4), rgba(10, 16, 28, 0.4)),
     url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=80")
       center / cover;
-  content: "";
-  display: block;
-  min-height: 100vh;
-}
-
-@media (max-width: 980px) {
-  .auth-shell {
-    grid-template-columns: 1fr;
-  }
-  .auth-shell::after {
-    display: none;
-  }
 }
