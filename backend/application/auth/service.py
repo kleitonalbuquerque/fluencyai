@@ -69,6 +69,29 @@ class AuthService:
 
         return self._build_auth_result(user)
 
+    def get_profile(self, user_id: str) -> User:
+        user = self._user_repository.get_by_id(user_id)
+        if user is None:
+            raise InvalidCredentials()
+        return user
+
+    def change_password(
+        self,
+        user_id: str,
+        current_password: str,
+        new_password: str,
+    ) -> None:
+        user = self.get_profile(user_id)
+        if not self._password_hasher.verify(current_password, user.password_hash):
+            raise InvalidCredentials()
+
+        password_hash = self._password_hasher.hash(new_password)
+        self._user_repository.update_password_hash(user_id, password_hash)
+
+    def update_avatar(self, user_id: str, avatar_url: str) -> User:
+        self.get_profile(user_id)
+        return self._user_repository.update_avatar_url(user_id, avatar_url)
+
     def request_password_reset(self, email: str) -> PasswordResetRequestResult:
         normalized_email = email.strip().lower()
         user = self._user_repository.get_by_email(normalized_email)

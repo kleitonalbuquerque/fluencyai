@@ -18,12 +18,22 @@ class PasswordResetRequest(BaseModel):
     email: EmailStr
 
 
+class ChangePasswordRequest(BaseModel):
+    current_password: str = Field(min_length=8, max_length=128)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
+class AvatarUpdateRequest(BaseModel):
+    avatar_url: str = Field(min_length=1, max_length=1_500_000)
+
+
 class UserResponse(BaseModel):
     id: str
     email: EmailStr
     xp: int
     level: int
     streak: int
+    avatar_url: str | None
 
     @classmethod
     def from_entity(cls, user: User) -> "UserResponse":
@@ -33,6 +43,7 @@ class UserResponse(BaseModel):
             xp=user.xp,
             level=user.level,
             streak=user.streak,
+            avatar_url=user.avatar_url,
         )
 
 
@@ -61,3 +72,7 @@ class PasswordResetRequestResponse(BaseModel):
         result: PasswordResetRequestResult,
     ) -> "PasswordResetRequestResponse":
         return cls(message=result.message)
+
+
+class MessageResponse(BaseModel):
+    message: str

@@ -22,6 +22,7 @@ export type AuthUser = {
   xp: number;
   level: number;
   streak: number;
+  avatar_url: string | null;
 };
 
 export type AuthResponse = {
@@ -29,4 +30,9 @@ export type AuthResponse = {
   access_token: string;
   refresh_token: string;
   token_type: "bearer";
+};
+
+export type ChangePasswordPayload = {
+  current_password: string;
+  new_password: string;
 };

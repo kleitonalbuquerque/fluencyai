@@ -4,7 +4,6 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 
 import { usePasswordResetRequest } from "../hooks/usePasswordResetRequest";
-import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 export function PasswordResetRequestForm() {
   const { error, isPending, message, requestPasswordReset } =
@@ -18,14 +17,8 @@ export function PasswordResetRequestForm() {
 
   return (
     <section className="login-panel" aria-labelledby="password-reset-title">
-      <div className="auth-toolbar">
-        <ThemeToggle />
-      </div>
-
       <header className="login-header">
-        <div className="brand-mark" aria-hidden="true">
-          F
-        </div>
+        <div className="brand-wordmark">FluencyAI</div>
         <h1 id="password-reset-title" className="login-title">
           Redefinir senha
         </h1>

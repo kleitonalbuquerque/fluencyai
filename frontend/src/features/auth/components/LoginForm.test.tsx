@@ -10,8 +10,16 @@ const loginHookState = vi.hoisted(() => ({
   login: vi.fn(),
 }));
 
+const router = vi.hoisted(() => ({
+  push: vi.fn(),
+}));
+
 vi.mock("../hooks/useLogin", () => ({
   useLogin: () => loginHookState,
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => router,
 }));
 
 describe("LoginForm", () => {
@@ -19,6 +27,7 @@ describe("LoginForm", () => {
     loginHookState.error = null;
     loginHookState.isPending = false;
     loginHookState.login.mockReset();
+    router.push.mockReset();
   });
 
   it("submits credentials through the auth hook", async () => {
@@ -33,6 +42,30 @@ describe("LoginForm", () => {
       email: "ana@example.com",
       password: "strong-password",
     });
+  });
+
+  it("redirects to the app after login", async () => {
+    const user = userEvent.setup();
+    loginHookState.login.mockResolvedValue({
+      access_token: "access-token",
+      refresh_token: "refresh-token",
+      token_type: "bearer",
+      user: {
+        id: "user-1",
+        email: "ana@example.com",
+        xp: 0,
+        level: 1,
+        streak: 0,
+        avatar_url: null,
+      },
+    });
+    render(<LoginForm />);
+
+    await user.type(screen.getByLabelText("E-mail"), "ana@example.com");
+    await user.type(screen.getByLabelText("Senha"), "strong-password");
+    await user.click(screen.getByRole("button", { name: "Entrar" }));
+
+    expect(router.push).toHaveBeenCalledWith("/app");
   });
 
   it("shows login errors from the auth hook", () => {

@@ -116,8 +116,8 @@ a:hover {
   font-size: 0.8125rem;
   font-weight: 700;
   gap: 8px;
-  min-height: 36px;
-  padding: 5px 10px 5px 6px;
+  min-height: 38px;
+  padding: 5px 8px 5px 6px;
 }
 
 .theme-toggle-track {
@@ -144,22 +144,23 @@ a:hover {
   transform: translateX(0);
 }
 
+.theme-icon {
+  color: var(--foreground);
+  height: 18px;
+  width: 18px;
+}
+
 .login-header {
   margin-bottom: 34px;
 }
 
-.brand-mark {
-  align-items: center;
-  background: var(--primary);
-  border-radius: 14px;
-  color: var(--primary-contrast);
-  display: inline-flex;
-  font-size: 1.1rem;
+.brand-wordmark {
+  color: var(--foreground);
+  display: inline-block;
+  font-size: 1.45rem;
   font-weight: 900;
-  height: 44px;
-  justify-content: center;
+  letter-spacing: 0;
   margin-bottom: 34px;
-  width: 44px;
 }
 
 .login-title {
@@ -348,6 +349,206 @@ a:hover {
   }
 
   .form-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.app-shell {
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  padding: 28px clamp(20px, 4vw, 56px);
+}
+
+.app-header {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.app-brand {
+  color: var(--foreground);
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.app-brand:hover {
+  text-decoration: none;
+}
+
+.app-actions {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.icon-link {
+  align-items: center;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--foreground);
+  display: inline-flex;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.icon-link:hover {
+  color: var(--primary-strong);
+  text-decoration: none;
+}
+
+.app-icon {
+  height: 18px;
+  width: 18px;
+}
+
+.avatar-chip,
+.settings-avatar {
+  align-items: center;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  display: inline-flex;
+  font-weight: 900;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.avatar-chip {
+  border-radius: 999px;
+  height: 38px;
+  width: 38px;
+}
+
+.avatar-chip img,
+.settings-avatar img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.dashboard-hero {
+  margin: 72px 0 32px;
+  max-width: 760px;
+}
+
+.eyebrow {
+  color: var(--primary-strong);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.dashboard-hero h1,
+.settings-layout h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: 0;
+  line-height: 1.05;
+  margin: 0 0 16px;
+}
+
+.dashboard-hero p,
+.settings-copy {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.metric-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 920px;
+}
+
+.metric-card,
+.settings-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+}
+
+.metric-card {
+  display: grid;
+  gap: 12px;
+  padding: 22px;
+}
+
+.metric-card span {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+.metric-card strong {
+  font-size: 2rem;
+}
+
+.settings-layout {
+  display: grid;
+  gap: 22px;
+  margin: 56px auto 0;
+  max-width: 760px;
+}
+
+.settings-panel {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  padding: 24px;
+}
+
+.settings-panel h2 {
+  font-size: 1.1rem;
+  margin: 0 0 14px;
+}
+
+.settings-avatar {
+  border-radius: 18px;
+  flex: 0 0 auto;
+  font-size: 2rem;
+  height: 96px;
+  width: 96px;
+}
+
+.upload-button {
+  align-items: center;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 800;
+  gap: 10px;
+  min-height: 42px;
+  padding: 9px 14px;
+}
+
+.upload-button input {
+  height: 1px;
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.settings-form {
+  align-items: stretch;
+  display: grid;
+}
+
+@media (max-width: 720px) {
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-panel {
     align-items: flex-start;
     flex-direction: column;
   }

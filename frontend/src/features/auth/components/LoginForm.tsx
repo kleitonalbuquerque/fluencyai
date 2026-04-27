@@ -2,31 +2,29 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { SocialAuthButtons } from "./SocialAuthButtons";
 import { useLogin } from "../hooks/useLogin";
-import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 export function LoginForm() {
   const { error, isPending, login } = useLogin();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await login({ email, password });
+    const auth = await login({ email, password });
+    if (auth) {
+      router.push("/app");
+    }
   }
 
   return (
     <section className="login-panel" aria-labelledby="login-title">
-      <div className="auth-toolbar">
-        <ThemeToggle />
-      </div>
-
       <header className="login-header">
-        <div className="brand-mark" aria-hidden="true">
-          F
-        </div>
+        <div className="brand-wordmark">FluencyAI</div>
         <h1 id="login-title" className="login-title">
           Entrar na sua conta
         </h1>

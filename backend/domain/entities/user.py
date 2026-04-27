@@ -10,5 +10,6 @@ class User:
     xp: int = 0
     level: int = 1
     streak: int = 0
+    avatar_url: str | None = None
     created_at: datetime | None = None
     updated_at: datetime | None = None
