@@ -4,13 +4,8 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { SettingsIcon } from "./AppIcons";
+import { AppHeader } from "./AppHeader";
 import { useAuthSession } from "../hooks/useAuthSession";
-import { ThemeToggle } from "@/features/theme/ThemeToggle";
-
-function getInitials(email: string): string {
-  return email.slice(0, 1).toUpperCase();
-}
 
 export function AppHome() {
   const router = useRouter();
@@ -30,22 +25,7 @@ export function AppHome() {
 
   return (
     <main className="app-shell">
-      <header className="app-header">
-        <div className="app-brand">FluencyAI</div>
-        <div className="app-actions">
-          <ThemeToggle />
-          <Link className="icon-link" href="/app/settings" aria-label="Configurações da conta">
-            <SettingsIcon />
-          </Link>
-          <div className="avatar-chip" aria-label={user.email}>
-            {user.avatar_url ? (
-              <img alt="" src={user.avatar_url} />
-            ) : (
-              <span>{getInitials(user.email)}</span>
-            )}
-          </div>
-        </div>
-      </header>
+      <AppHeader user={user} />
 
       <section className="dashboard-hero">
         <p className="eyebrow">Plano diário</p>
@@ -66,6 +46,39 @@ export function AppHome() {
           <span>Streak</span>
           <strong>{user.streak} dias</strong>
         </article>
+      </section>
+
+      <section className="feature-grid" aria-label="Funcionalidades do produto">
+        <Link className="feature-card" href="/app/plan" aria-label="Plano de imersão">
+          <span>01</span>
+          <strong>Plano de imersão</strong>
+          <p>7 dias com frases, vocabulário, gramática, fala e quiz.</p>
+        </Link>
+        <Link className="feature-card" href="/app/chat" aria-label="Conversa com IA">
+          <span>02</span>
+          <strong>Conversa com IA</strong>
+          <p>Pratique uma conversa fluida com correção e vocabulário melhor.</p>
+        </Link>
+        <Link className="feature-card" href="/app/memorization" aria-label="Memorização">
+          <span>03</span>
+          <strong>Memorização</strong>
+          <p>20 palavras por sessão com definição, exemplo e truque de memória.</p>
+        </Link>
+        <Link className="feature-card" href="/app/role-play" aria-label="Role Play">
+          <span>04</span>
+          <strong>Role Play</strong>
+          <p>Situações reais como entrevista, café e viagem.</p>
+        </Link>
+        <Link className="feature-card" href="/app/ranking" aria-label="Ranking global">
+          <span>05</span>
+          <strong>Ranking global</strong>
+          <p>Acompanhe XP, streak, nível e sua posição.</p>
+        </Link>
+        <Link className="feature-card" href="/app/social" aria-label="Compartilhamento social">
+          <span>06</span>
+          <strong>Compartilhamento social</strong>
+          <p>Gere textos para compartilhar progresso e ranking.</p>
+        </Link>
       </section>
     </main>
   );

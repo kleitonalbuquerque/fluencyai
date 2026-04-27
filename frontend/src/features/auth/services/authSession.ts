@@ -48,6 +48,14 @@ export function setAuthSession(session: AuthSession): void {
   window.localStorage.setItem(TOKEN_STORAGE_KEY, JSON.stringify(session));
 }
 
+export function clearAuthSession(): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.localStorage.removeItem(TOKEN_STORAGE_KEY);
+}
+
 export function updateStoredUser(user: AuthUser): void {
   const session = getAuthSession();
   if (!session) {

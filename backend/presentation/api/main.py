@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from infrastructure.config.settings import get_settings
 from presentation.api.routes.auth import router as auth_router
+from presentation.api.routes.product import router as product_router
 
 
 def create_app() -> FastAPI:
@@ -16,6 +17,7 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
     app.include_router(auth_router)
+    app.include_router(product_router)
     return app
 
 

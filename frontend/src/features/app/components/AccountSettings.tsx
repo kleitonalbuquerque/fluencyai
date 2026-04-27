@@ -1,11 +1,10 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import Link from "next/link";
 
+import { AppHeader } from "./AppHeader";
 import { UploadIcon } from "./AppIcons";
 import { useAccountSettings } from "../hooks/useAccountSettings";
-import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 export function AccountSettings() {
   const {
@@ -42,14 +41,7 @@ export function AccountSettings() {
 
   return (
     <main className="app-shell">
-      <header className="app-header">
-        <Link className="app-brand" href="/app">
-          FluencyAI
-        </Link>
-        <div className="app-actions">
-          <ThemeToggle />
-        </div>
-      </header>
+      <AppHeader user={user} />
 
       <section className="settings-layout">
         <div>

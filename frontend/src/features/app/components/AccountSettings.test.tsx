@@ -4,6 +4,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { AccountSettings } from "./AccountSettings";
 
+const router = vi.hoisted(() => ({
+  replace: vi.fn(),
+}));
+
 const settingsHookState = vi.hoisted(() => ({
   avatarPreview: null as string | null,
   changePassword: vi.fn(),
@@ -23,6 +27,10 @@ const settingsHookState = vi.hoisted(() => ({
 
 vi.mock("../hooks/useAccountSettings", () => ({
   useAccountSettings: () => settingsHookState,
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => router,
 }));
 
 describe("AccountSettings", () => {
