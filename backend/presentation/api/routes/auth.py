@@ -3,7 +3,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from application.auth.service import AuthService
 from domain.exceptions import EmailAlreadyRegistered, InvalidCredentials
 from presentation.dependencies import get_auth_service
-from presentation.schemas.auth import AuthResponse, LoginRequest, SignupRequest
+from presentation.schemas.auth import (
+    AuthResponse,
+    LoginRequest,
+    PasswordResetRequest,
+    PasswordResetRequestResponse,
+    SignupRequest,
+)
 
 router = APIRouter(tags=["auth"])
 
@@ -40,3 +46,12 @@ def login(
             detail="Invalid credentials",
         ) from exc
     return AuthResponse.from_auth_result(result)
+
+
+@router.post("/password-reset/request", response_model=PasswordResetRequestResponse)
+def request_password_reset(
+    payload: PasswordResetRequest,
+    auth_service: AuthService = Depends(get_auth_service),
+) -> PasswordResetRequestResponse:
+    result = auth_service.request_password_reset(email=payload.email)
+    return PasswordResetRequestResponse.from_result(result)

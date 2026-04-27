@@ -3,6 +3,19 @@ export type LoginCredentials = {
   password: string;
 };
 
+export type SignupCredentials = {
+  email: string;
+  password: string;
+};
+
+export type PasswordResetRequest = {
+  email: string;
+};
+
+export type PasswordResetRequestResponse = {
+  message: string;
+};
+
 export type AuthUser = {
   id: string;
   email: string;

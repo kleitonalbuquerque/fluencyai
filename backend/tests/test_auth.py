@@ -94,3 +94,35 @@ def test_login_rejects_invalid_password():
 
     assert response.status_code == 401
     assert response.json()["detail"] == "Invalid credentials"
+
+
+def test_password_reset_request_returns_feedback_for_existing_email():
+    client = build_test_client()
+    client.post(
+        "/signup",
+        json={"email": "ana@example.com", "password": "strong-password"},
+    )
+
+    response = client.post(
+        "/password-reset/request",
+        json={"email": "ana@example.com"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "message": "If this email exists, password reset instructions will be sent.",
+    }
+
+
+def test_password_reset_request_does_not_reveal_unknown_email():
+    client = build_test_client()
+
+    response = client.post(
+        "/password-reset/request",
+        json={"email": "missing@example.com"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "message": "If this email exists, password reset instructions will be sent.",
+    }

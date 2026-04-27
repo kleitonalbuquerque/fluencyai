@@ -2,39 +2,41 @@
 
 import { useState } from "react";
 
-import type { AuthResponse, LoginCredentials } from "../domain/types";
+import type { AuthResponse, SignupCredentials } from "../domain/types";
+import { signupWithEmail } from "../services/authApi";
 import { persistAuthSession } from "../services/authSession";
-import { loginWithEmail } from "../services/authApi";
 import { HttpError } from "@/services/http/client";
 
-type LoginState = {
+type SignupState = {
   error: string | null;
   isPending: boolean;
 };
 
 function toUserMessage(error: unknown): string {
-  if (error instanceof HttpError && error.status === 401) {
-    return "Credenciais inválidas";
+  if (error instanceof HttpError && error.status === 409) {
+    return "Este e-mail já está cadastrado. Use outro e-mail ou entre na sua conta.";
   }
 
   if (error instanceof HttpError) {
     return error.message;
   }
 
-  return "Não foi possível entrar agora";
+  return "Não foi possível criar sua conta agora";
 }
 
-export function useLogin() {
-  const [state, setState] = useState<LoginState>({
+export function useSignup() {
+  const [state, setState] = useState<SignupState>({
     error: null,
     isPending: false,
   });
 
-  async function login(credentials: LoginCredentials): Promise<AuthResponse | null> {
+  async function signup(
+    credentials: SignupCredentials,
+  ): Promise<AuthResponse | null> {
     setState({ error: null, isPending: true });
 
     try {
-      const auth = await loginWithEmail(credentials);
+      const auth = await signupWithEmail(credentials);
       persistAuthSession(auth);
       setState({ error: null, isPending: false });
       return auth;
@@ -47,6 +49,6 @@ export function useLogin() {
   return {
     error: state.error,
     isPending: state.isPending,
-    login,
+    signup,
   };
 }

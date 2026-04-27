@@ -3,26 +3,26 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 
-import { useLogin } from "../hooks/useLogin";
+import { useSignup } from "../hooks/useSignup";
 
-export function LoginForm() {
-  const { error, isPending, login } = useLogin();
+export function SignupForm() {
+  const { error, isPending, signup } = useSignup();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await login({ email, password });
+    await signup({ email, password });
   }
 
   return (
-    <section className="login-panel" aria-labelledby="login-title">
+    <section className="login-panel" aria-labelledby="signup-title">
       <header className="login-header">
-        <h1 id="login-title" className="login-title">
-          Entrar no FluencyAI
+        <h1 id="signup-title" className="login-title">
+          Criar conta
         </h1>
         <p className="login-subtitle">
-          Continue seu plano diário, mantenha o streak e pratique com IA.
+          Comece seu plano diário e acompanhe XP, nível e streak desde o primeiro acesso.
         </p>
       </header>
 
@@ -43,8 +43,9 @@ export function LoginForm() {
         <div className="field">
           <label htmlFor="password">Senha</label>
           <input
-            autoComplete="current-password"
+            autoComplete="new-password"
             id="password"
+            minLength={8}
             name="password"
             onChange={(event) => setPassword(event.target.value)}
             required
@@ -60,16 +61,13 @@ export function LoginForm() {
         ) : null}
 
         <button className="login-submit" disabled={isPending} type="submit">
-          {isPending ? "Entrando..." : "Entrar"}
+          {isPending ? "Criando..." : "Criar conta"}
         </button>
       </form>
 
       <nav className="auth-links" aria-label="Acesso da conta">
-        <Link href="/signup">Criar conta</Link>
-        <Link href="/forgot-password">Esqueci minha senha</Link>
+        <Link href="/login">Já tenho conta</Link>
       </nav>
-
-      <p className="login-meta">Acesso seguro com JWT e refresh token.</p>
     </section>
   );
 }

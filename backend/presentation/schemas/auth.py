@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field
 
-from application.auth.service import AuthResult
+from application.auth.service import AuthResult, PasswordResetRequestResult
 from domain.entities.user import User
 
 
@@ -12,6 +12,10 @@ class SignupRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
+
+
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
 
 
 class UserResponse(BaseModel):
@@ -46,3 +50,14 @@ class AuthResponse(BaseModel):
             refresh_token=result.refresh_token,
             token_type=result.token_type,
         )
+
+
+class PasswordResetRequestResponse(BaseModel):
+    message: str
+
+    @classmethod
+    def from_result(
+        cls,
+        result: PasswordResetRequestResult,
+    ) -> "PasswordResetRequestResponse":
+        return cls(message=result.message)

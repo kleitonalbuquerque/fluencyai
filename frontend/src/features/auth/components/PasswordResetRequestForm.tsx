@@ -3,26 +3,26 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 
-import { useLogin } from "../hooks/useLogin";
+import { usePasswordResetRequest } from "../hooks/usePasswordResetRequest";
 
-export function LoginForm() {
-  const { error, isPending, login } = useLogin();
+export function PasswordResetRequestForm() {
+  const { error, isPending, message, requestPasswordReset } =
+    usePasswordResetRequest();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await login({ email, password });
+    await requestPasswordReset({ email });
   }
 
   return (
-    <section className="login-panel" aria-labelledby="login-title">
+    <section className="login-panel" aria-labelledby="password-reset-title">
       <header className="login-header">
-        <h1 id="login-title" className="login-title">
-          Entrar no FluencyAI
+        <h1 id="password-reset-title" className="login-title">
+          Redefinir senha
         </h1>
         <p className="login-subtitle">
-          Continue seu plano diário, mantenha o streak e pratique com IA.
+          Informe o e-mail da conta para receber as instruções de recuperação.
         </p>
       </header>
 
@@ -40,18 +40,11 @@ export function LoginForm() {
           />
         </div>
 
-        <div className="field">
-          <label htmlFor="password">Senha</label>
-          <input
-            autoComplete="current-password"
-            id="password"
-            name="password"
-            onChange={(event) => setPassword(event.target.value)}
-            required
-            type="password"
-            value={password}
-          />
-        </div>
+        {message ? (
+          <div className="login-success" role="status">
+            {message}
+          </div>
+        ) : null}
 
         {error ? (
           <div className="login-error" role="alert">
@@ -60,16 +53,13 @@ export function LoginForm() {
         ) : null}
 
         <button className="login-submit" disabled={isPending} type="submit">
-          {isPending ? "Entrando..." : "Entrar"}
+          {isPending ? "Enviando..." : "Enviar instruções"}
         </button>
       </form>
 
       <nav className="auth-links" aria-label="Acesso da conta">
-        <Link href="/signup">Criar conta</Link>
-        <Link href="/forgot-password">Esqueci minha senha</Link>
+        <Link href="/login">Voltar para login</Link>
       </nav>
-
-      <p className="login-meta">Acesso seguro com JWT e refresh token.</p>
     </section>
   );
 }

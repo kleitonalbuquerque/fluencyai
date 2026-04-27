@@ -107,6 +107,14 @@ a {
   padding: 10px 12px;
 }
 
+.login-success {
+  border: 1px solid rgba(20, 125, 100, 0.24);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  color: var(--primary-strong);
+  padding: 10px 12px;
+}
+
 .login-submit {
   align-items: center;
   background: var(--primary);
@@ -129,6 +137,25 @@ a {
 .login-submit:focus {
   outline: 3px solid rgba(20, 125, 100, 0.24);
   outline-offset: 2px;
+}
+
+.auth-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.auth-links a {
+  color: var(--primary-strong);
+  font-weight: 700;
+}
+
+.auth-links a:focus {
+  border-radius: 4px;
+  outline: 3px solid rgba(20, 125, 100, 0.2);
+  outline-offset: 3px;
 }
 
 .login-meta {
