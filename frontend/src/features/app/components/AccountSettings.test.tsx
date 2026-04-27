@@ -31,6 +31,7 @@ vi.mock("../hooks/useAccountSettings", () => ({
 
 vi.mock("next/navigation", () => ({
   useRouter: () => router,
+  usePathname: () => "/app/settings",
 }));
 
 describe("AccountSettings", () => {
