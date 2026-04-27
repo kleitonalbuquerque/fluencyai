@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 
 import { useSignup } from "../hooks/useSignup";
+import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 export function SignupForm() {
   const { error, isPending, signup } = useSignup();
@@ -17,18 +18,25 @@ export function SignupForm() {
 
   return (
     <section className="login-panel" aria-labelledby="signup-title">
+      <div className="auth-toolbar">
+        <ThemeToggle />
+      </div>
+
       <header className="login-header">
+        <div className="brand-mark" aria-hidden="true">
+          F
+        </div>
         <h1 id="signup-title" className="login-title">
-          Criar conta
+          Criar sua conta
         </h1>
         <p className="login-subtitle">
-          Comece seu plano diário e acompanhe XP, nível e streak desde o primeiro acesso.
+          Já tem acesso? <Link href="/login">Entrar</Link>
         </p>
       </header>
 
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="field">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">E-mail</label>
           <input
             autoComplete="email"
             id="email"
@@ -63,11 +71,22 @@ export function SignupForm() {
         <button className="login-submit" disabled={isPending} type="submit">
           {isPending ? "Criando..." : "Criar conta"}
         </button>
-      </form>
 
-      <nav className="auth-links" aria-label="Acesso da conta">
-        <Link href="/login">Já tenho conta</Link>
-      </nav>
+        <div className="auth-divider">
+          <span>Ou continue com</span>
+        </div>
+
+        <div className="social-grid">
+          <button className="social-button" type="button">
+            <span aria-hidden="true">G</span>
+            Google
+          </button>
+          <button className="social-button" type="button">
+            <span aria-hidden="true">GH</span>
+            GitHub
+          </button>
+        </div>
+      </form>
     </section>
   );
 }

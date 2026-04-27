@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 
 import { useLogin } from "../hooks/useLogin";
+import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 export function LoginForm() {
   const { error, isPending, login } = useLogin();
@@ -17,18 +18,25 @@ export function LoginForm() {
 
   return (
     <section className="login-panel" aria-labelledby="login-title">
+      <div className="auth-toolbar">
+        <ThemeToggle />
+      </div>
+
       <header className="login-header">
+        <div className="brand-mark" aria-hidden="true">
+          F
+        </div>
         <h1 id="login-title" className="login-title">
-          Entrar no FluencyAI
+          Entrar na sua conta
         </h1>
         <p className="login-subtitle">
-          Continue seu plano diário, mantenha o streak e pratique com IA.
+          Novo por aqui? <Link href="/signup">Criar conta</Link>
         </p>
       </header>
 
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="field">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">E-mail</label>
           <input
             autoComplete="email"
             id="email"
@@ -53,6 +61,14 @@ export function LoginForm() {
           />
         </div>
 
+        <div className="form-row">
+          <label className="remember-option">
+            <input type="checkbox" />
+            <span>Lembrar de mim</span>
+          </label>
+          <Link href="/forgot-password">Esqueci minha senha</Link>
+        </div>
+
         {error ? (
           <div className="login-error" role="alert">
             {error}
@@ -62,14 +78,22 @@ export function LoginForm() {
         <button className="login-submit" disabled={isPending} type="submit">
           {isPending ? "Entrando..." : "Entrar"}
         </button>
+
+        <div className="auth-divider">
+          <span>Ou continue com</span>
+        </div>
+
+        <div className="social-grid">
+          <button className="social-button" type="button">
+            <span aria-hidden="true">G</span>
+            Google
+          </button>
+          <button className="social-button" type="button">
+            <span aria-hidden="true">GH</span>
+            GitHub
+          </button>
+        </div>
       </form>
-
-      <nav className="auth-links" aria-label="Acesso da conta">
-        <Link href="/signup">Criar conta</Link>
-        <Link href="/forgot-password">Esqueci minha senha</Link>
-      </nav>
-
-      <p className="login-meta">Acesso seguro com JWT e refresh token.</p>
     </section>
   );
 }

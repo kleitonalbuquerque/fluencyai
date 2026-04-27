@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 
 import { usePasswordResetRequest } from "../hooks/usePasswordResetRequest";
+import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 export function PasswordResetRequestForm() {
   const { error, isPending, message, requestPasswordReset } =
@@ -17,18 +18,25 @@ export function PasswordResetRequestForm() {
 
   return (
     <section className="login-panel" aria-labelledby="password-reset-title">
+      <div className="auth-toolbar">
+        <ThemeToggle />
+      </div>
+
       <header className="login-header">
+        <div className="brand-mark" aria-hidden="true">
+          F
+        </div>
         <h1 id="password-reset-title" className="login-title">
           Redefinir senha
         </h1>
         <p className="login-subtitle">
-          Informe o e-mail da conta para receber as instruções de recuperação.
+          Lembrou a senha? <Link href="/login">Voltar para login</Link>
         </p>
       </header>
 
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="field">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">E-mail</label>
           <input
             autoComplete="email"
             id="email"
@@ -56,10 +64,6 @@ export function PasswordResetRequestForm() {
           {isPending ? "Enviando..." : "Enviar instruções"}
         </button>
       </form>
-
-      <nav className="auth-links" aria-label="Acesso da conta">
-        <Link href="/login">Voltar para login</Link>
-      </nav>
     </section>
   );
 }

@@ -27,7 +27,7 @@ describe("PasswordResetRequestForm", () => {
     const user = userEvent.setup();
     render(<PasswordResetRequestForm />);
 
-    await user.type(screen.getByLabelText("Email"), "ana@example.com");
+    await user.type(screen.getByLabelText("E-mail"), "ana@example.com");
     await user.click(screen.getByRole("button", { name: "Enviar instruções" }));
 
     expect(resetHookState.requestPasswordReset).toHaveBeenCalledWith({

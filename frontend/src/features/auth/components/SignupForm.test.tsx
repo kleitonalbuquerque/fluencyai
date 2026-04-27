@@ -25,7 +25,7 @@ describe("SignupForm", () => {
     const user = userEvent.setup();
     render(<SignupForm />);
 
-    await user.type(screen.getByLabelText("Email"), "ana@example.com");
+    await user.type(screen.getByLabelText("E-mail"), "ana@example.com");
     await user.type(screen.getByLabelText("Senha"), "strong-password");
     await user.click(screen.getByRole("button", { name: "Criar conta" }));
 
