@@ -15,9 +15,15 @@ htmlcov/
 backend/.env
 frontend/.env.local
 
+# Runtime knowledge uploads
+backend/knowledge_base/*
+!backend/knowledge_base/rules.md
+
 # Node / Next.js
 node_modules/
 .next/
+coverage/
+frontend/coverage/
 out/
 npm-debug.log*
 yarn-debug.log*

@@ -20,18 +20,24 @@ async function request<TResponse>(
   body?: unknown,
   options: RequestOptions = {},
 ): Promise<TResponse> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
+  const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
+  const headers: Record<string, string> = {};
 
   if (options.token) {
     headers.Authorization = `Bearer ${options.token}`;
   }
 
+  if (!isFormData) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const requestBody =
+    body === undefined ? undefined : isFormData ? body : JSON.stringify(body);
+
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method,
     headers,
-    body: body === undefined ? undefined : JSON.stringify(body),
+    body: requestBody,
   });
 
   const payload = await response.json().catch(() => null);
@@ -64,6 +70,10 @@ export const httpClient = {
     options?: RequestOptions,
   ): Promise<TResponse> {
     return request<TResponse>("POST", path, body, options);
+  },
+
+  delete<TResponse>(path: string, options?: RequestOptions): Promise<TResponse> {
+    return request<TResponse>("DELETE", path, undefined, options);
   },
 
   put<TResponse>(

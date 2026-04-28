@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthSession } from "../hooks/useAuthSession";
+import { canManageKnowledge } from "@/features/product/domain/knowledgeAccess";
 
 export function AppHome() {
   const session = useAuthSession();
@@ -17,6 +18,7 @@ export function AppHome() {
   }
 
   const { user } = session;
+  const canAccessKnowledge = canManageKnowledge(user);
 
   return (
     <main className="max-w-6xl mx-auto px-8 py-12">
@@ -57,13 +59,15 @@ export function AppHome() {
           <p className="text-on-surface/60 text-sm">Practice natural conversations with real-time feedback.</p>
         </Link>
 
-        <Link href="/app/knowledge" className="group p-6 rounded-2xl bg-surface border border-outline/10 hover:border-primary/50 transition-all shadow-sm">
-          <div className="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center mb-4 group-hover:bg-tertiary/20 transition-colors">
-            <span className="material-symbols-outlined text-tertiary">database</span>
-          </div>
-          <h3 className="text-xl font-bold text-on-surface mb-2 font-manrope">Knowledge Base</h3>
-          <p className="text-on-surface/60 text-sm">Explore and manage documents used by your personal AI.</p>
-        </Link>
+        {canAccessKnowledge ? (
+          <Link href="/app/knowledge" className="group p-6 rounded-2xl bg-surface border border-outline/10 hover:border-primary/50 transition-all shadow-sm">
+            <div className="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center mb-4 group-hover:bg-tertiary/20 transition-colors">
+              <span className="material-symbols-outlined text-tertiary">database</span>
+            </div>
+            <h3 className="text-xl font-bold text-on-surface mb-2 font-manrope">Knowledge Base</h3>
+            <p className="text-on-surface/60 text-sm">Explore and manage documents used by your personal AI.</p>
+          </Link>
+        ) : null}
 
         <Link href="/app/memorization" className="group p-6 rounded-2xl bg-surface border border-outline/10 hover:border-primary/50 transition-all shadow-sm">
           <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">

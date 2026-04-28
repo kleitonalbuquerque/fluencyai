@@ -7,6 +7,7 @@ import type {
   RolePlayFeedback,
   RolePlayScenarioList,
   SocialShare,
+  KnowledgeSourceDetail,
   KnowledgeSourceList,
 } from "../domain/types";
 import { httpClient } from "@/services/http/client";
@@ -58,9 +59,26 @@ export function getKnowledgeSources(token: string): Promise<KnowledgeSourceList>
   return httpClient.get<KnowledgeSourceList>("/knowledge/sources", { token });
 }
 
+export function getKnowledgeSource(
+  token: string,
+  sourceId: string,
+): Promise<KnowledgeSourceDetail> {
+  return httpClient.get<KnowledgeSourceDetail>(
+    `/knowledge/sources/${encodeURIComponent(sourceId)}`,
+    { token },
+  );
+}
+
 export function uploadKnowledgeDocument(token: string, file: File): Promise<{ message: string }> {
   const formData = new FormData();
   formData.append("file", file);
   
   return httpClient.post<{ message: string }>("/knowledge/upload", formData, { token });
+}
+
+export function deleteKnowledgeSource(token: string, sourceId: string): Promise<void> {
+  return httpClient.delete<void>(
+    `/knowledge/sources/${encodeURIComponent(sourceId)}`,
+    { token },
+  );
 }
