@@ -28,17 +28,17 @@ export function AppHeader({ user, title = "Dashboard", onMenuToggle }: AppHeader
   };
 
   return (
-    <header className="w-full h-16 border-b border-white/10 fixed top-0 z-40 bg-[#09090B]/80 backdrop-blur-md flex items-center justify-between pl-4 lg:pl-72 pr-4 lg:pr-8 font-manrope">
+    <header className="w-full h-16 border-b border-outline/10 fixed top-0 z-40 bg-surface/80 backdrop-blur-md flex items-center justify-between pl-4 lg:pl-72 pr-4 lg:pr-8 font-manrope">
       <div className="flex items-center gap-4">
         <button 
           onClick={onMenuToggle}
-          className="lg:hidden p-2 text-neutral-400 hover:text-white transition-colors"
+          className="lg:hidden p-2 text-on-surface/60 hover:text-on-surface transition-colors"
         >
           <span className="material-symbols-outlined">menu</span>
         </button>
-        <h1 className="text-[18px] lg:text-[24px] font-semibold text-white truncate">{getTitle()}</h1>
-        <div className="h-4 w-[1px] bg-white/10 hidden md:block"></div>
-        <div className="hidden md:flex gap-4 text-neutral-400">
+        <h1 className="text-[18px] lg:text-[24px] font-semibold text-on-surface truncate">{getTitle()}</h1>
+        <div className="h-4 w-[1px] bg-outline/10 hidden md:block"></div>
+        <div className="hidden md:flex gap-4 text-on-surface/40">
           <span className="text-[12px] font-bold tracking-[0.1em] uppercase flex items-center gap-1">
             <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> Level {user?.level ?? 1}
           </span>
@@ -52,7 +52,7 @@ export function AppHeader({ user, title = "Dashboard", onMenuToggle }: AppHeader
       </div>
       <div className="flex items-center gap-2 lg:gap-4">
         <ThemeToggle />
-        <button className="p-2 text-neutral-400 hover:text-white transition-opacity opacity-80 hover:opacity-100">
+        <button className="p-2 text-on-surface/60 hover:text-on-surface transition-opacity opacity-80 hover:opacity-100">
           <span className="material-symbols-outlined">notifications</span>
         </button>
         <button className="bg-primary text-on-primary px-3 py-1.5 lg:px-4 lg:py-2 rounded-lg font-bold text-xs lg:text-sm hover:opacity-90 transition-opacity whitespace-nowrap">

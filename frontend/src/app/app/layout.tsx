@@ -14,11 +14,13 @@ export default function AppLayout({
   const router = useRouter();
   const session = useAuthSession();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     if (session === null) {
       const timeout = setTimeout(() => {
-        if (!getAuthSession()) {
+        if (!localStorage.getItem("fluencyai.auth")) {
           router.replace("/login");
         }
       }, 500);
@@ -26,17 +28,12 @@ export default function AppLayout({
     }
   }, [router, session]);
 
-  const getAuthSession = () => {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("auth_session");
-  };
-
-  if (!session && typeof window !== "undefined" && !getAuthSession()) {
+  if (!mounted || (!session && !localStorage.getItem("fluencyai.auth"))) {
     return null;
   }
 
   return (
-    <div className="min-h-screen bg-background text-on-background">
+    <div className="min-h-screen bg-background text-on-surface transition-colors duration-300">
       {/* Overlay for mobile menu */}
       {isMobileMenuOpen && (
         <div 
