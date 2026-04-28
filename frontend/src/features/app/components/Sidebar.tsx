@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { AuthUser } from "@/features/auth/domain/types";
 import { clearAuthSession } from "@/features/auth/services/authSession";
+import { canManageKnowledge } from "@/features/product/domain/knowledgeAccess";
 
 type SidebarProps = {
   user?: AuthUser | null;
@@ -25,6 +26,7 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const canAccessKnowledge = canManageKnowledge(user);
 
   useEffect(() => {
     setMounted(true);
@@ -60,7 +62,7 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
       <nav className="flex-1 space-y-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
-          if (item.label === "Knowledge Base" && !user?.is_admin) {
+          if (item.label === "Knowledge Base" && !canAccessKnowledge) {
             return null;
           }
           return (
@@ -68,13 +70,13 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-200 ${
+              className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
                 isActive
                   ? "text-primary bg-primary/10 border-r-2 border-primary font-semibold"
-                  : "text-on-surface/60 hover:text-on-surface hover:bg-on-surface/5"
+                  : "text-on-surface/60 hover:text-primary hover:bg-primary/10 hover:translate-x-1"
               }`}
             >
-              <span className="material-symbols-outlined">{item.icon}</span>
+              <span className="material-symbols-outlined transition-transform duration-200 group-hover:scale-110">{item.icon}</span>
               <span className="text-sm">{item.label}</span>
             </Link>
           );
@@ -102,25 +104,25 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
         <Link 
           href="/app/settings" 
           onClick={onClose}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface/60 hover:text-on-surface hover:bg-on-surface/5"
+          className="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface/60 hover:text-primary hover:bg-primary/10 hover:translate-x-1 transition-all duration-200"
         >
-          <span className="material-symbols-outlined">settings</span>
+          <span className="material-symbols-outlined transition-transform duration-200 group-hover:scale-110">settings</span>
           <span className="text-sm">Settings</span>
         </Link>
         <Link 
           href="/app/ranking" 
           onClick={onClose}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface/60 hover:text-on-surface hover:bg-on-surface/5"
+          className="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface/60 hover:text-primary hover:bg-primary/10 hover:translate-x-1 transition-all duration-200"
         >
-          <span className="material-symbols-outlined">leaderboard</span>
+          <span className="material-symbols-outlined transition-transform duration-200 group-hover:scale-110">leaderboard</span>
           <span className="text-sm">Global Ranking</span>
         </Link>
         
         <button 
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-error hover:bg-error/5 transition-colors mt-4"
+          className="group w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-error hover:bg-error/10 hover:translate-x-1 transition-all duration-200 mt-4"
         >
-          <span className="material-symbols-outlined">logout</span>
+          <span className="material-symbols-outlined transition-transform duration-200 group-hover:scale-110">logout</span>
           <span className="text-[11px] font-bold uppercase tracking-wider">Logout</span>
         </button>
       </div>

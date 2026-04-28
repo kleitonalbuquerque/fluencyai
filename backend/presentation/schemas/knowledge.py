@@ -9,5 +9,9 @@ class KnowledgeSourceResponse(BaseModel):
     last_updated: datetime
 
 
+class KnowledgeSourceDetailResponse(KnowledgeSourceResponse):
+    content: str
+
+
 class KnowledgeSourceListResponse(BaseModel):
     sources: list[KnowledgeSourceResponse]

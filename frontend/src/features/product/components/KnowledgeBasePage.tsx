@@ -1,21 +1,53 @@
 "use client";
 
 import { ChangeEvent, useRef, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { FeatureState } from "./FeatureState";
-import { useKnowledgeSources, useUploadKnowledgeDocument } from "../hooks/useProductFeatures";
+import {
+  useKnowledgeSourceActions,
+  useKnowledgeSources,
+  useUploadKnowledgeDocument,
+} from "../hooks/useProductFeatures";
 import { KnowledgeSource } from "../domain/types";
+import { canManageKnowledge } from "../domain/knowledgeAccess";
+import { useAuthSession } from "@/features/app/hooks/useAuthSession";
 
 export function KnowledgeBasePage() {
-  const { data, error, isLoading, session, mutate } = useKnowledgeSources();
-  const { upload, isPending: isUploading, error: uploadError } = useUploadKnowledgeDocument();
+  const router = useRouter();
+  const session = useAuthSession();
   const [mounted, setMounted] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const isAdmin = session?.user?.is_admin;
+  useEffect(() => {
+    if (mounted && session && !canManageKnowledge(session.user)) {
+      router.replace("/app");
+    }
+  }, [mounted, router, session]);
+
+  if (!mounted || !session || !canManageKnowledge(session.user)) {
+    return null;
+  }
+
+  return <KnowledgeBaseContent />;
+}
+
+function KnowledgeBaseContent() {
+  const { data, error, isLoading, session, mutate } = useKnowledgeSources();
+  const { upload, isPending: isUploading, error: uploadError } = useUploadKnowledgeDocument();
+  const {
+    closeSource,
+    deleteSource,
+    deletingSourceId,
+    error: sourceActionError,
+    isLoadingContent,
+    selectedSource,
+    viewSource,
+  } = useKnowledgeSourceActions();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const canUpload = canManageKnowledge(session?.user);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -28,7 +60,16 @@ export function KnowledgeBasePage() {
     }
   };
 
-  if (!mounted) return null;
+  const handleDeleteSource = async (source: KnowledgeSource) => {
+    if (!window.confirm(`Delete ${source.name}?`)) {
+      return;
+    }
+
+    const success = await deleteSource(source.id);
+    if (success) {
+      mutate();
+    }
+  };
 
   return (
     <main className="max-w-6xl mx-auto px-8 py-12">
@@ -38,7 +79,7 @@ export function KnowledgeBasePage() {
         <p className="text-on-surface/60 text-lg">The AI consults these documents to provide accurate, grounded answers.</p>
       </header>
 
-      <FeatureState error={error || uploadError} isLoading={isLoading} />
+      <FeatureState error={error || uploadError || sourceActionError} isLoading={isLoading} />
 
       {data ? (
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -67,15 +108,31 @@ export function KnowledgeBasePage() {
                 Last updated: {new Date(src.last_updated).toLocaleDateString()}
               </p>
 
-              <div className="flex items-center gap-2 text-primary font-bold text-xs cursor-pointer hover:underline">
-                <span className="material-symbols-outlined text-[16px]">visibility</span>
-                View Content
+              <div className="flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => viewSource(src.id)}
+                  disabled={isLoadingContent}
+                  className="flex items-center gap-2 text-primary font-bold text-xs hover:underline disabled:opacity-50"
+                >
+                  <span className="material-symbols-outlined text-[16px]">visibility</span>
+                  {isLoadingContent ? "Loading..." : "View Content"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDeleteSource(src)}
+                  disabled={deletingSourceId === src.id}
+                  className="flex items-center gap-2 text-error font-bold text-xs hover:underline disabled:opacity-50"
+                  aria-label={`Delete ${src.name}`}
+                >
+                  <span className="material-symbols-outlined text-[16px]">delete</span>
+                  {deletingSourceId === src.id ? "Deleting..." : "Delete"}
+                </button>
               </div>
             </article>
           ))}
 
-          {/* Add New Source - ONLY FOR ADMIN */}
-          {isAdmin && (
+          {canUpload && (
             <div className="relative">
               <input
                 type="file"
@@ -108,10 +165,41 @@ export function KnowledgeBasePage() {
           <h2 className="text-xl font-bold text-on-surface mb-2">No documents found</h2>
           <p className="text-on-surface/40 max-w-md mx-auto text-sm">
             Your knowledge base is empty. 
-            {isAdmin ? " Add Markdown files or PDFs to get started." : " Contact an administrator to populate the brain."}
+            {canUpload ? " Add Markdown files or PDFs to get started." : " Contact an administrator to populate the brain."}
           </p>
         </div>
       )}
+
+      {selectedSource ? (
+        <div className="fixed inset-0 z-[60] bg-black/70 px-4 py-6 flex items-center justify-center">
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="knowledge-source-title"
+            className="w-full max-w-4xl max-h-[88vh] bg-surface border border-outline/20 rounded-2xl shadow-2xl overflow-hidden"
+          >
+            <header className="px-6 py-4 border-b border-outline/10 flex items-center justify-between gap-4">
+              <div className="min-w-0">
+                <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-on-surface/40">{selectedSource.type}</p>
+                <h2 id="knowledge-source-title" className="text-xl font-bold text-on-surface truncate">
+                  {selectedSource.name}
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={closeSource}
+                className="p-2 rounded-lg text-on-surface/60 hover:text-on-surface hover:bg-on-surface/5"
+                aria-label="Close document content"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </header>
+            <pre className="max-h-[70vh] overflow-auto p-6 text-sm leading-6 text-on-surface/80 whitespace-pre-wrap font-mono">
+              {selectedSource.content || "No readable content found."}
+            </pre>
+          </section>
+        </div>
+      ) : null}
     </main>
   );
 }

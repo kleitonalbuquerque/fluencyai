@@ -45,6 +45,7 @@ describe("AppHome", () => {
         xp: 120,
         level: 2,
         streak: 4,
+        is_admin: false,
         avatar_url: null,
       },
     } as any;
@@ -78,6 +79,22 @@ describe("AppHome", () => {
     expect(screen.getByRole("link", { name: /Memorization/i })).toHaveAttribute(
       "href",
       "/app/memorization",
+    );
+    expect(screen.queryByRole("link", { name: /Knowledge Base/i })).not.toBeInTheDocument();
+  });
+
+  it("renders the knowledge link for the authorized admin", () => {
+    sessionState.session.user = {
+      ...sessionState.session.user,
+      email: "kleiton2102@gmail.com",
+      is_admin: true,
+    };
+
+    render(<AppHome />);
+
+    expect(screen.getByRole("link", { name: /Knowledge Base/i })).toHaveAttribute(
+      "href",
+      "/app/knowledge",
     );
   });
 

@@ -10,8 +10,10 @@ import { RolePlayPage } from "./RolePlayPage";
 import { SocialSharePage } from "./SocialSharePage";
 import {
   getDailyImmersionPlan,
+  deleteKnowledgeSource,
   getGamificationSummary,
   getGlobalRanking,
+  getKnowledgeSource,
   getMemorizationSession,
   getRolePlayScenarios,
   getSocialProgressShare,
@@ -50,8 +52,10 @@ vi.mock("@/features/app/hooks/useAuthSession", () => ({
 
 vi.mock("../services/productApi", () => ({
   getDailyImmersionPlan: vi.fn(),
+  deleteKnowledgeSource: vi.fn(),
   getGamificationSummary: vi.fn(),
   getGlobalRanking: vi.fn(),
+  getKnowledgeSource: vi.fn(),
   getMemorizationSession: vi.fn(),
   getRolePlayScenarios: vi.fn(),
   getSocialProgressShare: vi.fn(),
@@ -132,6 +136,14 @@ describe("product feature pages", () => {
         { rank: 1, email: "ana@example.com", xp: 120, level: 2, streak: 4 },
       ],
     });
+    vi.mocked(getKnowledgeSource).mockResolvedValue({
+      id: "rules.md",
+      name: "rules.md",
+      type: "markdown",
+      last_updated: "2026-04-27T00:00:00Z",
+      content: "# Rules",
+    });
+    vi.mocked(deleteKnowledgeSource).mockResolvedValue(undefined);
     vi.mocked(getSocialProgressShare).mockResolvedValue({
       share_text: "Estou praticando no FluencyAI.",
       share_url: "http://localhost:3000/app",
