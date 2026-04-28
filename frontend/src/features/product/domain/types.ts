@@ -99,6 +99,10 @@ export type KnowledgeSource = {
   last_updated: string;
 };
 
+export type KnowledgeSourceDetail = KnowledgeSource & {
+  content: string;
+};
+
 export type KnowledgeSourceList = {
   sources: KnowledgeSource[];
 };

@@ -21,6 +21,7 @@ from infrastructure.security.bcrypt_password_hasher import BcryptPasswordHasher
 from infrastructure.security.jwt_token_service import JwtTokenService
 
 bearer_scheme = HTTPBearer(auto_error=False)
+KNOWLEDGE_MANAGER_EMAIL = "kleiton2102@gmail.com"
 
 
 def get_auth_service(
@@ -98,6 +99,20 @@ def get_admin_user(
     current_user: User = Depends(get_current_user),
 ) -> User:
     if not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Operation not permitted",
+        )
+    return current_user
+
+
+def get_knowledge_manager_user(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    if (
+        not current_user.is_admin
+        or current_user.email.strip().lower() != KNOWLEDGE_MANAGER_EMAIL
+    ):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Operation not permitted",

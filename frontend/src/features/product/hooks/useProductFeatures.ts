@@ -6,8 +6,10 @@ import { useRouter } from "next/navigation";
 import { useAuthenticatedResource } from "./useAuthenticatedResource";
 import type { AiChatFeedback, RolePlayFeedback } from "../domain/types";
 import {
+  deleteKnowledgeSource,
   getDailyImmersionPlan,
   getGamificationSummary,
+  getKnowledgeSource,
   getGlobalRanking,
   getKnowledgeSources,
   getMemorizationSession,
@@ -18,6 +20,7 @@ import {
   uploadKnowledgeDocument,
 } from "../services/productApi";
 import { useAuthSession } from "@/features/app/hooks/useAuthSession";
+import type { KnowledgeSourceDetail } from "../domain/types";
 
 export function useDailyImmersionPlan() {
   return useAuthenticatedResource(getDailyImmersionPlan);
@@ -73,6 +76,65 @@ export function useUploadKnowledgeDocument() {
   }
 
   return { error, isPending, upload };
+}
+
+export function useKnowledgeSourceActions() {
+  const router = useRouter();
+  const session = useAuthSession();
+  const [error, setError] = useState<string | null>(null);
+  const [selectedSource, setSelectedSource] = useState<KnowledgeSourceDetail | null>(null);
+  const [isLoadingContent, setIsLoadingContent] = useState(false);
+  const [deletingSourceId, setDeletingSourceId] = useState<string | null>(null);
+
+  async function viewSource(sourceId: string): Promise<boolean> {
+    if (!session) {
+      router.replace("/login");
+      return false;
+    }
+
+    setIsLoadingContent(true);
+    setError(null);
+    try {
+      const source = await getKnowledgeSource(session.accessToken, sourceId);
+      setSelectedSource(source);
+      return true;
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not load document content.");
+      return false;
+    } finally {
+      setIsLoadingContent(false);
+    }
+  }
+
+  async function deleteSource(sourceId: string): Promise<boolean> {
+    if (!session) {
+      router.replace("/login");
+      return false;
+    }
+
+    setDeletingSourceId(sourceId);
+    setError(null);
+    try {
+      await deleteKnowledgeSource(session.accessToken, sourceId);
+      setSelectedSource((current) => (current?.id === sourceId ? null : current));
+      return true;
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not delete document.");
+      return false;
+    } finally {
+      setDeletingSourceId(null);
+    }
+  }
+
+  return {
+    closeSource: () => setSelectedSource(null),
+    deleteSource,
+    deletingSourceId,
+    error,
+    isLoadingContent,
+    selectedSource,
+    viewSource,
+  };
 }
 
 export function useAiConversation() {

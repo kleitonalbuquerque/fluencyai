@@ -22,7 +22,8 @@ export function LoginForm() {
   }
 
   return (
-    <section className="w-full max-w-md mx-auto p-8 flex flex-col justify-center min-h-screen lg:min-h-0 lg:p-12 relative">
+    <section className="flex min-h-screen w-full items-center justify-center px-6 py-10 sm:px-10 lg:px-12">
+      <div className="w-full max-w-[440px]">
       <header className="mb-8">
         <div className="flex items-center gap-2 mb-6">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
@@ -109,6 +110,7 @@ export function LoginForm() {
 
         <SocialAuthButtons />
       </form>
+      </div>
     </section>
   );
 }
