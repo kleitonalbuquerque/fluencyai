@@ -11,6 +11,7 @@ vi.mock("@/features/auth/services/authApi", () => ({
 }));
 
 vi.mock("@/features/auth/services/authSession", () => ({
+  AUTH_SESSION_UPDATED_EVENT: "fluencyai.auth.updated",
   getAuthSession: vi.fn(),
   updateStoredUser: vi.fn(),
 }));

@@ -69,10 +69,13 @@ describe("LoginForm", () => {
   });
 
   it("shows login errors from the auth hook", () => {
-    loginHookState.error = "Invalid credentials";
+    loginHookState.error = "E-mail ou senha inválidos. Confira os dados e tente novamente.";
 
     render(<LoginForm />);
 
-    expect(screen.getByRole("alert")).toHaveTextContent("Invalid credentials");
+    expect(screen.getByRole("alert")).toHaveTextContent("Não foi possível entrar");
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "E-mail ou senha inválidos. Confira os dados e tente novamente.",
+    );
   });
 });

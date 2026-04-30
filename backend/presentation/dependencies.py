@@ -14,7 +14,11 @@ from infrastructure.repositories.sqlalchemy_password_reset_token_repository impo
 )
 from infrastructure.repositories.sqlalchemy_user_repository import SQLAlchemyUserRepository
 from infrastructure.repositories.sqlalchemy_learning_repository import (
+    SqlAlchemyLearningTrackRepository,
+    SqlAlchemyLessonItemProgressRepository,
     SqlAlchemyLessonRepository,
+    SqlAlchemyLessonSectionProgressRepository,
+    SqlAlchemyUserTrackProgressRepository,
     SqlAlchemyUserProgressRepository,
 )
 from infrastructure.security.bcrypt_password_hasher import BcryptPasswordHasher
@@ -43,6 +47,9 @@ def get_knowledge_service(
     return KnowledgeService(
         kb_dir=settings.knowledge_base_dir,
         api_key=settings.gemini_api_key,
+        caveman_enabled=settings.caveman_enabled,
+        caveman_bin=settings.caveman_bin,
+        caveman_timeout_seconds=settings.caveman_timeout_seconds,
     )
 
 
@@ -53,7 +60,12 @@ def get_product_service(
     return ProductService(
         lesson_repository=SqlAlchemyLessonRepository(db),
         progress_repository=SqlAlchemyUserProgressRepository(db),
+        section_progress_repository=SqlAlchemyLessonSectionProgressRepository(db),
+        item_progress_repository=SqlAlchemyLessonItemProgressRepository(db),
+        user_repository=SQLAlchemyUserRepository(db),
         knowledge_service=knowledge_service,
+        track_repository=SqlAlchemyLearningTrackRepository(db),
+        track_progress_repository=SqlAlchemyUserTrackProgressRepository(db),
     )
 
 

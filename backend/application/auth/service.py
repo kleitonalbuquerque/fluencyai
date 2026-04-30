@@ -69,6 +69,21 @@ class AuthService:
 
         return self._build_auth_result(user)
 
+    def refresh(self, refresh_token: str) -> AuthResult:
+        try:
+            user_id = self._token_service.get_subject(
+                token=refresh_token,
+                expected_type="refresh",
+            )
+        except ValueError as exc:
+            raise InvalidCredentials() from exc
+
+        user = self._user_repository.get_by_id(user_id)
+        if user is None:
+            raise InvalidCredentials()
+
+        return self._build_auth_result(user)
+
     def get_profile(self, user_id: str) -> User:
         user = self._user_repository.get_by_id(user_id)
         if user is None:

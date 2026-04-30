@@ -1,19 +1,117 @@
 import type {
   AiChatFeedback,
+  CompleteLessonItemResult,
+  CompleteLessonSectionResult,
   DailyImmersionPlan,
+  DailyImmersionPlanWithProgress,
   GamificationSummary,
   GlobalRanking,
+  ImmersionSectionKey,
+  LessonHistory,
   MemorizationSession,
   RolePlayFeedback,
   RolePlayScenarioList,
   SocialShare,
   KnowledgeSourceDetail,
   KnowledgeSourceList,
+  LearningTrack,
+  WeeklyImmersionPlan,
 } from "../domain/types";
 import { httpClient } from "@/services/http/client";
 
+export function getLearningTracks(token: string): Promise<LearningTrack[]> {
+  return httpClient.get<LearningTrack[]>("/learning-tracks", { token });
+}
+
+export function getActiveLearningTrack(token: string): Promise<LearningTrack> {
+  return httpClient.get<LearningTrack>("/learning-tracks/active", { token });
+}
+
+export function setActiveLearningTrack(
+  token: string,
+  trackSlug: string,
+): Promise<LearningTrack> {
+  return httpClient.put<LearningTrack>(
+    "/learning-tracks/active",
+    { track_slug: trackSlug },
+    { token },
+  );
+}
+
 export function getDailyImmersionPlan(token: string): Promise<DailyImmersionPlan> {
   return httpClient.get<DailyImmersionPlan>("/learning-plan/today", { token });
+}
+
+export function getWeeklyImmersionPlan(
+  token: string,
+  weekOffset = 0,
+): Promise<WeeklyImmersionPlan> {
+  return httpClient.get<WeeklyImmersionPlan>(
+    `/learning-plan/weekly?week_offset=${weekOffset}`,
+    { token },
+  );
+}
+
+export function getImmersionPlanDay(
+  token: string,
+  day: number,
+): Promise<DailyImmersionPlanWithProgress> {
+  return httpClient.get<DailyImmersionPlanWithProgress>(
+    `/learning-plan/day/${day}`,
+    { token },
+  );
+}
+
+export function getImmersionPlanHistory(token: string): Promise<LessonHistory> {
+  return httpClient.get<LessonHistory>("/learning-plan/history", { token });
+}
+
+export function getImmersionPlanHistoryDay(
+  token: string,
+  day: number,
+): Promise<DailyImmersionPlanWithProgress> {
+  return httpClient.get<DailyImmersionPlanWithProgress>(
+    `/learning-plan/history/day/${day}`,
+    { token },
+  );
+}
+
+export function completeImmersionPlanSection(
+  token: string,
+  day: number,
+  section: ImmersionSectionKey,
+): Promise<CompleteLessonSectionResult> {
+  return httpClient.post<CompleteLessonSectionResult>(
+    `/learning-plan/day/${day}/sections/${section}/complete`,
+    {},
+    { token },
+  );
+}
+
+export function completeImmersionPlanItem(
+  token: string,
+  day: number,
+  section: ImmersionSectionKey,
+  itemKey: string,
+  answer?: string,
+): Promise<CompleteLessonItemResult> {
+  return httpClient.post<CompleteLessonItemResult>(
+    `/learning-plan/day/${day}/items/${section}/${encodeURIComponent(itemKey)}/complete`,
+    { answer: answer ?? null },
+    { token },
+  );
+}
+
+export function uncompleteImmersionPlanItem(
+  token: string,
+  day: number,
+  section: ImmersionSectionKey,
+  itemKey: string,
+): Promise<CompleteLessonItemResult> {
+  return httpClient.delete<CompleteLessonItemResult>(
+    `/learning-plan/day/${day}/items/${section}/${encodeURIComponent(itemKey)}/complete`,
+    { token },
+  );
 }
 
 export function sendAiMessage(

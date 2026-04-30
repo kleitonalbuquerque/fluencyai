@@ -89,9 +89,7 @@ export function LoginForm() {
         </label>
 
         {error ? (
-          <div className="p-4 bg-error/10 border border-error/20 rounded-xl text-error text-sm font-medium" role="alert">
-            {error}
-          </div>
+          <LoginAlert message={error} />
         ) : null}
 
         <button 
@@ -112,5 +110,24 @@ export function LoginForm() {
       </form>
       </div>
     </section>
+  );
+}
+
+function LoginAlert({ message }: { message: string }) {
+  return (
+    <div
+      className="rounded-xl border border-error/30 bg-error/10 p-4 text-error"
+      role="alert"
+    >
+      <div className="flex gap-3">
+        <span className="material-symbols-outlined mt-0.5 text-[20px] text-error">
+          error
+        </span>
+        <div>
+          <h2 className="text-sm font-bold text-error">Não foi possível entrar</h2>
+          <p className="mt-1 text-sm leading-6 text-error/80">{message}</p>
+        </div>
+      </div>
+    </div>
   );
 }

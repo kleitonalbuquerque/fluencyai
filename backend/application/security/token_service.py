@@ -11,3 +11,6 @@ class TokenPair:
 class TokenService(Protocol):
     def create_pair(self, subject: str) -> TokenPair:
         raise NotImplementedError
+
+    def get_subject(self, token: str, expected_type: str) -> str:
+        raise NotImplementedError

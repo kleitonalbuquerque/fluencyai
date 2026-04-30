@@ -21,3 +21,12 @@ class UserRepository(Protocol):
 
     def set_admin(self, user_id: str, is_admin: bool) -> User:
         raise NotImplementedError
+
+    def update_learning_stats(
+        self,
+        user_id: str,
+        xp: int,
+        level: int,
+        streak: int,
+    ) -> User:
+        raise NotImplementedError

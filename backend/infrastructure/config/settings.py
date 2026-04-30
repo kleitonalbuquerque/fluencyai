@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     cors_allowed_origins: str = "http://localhost:3000"
     gemini_api_key: str = ""
     knowledge_base_dir: str = "knowledge_base"
+    caveman_enabled: bool = True
+    caveman_bin: str = "/usr/local/bin/caveman"
+    caveman_timeout_seconds: int = 10
 
     @property
     def cors_origins(self) -> list[str]:

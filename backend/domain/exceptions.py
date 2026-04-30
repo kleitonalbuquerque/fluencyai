@@ -8,3 +8,23 @@ class EmailAlreadyRegistered(DomainError):
 
 class InvalidCredentials(DomainError):
     pass
+
+
+class LessonNotFound(DomainError):
+    pass
+
+
+class LessonLocked(DomainError):
+    pass
+
+
+class InvalidLearningSection(DomainError):
+    pass
+
+
+class InvalidLearningItem(DomainError):
+    pass
+
+
+class LessonSectionIncomplete(DomainError):
+    pass

@@ -1,14 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useAuthenticatedResource } from "./useAuthenticatedResource";
-import type { AiChatFeedback, RolePlayFeedback } from "../domain/types";
+import type {
+  AiChatFeedback,
+  CompleteLessonItemResult,
+  CompleteLessonSectionResult,
+  ImmersionSectionKey,
+  RolePlayFeedback,
+} from "../domain/types";
 import {
+  completeImmersionPlanItem,
+  completeImmersionPlanSection,
   deleteKnowledgeSource,
   getDailyImmersionPlan,
+  getLearningTracks,
+  getImmersionPlanHistory,
   getGamificationSummary,
+  getWeeklyImmersionPlan,
   getKnowledgeSource,
   getGlobalRanking,
   getKnowledgeSources,
@@ -17,13 +28,189 @@ import {
   getSocialProgressShare,
   respondToRolePlay,
   sendAiMessage,
+  setActiveLearningTrack,
+  uncompleteImmersionPlanItem,
   uploadKnowledgeDocument,
 } from "../services/productApi";
 import { useAuthSession } from "@/features/app/hooks/useAuthSession";
+import { updateStoredUser } from "@/features/auth/services/authSession";
 import type { KnowledgeSourceDetail } from "../domain/types";
 
 export function useDailyImmersionPlan() {
   return useAuthenticatedResource(getDailyImmersionPlan);
+}
+
+export function useWeeklyImmersionPlan(weekOffset = 0) {
+  const loadWeeklyPlan = useCallback(
+    (token: string) => getWeeklyImmersionPlan(token, weekOffset),
+    [weekOffset],
+  );
+  return useAuthenticatedResource(loadWeeklyPlan);
+}
+
+export function useImmersionPlanHistory() {
+  return useAuthenticatedResource(getImmersionPlanHistory);
+}
+
+export function useLearningTracks() {
+  return useAuthenticatedResource(getLearningTracks);
+}
+
+export function useSetActiveLearningTrack() {
+  const router = useRouter();
+  const session = useAuthSession();
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
+
+  async function select(trackSlug: string): Promise<boolean> {
+    if (!session) {
+      router.replace("/login");
+      return false;
+    }
+
+    setIsPending(true);
+    setError(null);
+    try {
+      await setActiveLearningTrack(session.accessToken, trackSlug);
+      return true;
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not switch track.");
+      return false;
+    } finally {
+      setIsPending(false);
+    }
+  }
+
+  return { error, isPending, select, session };
+}
+
+export function useCompleteImmersionSection() {
+  const router = useRouter();
+  const session = useAuthSession();
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
+
+  async function complete(
+    day: number,
+    section: ImmersionSectionKey,
+  ): Promise<CompleteLessonSectionResult | null> {
+    if (!session) {
+      router.replace("/login");
+      return null;
+    }
+
+    setIsPending(true);
+    setError(null);
+    try {
+      const result = await completeImmersionPlanSection(
+        session.accessToken,
+        day,
+        section,
+      );
+      updateStoredUser({
+        ...session.user,
+        xp: result.xp_total,
+        level: result.level,
+        streak: result.streak,
+      });
+      return result;
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not update progress.");
+      return null;
+    } finally {
+      setIsPending(false);
+    }
+  }
+
+  return { complete, error, isPending, session };
+}
+
+export function useCompleteImmersionItem() {
+  const router = useRouter();
+  const session = useAuthSession();
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
+
+  async function complete(
+    day: number,
+    section: ImmersionSectionKey,
+    itemKey: string,
+    answer?: string,
+  ): Promise<CompleteLessonItemResult | null> {
+    if (!session) {
+      router.replace("/login");
+      return null;
+    }
+
+    setIsPending(true);
+    setError(null);
+    try {
+      const result = await completeImmersionPlanItem(
+        session.accessToken,
+        day,
+        section,
+        itemKey,
+        answer,
+      );
+      updateStoredUser({
+        ...session.user,
+        xp: result.xp_total,
+        level: result.level,
+        streak: result.streak,
+      });
+      return result;
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not update progress.");
+      return null;
+    } finally {
+      setIsPending(false);
+    }
+  }
+
+  return { complete, error, isPending, session };
+}
+
+export function useUncompleteImmersionItem() {
+  const router = useRouter();
+  const session = useAuthSession();
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
+
+  async function uncomplete(
+    day: number,
+    section: ImmersionSectionKey,
+    itemKey: string,
+  ): Promise<CompleteLessonItemResult | null> {
+    if (!session) {
+      router.replace("/login");
+      return null;
+    }
+
+    setIsPending(true);
+    setError(null);
+    try {
+      const result = await uncompleteImmersionPlanItem(
+        session.accessToken,
+        day,
+        section,
+        itemKey,
+      );
+      updateStoredUser({
+        ...session.user,
+        xp: result.xp_total,
+        level: result.level,
+        streak: result.streak,
+      });
+      return result;
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not undo progress.");
+      return null;
+    } finally {
+      setIsPending(false);
+    }
+  }
+
+  return { error, isPending, session, uncomplete };
 }
 
 export function useMemorizationSession() {
