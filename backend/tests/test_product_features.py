@@ -45,9 +45,10 @@ def test_weekly_immersion_plan_returns_roadmap_and_focus_progress():
     assert len(payload["days"]) == 7
     current_index = today.weekday()
     assert payload["days"][0]["calendar_day"] == week_start.day
+    assert [day["day"] for day in payload["days"]] == list(range(1, 8))
     assert payload["days"][current_index]["calendar_day"] == today.day
     assert payload["days"][current_index]["is_current"] is True
-    assert payload["days"][current_index]["is_locked"] is False
+    assert payload["days"][0]["is_locked"] is False
     if current_index < 6:
         assert payload["days"][current_index + 1]["is_locked"] is True
     assert payload["focus"]["day"] == 1

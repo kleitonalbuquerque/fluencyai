@@ -164,13 +164,13 @@ class ProductService:
             calendar_week_start + timedelta(days=index)
             for index in range(7)
         ]
-        week_days = [
-            current_day + (calendar_day - today).days
-            for calendar_day in calendar_days
-        ]
         base_week_start = ((current_day - 1) // 7) * 7 + 1
         week_start_day = max(1, base_week_start + (week_offset * 7))
         week_end_day = week_start_day + 6
+        week_days = [
+            week_start_day + index
+            for index in range(7)
+        ]
         week_lessons = {
             lesson.day: lesson
             for lesson in self._lesson_repository.list_summaries(track.slug)
@@ -630,7 +630,6 @@ class ProductService:
 
         if xp_awarded > 0:
             progress = self._apply_gamification(progress, user.id, xp_awarded)
-            current_day = progress.current_day
 
         plan = self.get_lesson_plan_for_day(user, day)
         return CompleteLessonSectionResult(

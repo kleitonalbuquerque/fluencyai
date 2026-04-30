@@ -156,10 +156,11 @@ Use this order to validate the current Onda 2 implementation:
 3. `POST /learning-plan/day/1/sections/phrases/complete`
 4. `POST /learning-plan/day/1/sections/vocabulary/complete`
 5. `POST /learning-plan/day/1/sections/grammar/complete`
-6. `POST /learning-plan/day/1/sections/speaking/complete`
-7. `POST /learning-plan/day/1/sections/quiz/complete`
+6. `POST /learning-plan/day/1/sections/grammar_practice/complete`
+7. `POST /learning-plan/day/1/sections/speaking/complete`
+8. `POST /learning-plan/day/1/sections/quiz/complete`
 
-After each completion, `progress_percent` should increase by 20 points. When all five sections are complete, the day reaches 100%.
+After each completion, `progress_percent` should increase by roughly 17 points because the Immersion Plan has six sections. When all six sections are complete, the day reaches 100%.
 
 Useful database checks:
 
@@ -196,20 +197,21 @@ Recommended validation path:
 
 3. **Immersion Plan**
    - Route: `/app/plan`
-   - Shows the Weekly Roadmap, current lesson, daily progress, and five learning sections:
+   - Shows the Weekly Roadmap, current lesson, daily progress, and six learning sections:
      - Essential Phrases
      - Thematic Vocabulary
      - Grammar Points
+     - Verb & Structure Practice
      - Speaking Exercise
      - Final Quiz
    - Click a card action such as **Review list**, **Resume Study**, **Begin Practice**, or **Take Final Exam**.
    - The modal shows the real lesson content.
    - Click **Mark Complete** to persist section progress.
-   - The progress bar updates in 20% steps.
+   - The progress bar updates across the six learning sections.
 
 4. **Knowledge Base**
    - Route: `/app/knowledge`
-   - Visible only when the logged-in user has `is_admin = true` and email `kleiton2102@gmail.com`.
+   - Visible only to authorized admin users; any additional email-based restriction should be configured server-side.
    - Supports `.md` and `.pdf` document upload, content viewing, and deletion.
    - This is the Onda 3 foundation for grounded AI answers.
 
