@@ -24,10 +24,19 @@ def build_test_client() -> TestClient:
     # Seed initial data for learning
     db = TestingSessionLocal()
     from infrastructure.database.models.learning import (
+        GrammarPracticeItemModel,
+        LearningTrackModel,
         LessonModel, LearningPhraseModel, VocabularyWordModel,
         GrammarPointModel, QuizModel, QuizQuestionModel
     )
+    db.add(LearningTrackModel(
+        slug="study",
+        label="Study",
+        description="Study track",
+        position=1,
+    ))
     lesson = LessonModel(
+        track_slug="study",
         day=1,
         title="Essential Daily Conversations",
         speaking_exercise="Introduce yourself."
@@ -35,19 +44,29 @@ def build_test_client() -> TestClient:
     db.add(lesson)
     db.flush()
     for i in range(1, 21):
-        db.add(LearningPhraseModel(lesson_id=lesson.id, text=f"Phrase {i}", translation=f"T {i}"))
+        db.add(LearningPhraseModel(lesson_id=lesson.id, text=f"Phrase {i}", translation=f"T {i}", position=i))
     for i in range(1, 16):
         db.add(VocabularyWordModel(
             lesson_id=lesson.id, word=f"word{i}", theme="T", 
-            definition="D", example_sentence="E", memory_tip="M"
+            definition="D", example_sentence="E", memory_tip="M", position=i
         ))
     for i in range(1, 6):
-        db.add(GrammarPointModel(lesson_id=lesson.id, title=f"G {i}", explanation="E", example="EX"))
+        db.add(GrammarPointModel(lesson_id=lesson.id, title=f"G {i}", explanation="E", example="EX", position=i))
+    for i in range(1, 6):
+        db.add(GrammarPracticeItemModel(
+            lesson_id=lesson.id,
+            title=f"Practice {i}",
+            prompt=f"Prompt {i}",
+            options=["A", "B"],
+            answer="A",
+            explanation="Explanation",
+            position=i,
+        ))
     quiz = QuizModel(lesson_id=lesson.id, title="Q")
     db.add(quiz)
     db.flush()
     for i in range(1, 6):
-        db.add(QuizQuestionModel(quiz_id=quiz.id, prompt=f"Q {i}", options=["A", "B"], answer="A"))
+        db.add(QuizQuestionModel(quiz_id=quiz.id, prompt=f"Q {i}", options=["A", "B"], answer="A", position=i))
     db.commit()
     db.close()
 
@@ -108,6 +127,21 @@ def test_login_returns_tokens_for_valid_credentials():
     assert payload["access_token"]
     assert payload["refresh_token"]
     assert payload["token_type"] == "bearer"
+
+
+def test_refresh_returns_new_token_pair():
+    client = build_test_client()
+    user_payload = {"email": "ana@example.com", "password": "strong-password"}
+    signup_response = client.post("/signup", json=user_payload)
+    refresh_token = signup_response.json()["refresh_token"]
+
+    response = client.post("/refresh", json={"refresh_token": refresh_token})
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["user"]["email"] == "ana@example.com"
+    assert payload["access_token"]
+    assert payload["refresh_token"]
 
 
 def test_login_rejects_invalid_password():

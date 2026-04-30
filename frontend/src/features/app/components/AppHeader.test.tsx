@@ -2,14 +2,17 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { AppHeader } from "./AppHeader";
+import { AppHeader, getStreakFlameClass } from "./AppHeader";
+import { START_LESSON_STORAGE_KEY } from "@/features/product/domain/immersionStart";
 
 const navigation = vi.hoisted(() => ({
   pathname: "/app/knowledge",
+  push: vi.fn(),
 }));
 
 vi.mock("next/navigation", () => ({
   usePathname: () => navigation.pathname,
+  useRouter: () => ({ push: navigation.push }),
 }));
 
 vi.mock("@/features/theme/ThemeToggle", () => ({
@@ -19,6 +22,8 @@ vi.mock("@/features/theme/ThemeToggle", () => ({
 describe("AppHeader", () => {
   beforeEach(() => {
     navigation.pathname = "/app/knowledge";
+    navigation.push.mockReset();
+    window.sessionStorage.clear();
   });
 
   it("maps app routes to page titles and user stats", () => {
@@ -53,5 +58,24 @@ describe("AppHeader", () => {
 
     expect(screen.getByRole("heading", { name: "Custom" })).toBeInTheDocument();
     expect(onMenuToggle).toHaveBeenCalled();
+  });
+
+  it("starts the lesson from the header", async () => {
+    const user = userEvent.setup();
+    render(<AppHeader />);
+
+    await user.click(screen.getByRole("button", { name: "Start Lesson" }));
+
+    expect(window.sessionStorage.getItem(START_LESSON_STORAGE_KEY)).toBe("1");
+    expect(navigation.push).toHaveBeenCalledWith("/app/plan");
+  });
+
+  it("cycles streak flame color through a weekly heat scale", () => {
+    expect(getStreakFlameClass(0)).toBe("text-primary");
+    expect(getStreakFlameClass(1)).toBe("text-primary");
+    expect(getStreakFlameClass(2)).toBe("text-yellow-300");
+    expect(getStreakFlameClass(4)).toBe("text-orange-300");
+    expect(getStreakFlameClass(7)).toBe("text-red-500");
+    expect(getStreakFlameClass(8)).toBe("text-primary");
   });
 });

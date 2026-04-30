@@ -26,6 +26,20 @@ class JwtTokenService(TokenService):
             ),
         )
 
+    def get_subject(self, token: str, expected_type: str) -> str:
+        try:
+            payload = jwt.decode(
+                token,
+                self._settings.jwt_secret_key,
+                algorithms=[self._settings.jwt_algorithm],
+            )
+        except jwt.PyJWTError as exc:
+            raise ValueError("Invalid token") from exc
+
+        if payload.get("type") != expected_type or not isinstance(payload.get("sub"), str):
+            raise ValueError("Invalid token")
+        return payload["sub"]
+
     def _encode(
         self,
         subject: str,

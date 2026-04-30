@@ -113,6 +113,138 @@ Build a complete language learning platform featuring:
 
 ---
 
+## 🔎 Swagger and Manual API Testing
+
+FastAPI exposes Swagger automatically:
+
+```text
+http://localhost:8000/docs
+```
+
+The raw OpenAPI document is available at:
+
+```text
+http://localhost:8000/openapi.json
+```
+
+### Authenticated Requests in Swagger
+
+1. Open `http://localhost:8000/docs`.
+2. Run `POST /signup` or `POST /login`.
+3. Copy the `access_token` from the response.
+4. Click **Authorize** in Swagger.
+5. Paste only the token value when Swagger asks for the bearer token.
+6. Test protected endpoints normally.
+
+Example login payload:
+
+```json
+{
+  "email": "ana@example.com",
+  "password": "strong-password"
+}
+```
+
+### Immersion Plan API Test Flow
+
+Use this order to validate the current Onda 2 implementation:
+
+1. `GET /learning-plan/weekly`
+   - Confirms the weekly roadmap, current day, locked days, completed days, and focus lesson.
+2. `GET /learning-plan/day/1`
+   - Loads the full content for Day 1 with section progress.
+3. `POST /learning-plan/day/1/sections/phrases/complete`
+4. `POST /learning-plan/day/1/sections/vocabulary/complete`
+5. `POST /learning-plan/day/1/sections/grammar/complete`
+6. `POST /learning-plan/day/1/sections/speaking/complete`
+7. `POST /learning-plan/day/1/sections/quiz/complete`
+
+After each completion, `progress_percent` should increase by 20 points. When all five sections are complete, the day reaches 100%.
+
+Useful database checks:
+
+```sql
+SELECT *
+FROM lesson_section_progress
+ORDER BY completed_at DESC;
+```
+
+```sql
+SELECT *
+FROM user_progress;
+```
+
+---
+
+## 🧭 Application Tour
+
+Start the frontend at:
+
+```text
+http://localhost:3000
+```
+
+Recommended validation path:
+
+1. **Signup/Login**
+   - Use `/signup` to create a user or `/login` to enter with an existing account.
+   - After authentication, the app redirects to the authenticated area.
+
+2. **Dashboard**
+   - Route: `/app`
+   - Main landing screen for the logged-in user.
+
+3. **Immersion Plan**
+   - Route: `/app/plan`
+   - Shows the Weekly Roadmap, current lesson, daily progress, and five learning sections:
+     - Essential Phrases
+     - Thematic Vocabulary
+     - Grammar Points
+     - Speaking Exercise
+     - Final Quiz
+   - Click a card action such as **Review list**, **Resume Study**, **Begin Practice**, or **Take Final Exam**.
+   - The modal shows the real lesson content.
+   - Click **Mark Complete** to persist section progress.
+   - The progress bar updates in 20% steps.
+
+4. **Knowledge Base**
+   - Route: `/app/knowledge`
+   - Visible only when the logged-in user has `is_admin = true` and email `kleiton2102@gmail.com`.
+   - Supports `.md` and `.pdf` document upload, content viewing, and deletion.
+   - This is the Onda 3 foundation for grounded AI answers.
+
+5. **AI Chat**
+   - Route: `/app/chat`
+   - Conversational practice with correction and vocabulary suggestions.
+   - When Gemini is configured, the backend can consult the Knowledge Base.
+
+6. **Memorization**
+   - Route: `/app/memorization`
+   - Vocabulary practice flow using learning words and memory tips.
+
+7. **Role Play**
+   - Route: `/app/role-play`
+   - Scenario-based conversation practice.
+
+8. **Ranking and Settings**
+   - Routes: `/app/ranking` and `/app/settings`
+   - Ranking displays gamification context.
+   - Settings handles account preferences such as password and avatar updates.
+
+---
+
+## 🧯 Troubleshooting
+
+If Next.js shows an old chunk error such as `Cannot find module './755.js'`, stop the frontend, remove the stale `frontend/.next` directory, and start `npm run dev` again.
+
+Known local issues and their fixes are documented in:
+
+```text
+docs/troubleshooting-log.md
+```
+
+---
+
 ## ✅ Quality Checks
 
 ```bash
