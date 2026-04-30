@@ -219,6 +219,7 @@ Recommended validation path:
    - Route: `/app/chat`
    - Conversational practice with correction and vocabulary suggestions.
    - When Gemini is configured, the backend can consult the Knowledge Base.
+   - Knowledge Base context is caveman-compressed before the AI prompt when `CAVEMAN_ENABLED=true` and the `caveman` binary is available.
 
 6. **Memorization**
    - Route: `/app/memorization`
