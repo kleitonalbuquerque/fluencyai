@@ -116,16 +116,16 @@ export function LoginForm() {
 function LoginAlert({ message }: { message: string }) {
   return (
     <div
-      className="rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-red-100"
+      className="rounded-xl border border-error/30 bg-error/10 p-4 text-error"
       role="alert"
     >
       <div className="flex gap-3">
-        <span className="material-symbols-outlined mt-0.5 text-[20px] text-red-300">
+        <span className="material-symbols-outlined mt-0.5 text-[20px] text-error">
           error
         </span>
         <div>
-          <h2 className="text-sm font-bold text-red-100">Não foi possível entrar</h2>
-          <p className="mt-1 text-sm leading-6 text-red-100/80">{message}</p>
+          <h2 className="text-sm font-bold text-error">Não foi possível entrar</h2>
+          <p className="mt-1 text-sm leading-6 text-error/80">{message}</p>
         </div>
       </div>
     </div>

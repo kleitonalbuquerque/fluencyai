@@ -7,6 +7,12 @@ def mock_gemini():
     with patch('google.generativeai.GenerativeModel') as mock:
         yield mock
 
+@pytest.fixture(autouse=True)
+def clear_knowledge_compression_cache():
+    KnowledgeService.clear_compression_cache()
+    yield
+    KnowledgeService.clear_compression_cache()
+
 def test_knowledge_service_reads_markdown_files(tmp_path):
     # Setup temporary knowledge base
     kb_dir = tmp_path / "kb"
@@ -79,3 +85,31 @@ def test_knowledge_service_falls_back_to_original_context_when_caveman_is_missin
     context = service.get_consolidated_context(compress=True)
 
     assert "The FluencyAI agent must stay grounded." in context
+
+def test_knowledge_service_reuses_cached_caveman_context_for_unchanged_sources(tmp_path):
+    kb_dir = tmp_path / "kb"
+    kb_dir.mkdir()
+    (kb_dir / "test.md").write_text("The FluencyAI roadmap has six learning sections.")
+    calls = []
+
+    def compress(text):
+        calls.append(text)
+        return "FluencyAI roadmap six learning sections."
+
+    first_service = KnowledgeService(
+        kb_dir=str(kb_dir),
+        api_key="fake-key",
+        caveman_compressor=compress,
+    )
+    second_service = KnowledgeService(
+        kb_dir=str(kb_dir),
+        api_key="fake-key",
+        caveman_compressor=compress,
+    )
+
+    first_context = first_service.get_consolidated_context(compress=True)
+    second_context = second_service.get_consolidated_context(compress=True)
+
+    assert "FluencyAI roadmap six learning sections." in first_context
+    assert "FluencyAI roadmap six learning sections." in second_context
+    assert len(calls) == 1

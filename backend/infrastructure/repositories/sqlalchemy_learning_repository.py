@@ -91,7 +91,12 @@ class SqlAlchemyLessonRepository(LessonRepository):
 
     def get_by_day(self, day: int, track_slug: str = DEFAULT_TRACK_SLUG) -> Lesson | None:
         stmt = (
-            select(LessonModel)
+            select(LessonModel, LearningTrackModel.label)
+            .join(
+                LearningTrackModel,
+                LearningTrackModel.slug == LessonModel.track_slug,
+                isouter=True,
+            )
             .where(LessonModel.day == day)
             .where(LessonModel.track_slug == track_slug)
             .options(
@@ -102,14 +107,20 @@ class SqlAlchemyLessonRepository(LessonRepository):
                 selectinload(LessonModel.quiz).selectinload(QuizModel.questions),
             )
         )
-        model = self._session.execute(stmt).scalar_one_or_none()
-        if not model:
+        row = self._session.execute(stmt).one_or_none()
+        if row is None:
             return None
-        return self._to_entity(model)
+        model, track_label = row
+        return self._to_entity(model, track_label=track_label)
 
     def list_all(self, track_slug: str = DEFAULT_TRACK_SLUG) -> list[Lesson]:
         stmt = (
-            select(LessonModel)
+            select(LessonModel, LearningTrackModel.label)
+            .join(
+                LearningTrackModel,
+                LearningTrackModel.slug == LessonModel.track_slug,
+                isouter=True,
+            )
             .where(LessonModel.track_slug == track_slug)
             .options(
                 selectinload(LessonModel.phrases),
@@ -120,8 +131,8 @@ class SqlAlchemyLessonRepository(LessonRepository):
             )
             .order_by(LessonModel.day)
         )
-        models = self._session.execute(stmt).scalars().all()
-        return [self._to_entity(m) for m in models]
+        rows = self._session.execute(stmt).all()
+        return [self._to_entity(model, track_label=track_label) for model, track_label in rows]
 
     def list_summaries(self, track_slug: str = DEFAULT_TRACK_SLUG) -> list[LessonSummary]:
         stmt = (
@@ -148,12 +159,12 @@ class SqlAlchemyLessonRepository(LessonRepository):
             for row in rows
         ]
 
-    def _to_entity(self, model: LessonModel) -> Lesson:
+    def _to_entity(self, model: LessonModel, track_label: str | None = None) -> Lesson:
         return Lesson(
             id=model.id,
             day=model.day,
             track_slug=model.track_slug,
-            track_label=self._track_label(model.track_slug),
+            track_label=track_label or "Study",
             title=model.title,
             essential_phrases=[
                 LearningPhrase(text=p.text, translation=p.translation, position=p.position)
@@ -206,10 +217,6 @@ class SqlAlchemyLessonRepository(LessonRepository):
             created_at=model.created_at,
             updated_at=model.updated_at,
         )
-
-    def _track_label(self, track_slug: str) -> str:
-        track = self._session.get(LearningTrackModel, track_slug)
-        return track.label if track is not None else "Study"
 
 
 class SqlAlchemyUserProgressRepository(UserProgressRepository):

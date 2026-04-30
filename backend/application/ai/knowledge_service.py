@@ -2,7 +2,7 @@ import subprocess
 import tempfile
 from datetime import datetime
 from pathlib import Path
-from typing import Callable, List
+from typing import Callable, ClassVar, List
 
 import google.generativeai as genai
 from pypdf import PdfReader
@@ -11,6 +11,8 @@ from domain.entities.knowledge import KnowledgeSource, KnowledgeSourceType
 
 
 class KnowledgeService:
+    _compression_cache: ClassVar[dict[tuple[str, str, float, int], str]] = {}
+
     def __init__(
         self,
         kb_dir: str,
@@ -46,10 +48,14 @@ class KnowledgeService:
         sources = self.list_sources()
         context_parts = []
         for src in sources:
-            content = self._compress_text(src.content) if compress else src.content
+            content = self._compressed_source_content(src) if compress else src.content
             context_parts.append(f"--- DOCUMENT: {src.name} ({src.type}) ---\n{content}")
         
         return "\n\n".join(context_parts)
+
+    @classmethod
+    def clear_compression_cache(cls) -> None:
+        cls._compression_cache.clear()
 
     def ask_question(self, question: str) -> str:
         context = self.get_consolidated_context(compress=self.caveman_enabled)
@@ -124,6 +130,21 @@ ANSWER:
                         Path(path).unlink(missing_ok=True)
                     except OSError:
                         pass
+
+    def _compressed_source_content(self, source: KnowledgeSource) -> str:
+        cache_key = (
+            str(self.kb_dir.resolve()),
+            source.id,
+            source.last_updated.timestamp(),
+            len(source.content),
+        )
+        cached_content = self._compression_cache.get(cache_key)
+        if cached_content is not None:
+            return cached_content
+
+        compressed_content = self._compress_text(source.content)
+        self._compression_cache[cache_key] = compressed_content
+        return compressed_content
 
     def _load_markdown(self, path: Path) -> KnowledgeSource:
         with open(path, "r", encoding="utf-8") as f:

@@ -2,6 +2,7 @@ import {
   clearAuthSession,
   getAuthSession,
   setAuthSession,
+  type AuthSession,
 } from "@/features/auth/services/authSession";
 import type { AuthResponse } from "@/features/auth/domain/types";
 
@@ -20,7 +21,17 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8
 type RequestOptions = {
   token?: string;
   retryOnUnauthorized?: boolean;
+  useStoredToken?: boolean;
 };
+
+const AUTH_ENDPOINTS_WITHOUT_REFRESH = new Set([
+  "/login",
+  "/signup",
+  "/password-reset/request",
+  "/refresh",
+]);
+
+let refreshSessionPromise: Promise<AuthSession | null> | null = null;
 
 async function request<TResponse>(
   method: string,
@@ -41,7 +52,7 @@ async function requestWithRetry<TResponse>(
   const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
   const headers: Record<string, string> = {};
 
-  const session = getAuthSession();
+  const session = options.useStoredToken === true ? getAuthSession() : null;
   const token = options.token ?? session?.accessToken;
   if (token) {
     headers.Authorization = `Bearer ${token}`;
@@ -66,9 +77,9 @@ async function requestWithRetry<TResponse>(
     response.status === 401 &&
     options.retryOnUnauthorized !== false &&
     !didRetry &&
-    path !== "/refresh"
+    !AUTH_ENDPOINTS_WITHOUT_REFRESH.has(path)
   ) {
-    const refreshedSession = await refreshAuthSession();
+    const refreshedSession = await getRefreshedAuthSession();
     if (refreshedSession) {
       return requestWithRetry<TResponse>(
         method,
@@ -87,6 +98,16 @@ async function requestWithRetry<TResponse>(
   }
 
   return payload as TResponse;
+}
+
+async function getRefreshedAuthSession(): Promise<AuthSession | null> {
+  if (!refreshSessionPromise) {
+    refreshSessionPromise = refreshAuthSession().finally(() => {
+      refreshSessionPromise = null;
+    });
+  }
+
+  return refreshSessionPromise;
 }
 
 async function refreshAuthSession() {
