@@ -153,14 +153,16 @@ Use this order to validate the current Onda 2 implementation:
    - Confirms the weekly roadmap, current day, locked days, completed days, and focus lesson.
 2. `GET /learning-plan/day/1`
    - Loads the full content for Day 1 with section progress.
-3. `POST /learning-plan/day/1/sections/phrases/complete`
-4. `POST /learning-plan/day/1/sections/vocabulary/complete`
-5. `POST /learning-plan/day/1/sections/grammar/complete`
-6. `POST /learning-plan/day/1/sections/grammar_practice/complete`
-7. `POST /learning-plan/day/1/sections/speaking/complete`
-8. `POST /learning-plan/day/1/sections/quiz/complete`
+3. For each section (`phrases`, `vocabulary`, `grammar`, `grammar_practice`, `speaking`, `quiz`), complete all items in that section first using the item keys returned by `GET /learning-plan/day/1`.
+   - Required precondition: `POST /learning-plan/day/1/sections/{section_key}/complete` returns `409 Conflict` until every item in that section is completed.
+4. `POST /learning-plan/day/1/sections/phrases/complete`
+5. `POST /learning-plan/day/1/sections/vocabulary/complete`
+6. `POST /learning-plan/day/1/sections/grammar/complete`
+7. `POST /learning-plan/day/1/sections/grammar_practice/complete`
+8. `POST /learning-plan/day/1/sections/speaking/complete`
+9. `POST /learning-plan/day/1/sections/quiz/complete`
 
-After each completion, `progress_percent` should increase by roughly 17 points because the Immersion Plan has six sections. When all six sections are complete, the day reaches 100%.
+After each section completion, `progress_percent` should increase by roughly 17 points because the Immersion Plan has six sections. When all six sections are complete, the day reaches 100%.
 
 Useful database checks:
 

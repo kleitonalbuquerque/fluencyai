@@ -55,7 +55,6 @@ def upgrade() -> None:
         sa.Column(
             "track_slug",
             sa.String(length=40),
-            sa.ForeignKey("learning_tracks.slug"),
             nullable=True,
             server_default="study",
         ),

@@ -1,6 +1,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  clearAuthSession,
+  getAuthSession,
+  setAuthSession,
+} from "@/features/auth/services/authSession";
+import { HttpError } from "@/services/http/client";
+
+import {
   completeImmersionPlanItem,
   completeImmersionPlanSection,
   deleteKnowledgeSource,
@@ -15,6 +22,7 @@ import {
 describe("productApi", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
+    clearAuthSession();
   });
 
   it("uploads knowledge documents as FormData", async () => {
@@ -259,5 +267,45 @@ describe("productApi", () => {
         },
       }),
     );
+  });
+
+  it("clears the session and keeps the original 401 when refresh fetch fails", async () => {
+    setAuthSession({
+      accessToken: "expired-access-token",
+      refreshToken: "refresh-token",
+      tokenType: "bearer",
+      user: {
+        id: "user-1",
+        email: "ana@example.com",
+        xp: 0,
+        level: 1,
+        streak: 0,
+        is_admin: false,
+        avatar_url: null,
+      },
+    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        json: vi.fn().mockResolvedValue({ detail: "Token expired" }),
+      })
+      .mockRejectedValueOnce(new TypeError("Failed to fetch"));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(getWeeklyImmersionPlan("expired-access-token")).rejects.toEqual(
+      new HttpError("Token expired", 401),
+    );
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "http://localhost:8000/refresh",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({ refresh_token: "refresh-token" }),
+      }),
+    );
+    expect(getAuthSession()).toBeNull();
   });
 });

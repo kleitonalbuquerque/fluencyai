@@ -96,26 +96,31 @@ async function refreshAuthSession() {
     return null;
   }
 
-  const response = await fetch(`${API_BASE_URL}/refresh`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ refresh_token: session.refreshToken }),
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/refresh`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refresh_token: session.refreshToken }),
+    });
 
-  if (!response.ok) {
+    if (!response.ok) {
+      clearAuthSession();
+      return null;
+    }
+
+    const payload = (await response.json()) as AuthResponse;
+    const refreshedSession = {
+      accessToken: payload.access_token,
+      refreshToken: payload.refresh_token,
+      tokenType: payload.token_type,
+      user: payload.user,
+    };
+    setAuthSession(refreshedSession);
+    return refreshedSession;
+  } catch {
     clearAuthSession();
     return null;
   }
-
-  const payload = (await response.json()) as AuthResponse;
-  const refreshedSession = {
-    accessToken: payload.access_token,
-    refreshToken: payload.refresh_token,
-    tokenType: payload.token_type,
-    user: payload.user,
-  };
-  setAuthSession(refreshedSession);
-  return refreshedSession;
 }
 
 export const httpClient = {
