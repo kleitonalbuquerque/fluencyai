@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from application.auth.service import AuthService
+from domain.entities.user import User
 from domain.exceptions import EmailAlreadyRegistered, InvalidCredentials
-from presentation.dependencies import get_auth_service
-from presentation.dependencies import get_current_user
+from presentation.dependencies import get_auth_service, get_current_user
 from presentation.schemas.auth import (
     AuthResponse,
     AvatarUpdateRequest,
@@ -16,7 +16,6 @@ from presentation.schemas.auth import (
     SignupRequest,
     UserResponse,
 )
-from domain.entities.user import User
 
 router = APIRouter(tags=["auth"])
 

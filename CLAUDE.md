@@ -131,10 +131,35 @@ python seed_data.py
 
 ```bash
 npm run dev         # Start dev server on :3000
+npm run lint        # ESLint (deve passar antes dos testes)
+npm run lint:fix    # Corrigir violações automaticamente
 npm test            # Run Vitest tests (single run)
 npm run test:watch  # Watch mode
 npm run test:coverage
 npm run build       # Production build (TypeScript check included)
+```
+
+## Quality Checks — Ordem Obrigatória
+
+Execute nesta sequência antes de commitar ou abrir PR:
+
+### Frontend (run from `frontend/`)
+
+```bash
+npm audit                # verificar vulnerabilidades de dependências
+npm run lint             # ESLint — deve retornar 0 errors
+npx tsc --noEmit         # TypeScript sem erros de tipo
+npm test                 # 75+ testes passando
+```
+
+> `npm audit` pode reportar vulnerabilidades **upstream** do Next.js que requerem `--force` para corrigir (breaking change). Documente mas não force-atualize sem avaliar o impacto.
+
+### Backend (run from `backend/`)
+
+```bash
+.venv/bin/ruff check .         # lint Python — deve retornar "All checks passed!"
+.venv/bin/ruff check . --fix   # corrigir auto (organização de imports, etc.)
+.venv/bin/python -m pytest     # 59+ testes passando
 ```
 
 ## Engineering Mandates

@@ -1,13 +1,14 @@
 from abc import ABC, abstractmethod
-from domain.entities.learning import DEFAULT_TRACK_SLUG
+
 from domain.entities.learning import (
+    DEFAULT_TRACK_SLUG,
+    LearningTrack,
     Lesson,
     LessonItemProgress,
     LessonSectionProgress,
     LessonSummary,
-    LearningTrack,
-    UserTrackProgress,
     UserProgress,
+    UserTrackProgress,
 )
 
 

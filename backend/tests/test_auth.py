@@ -25,10 +25,14 @@ def build_test_client() -> TestClient:
     # Seed initial data for learning
     db = TestingSessionLocal()
     from infrastructure.database.models.learning import (
+        GrammarPointModel,
         GrammarPracticeItemModel,
+        LearningPhraseModel,
         LearningTrackModel,
-        LessonModel, LearningPhraseModel, VocabularyWordModel,
-        GrammarPointModel, QuizModel, QuizQuestionModel
+        LessonModel,
+        QuizModel,
+        QuizQuestionModel,
+        VocabularyWordModel,
     )
     db.add(LearningTrackModel(
         slug="study",

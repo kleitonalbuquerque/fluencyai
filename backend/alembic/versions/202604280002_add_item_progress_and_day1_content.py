@@ -6,9 +6,9 @@ Create Date: 2026-04-28 00:10:00.000000
 """
 from uuid import uuid4
 
-from alembic import op
 import sqlalchemy as sa
 
+from alembic import op
 
 revision = "202604280002"
 down_revision = "202604280001"

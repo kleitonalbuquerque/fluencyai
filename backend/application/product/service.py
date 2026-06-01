@@ -1,8 +1,16 @@
 from collections.abc import Callable
 from datetime import date, datetime, timedelta
 
+from application.ai.knowledge_service import KnowledgeService
+from application.repositories.learning_repository import (
+    LearningTrackRepository,
+    LessonItemProgressRepository,
+    LessonRepository,
+    LessonSectionProgressRepository,
+    UserProgressRepository,
+    UserTrackProgressRepository,
+)
 from application.repositories.user_repository import UserRepository
-from domain.entities.user import User
 from domain.entities.learning import (
     DEFAULT_TRACK_SLUG,
     IMMERSION_SECTION_KEYS,
@@ -14,31 +22,29 @@ from domain.entities.learning import (
     GamificationSummary,
     GlobalRanking,
     GrammarPracticeItem,
-    GrammarPoint,
+    LearningItemStatus,
+    LearningSectionStatus,
+    LearningTrack,
+    Lesson,
     LessonHistory,
     LessonHistoryEntry,
-    LearningItemStatus,
-    LearningTrack,
-    LearningPhrase,
-    Lesson,
     LessonItemProgress,
     LessonSectionProgress,
     LessonSummary,
-    LearningSectionStatus,
-    Quiz,
+    MemorizationSession,
     QuizQuestion,
     RankingEntry,
     RolePlayFeedback,
     RolePlayScenario,
     RolePlayScenarioList,
-    MemorizationSession,
     SocialShare,
-    UserTrackProgress,
     UserProgress,
+    UserTrackProgress,
     VocabularyWord,
     WeeklyImmersionPlan,
     WeeklyRoadmapDay,
 )
+from domain.entities.user import User
 from domain.exceptions import (
     InvalidLearningItem,
     InvalidLearningSection,
@@ -46,16 +52,6 @@ from domain.exceptions import (
     LessonNotFound,
     LessonSectionIncomplete,
 )
-from application.repositories.learning_repository import (
-    LessonItemProgressRepository,
-    LessonRepository,
-    LessonSectionProgressRepository,
-    LearningTrackRepository,
-    UserTrackProgressRepository,
-    UserProgressRepository,
-)
-from application.ai.knowledge_service import KnowledgeService
-
 
 WEEKDAY_LABELS = ("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
 LEVEL_XP = 100

@@ -7,8 +7,8 @@ from domain.entities.learning import (
     CompleteLessonItemResult,
     CompleteLessonSectionResult,
     DailyLessonProgress,
-    LessonHistory,
     LearningItemStatus,
+    LessonHistory,
     WeeklyImmersionPlan,
 )
 

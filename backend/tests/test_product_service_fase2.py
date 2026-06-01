@@ -1,18 +1,20 @@
 from datetime import date
 from unittest.mock import Mock
+
 import pytest
 
 from application.product.service import ProductService
 from domain.entities.learning import (
+    LearningPhrase,
     Lesson,
     LessonItemProgress,
     LessonSectionProgress,
-    UserTrackProgress,
-    UserProgress,
     Quiz,
-    LearningPhrase,
+    UserProgress,
+    UserTrackProgress,
 )
 from domain.entities.user import User
+
 
 @pytest.fixture
 def mock_lesson_repo():

@@ -4,9 +4,9 @@ Revision ID: 81724a9684c6
 Revises: 202604270003
 Create Date: 2026-04-27 18:33:25.936073
 """
-from alembic import op
 import sqlalchemy as sa
 
+from alembic import op
 
 revision = '81724a9684c6'
 down_revision = '202604270003'

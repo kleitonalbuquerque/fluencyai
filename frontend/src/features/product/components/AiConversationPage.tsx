@@ -54,7 +54,7 @@ export function AiConversationPage() {
         <div className="flex-grow overflow-y-auto pr-4 space-y-8 pb-32 custom-scrollbar text-on-surface">
           <div className="flex justify-center">
             <span className="text-[10px] font-bold tracking-[0.1em] uppercase text-neutral-500 bg-white/5 px-3 py-1 rounded-full">
-              Today's Session • Immersion Mode
+              Today&apos;s Session • Immersion Mode
             </span>
           </div>
 
@@ -217,7 +217,7 @@ export function AiConversationPage() {
           <p className="text-[11px] text-on-surface-variant leading-relaxed">
             Pay attention to verb tenses. Use past simple for completed actions:
             <br />
-            <span className="text-tertiary">"I went" not "I go"</span>
+            <span className="text-tertiary">&ldquo;I went&rdquo; not &ldquo;I go&rdquo;</span>
           </p>
         </div>
       </aside>

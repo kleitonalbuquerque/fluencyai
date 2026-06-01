@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
 
-from infrastructure.database.session import SessionLocal
 from infrastructure.database.models.learning import (
     GrammarPointModel,
     GrammarPracticeItemModel,
@@ -11,7 +10,7 @@ from infrastructure.database.models.learning import (
     QuizQuestionModel,
     VocabularyWordModel,
 )
-
+from infrastructure.database.session import SessionLocal
 
 TRACKS = [
     {

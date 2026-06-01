@@ -1,11 +1,12 @@
 from domain.entities.learning import (
-    LearningPhrase,
-    VocabularyWord,
     GrammarPoint,
-    QuizQuestion,
+    LearningPhrase,
+    Lesson,
     Quiz,
-    Lesson
+    QuizQuestion,
+    VocabularyWord,
 )
+
 
 def test_create_learning_phrase():
     phrase = LearningPhrase(text="Hello", translation="Olá")
