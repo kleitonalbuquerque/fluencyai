@@ -46,7 +46,7 @@ def get_knowledge_service(
 ) -> KnowledgeService:
     return KnowledgeService(
         kb_dir=settings.knowledge_base_dir,
-        api_key=settings.gemini_api_key,
+        api_key=settings.groq_api_key,
         caveman_enabled=settings.caveman_enabled,
         caveman_bin=settings.caveman_bin,
         caveman_timeout_seconds=settings.caveman_timeout_seconds,

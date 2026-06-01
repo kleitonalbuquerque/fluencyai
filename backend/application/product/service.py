@@ -1038,21 +1038,18 @@ class ProductService:
     def chat(self, message: str) -> AiChatFeedback:
         try:
             if not self._knowledge_service.api_key:
-                raise ValueError("API Key missing")
-            
-            ai_response = self._knowledge_service.ask_question(message)
+                raise ValueError("Groq API key not configured")
+            result = self._knowledge_service.analyze_message(message)
             return AiChatFeedback(
-                reply=ai_response,
-                correction="Isso soa bem! Só uma coisinha pequena... (correção via IA pendente)",
-                suggested_vocabulary=["actually", "usually", "vocabulary"]
+                reply=result["reply"],
+                correction=result["correction"],
+                suggested_vocabulary=result["suggested_vocabulary"],
             )
-        except Exception as e:
-            # Fallback mock for development or errors
-            topic = message.strip() if message.strip() else "your sentence"
+        except Exception:
             return AiChatFeedback(
-                reply=f"AI Service currently offline. You asked about: {topic}. Error: {str(e)}",
-                correction=f"Isso soa bem! Só uma coisinha pequena... tente dizer '{topic}' melhor.",
-                suggested_vocabulary=["actually", "usually", "reservation"]
+                reply="AI service is temporarily unavailable. Please try again later.",
+                correction="",
+                suggested_vocabulary=[],
             )
 
     def get_memorization_session(self) -> MemorizationSession:

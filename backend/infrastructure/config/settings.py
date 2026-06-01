@@ -10,8 +10,8 @@ class Settings(BaseSettings):
     jwt_access_token_expire_minutes: int = 15
     jwt_refresh_token_expire_days: int = 7
     password_reset_token_expire_minutes: int = 30
-    cors_allowed_origins: str = "http://localhost:3000"
-    gemini_api_key: str = ""
+    cors_allowed_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+    groq_api_key: str = ""
     knowledge_base_dir: str = "knowledge_base"
     caveman_enabled: bool = True
     caveman_bin: str = "/usr/local/bin/caveman"

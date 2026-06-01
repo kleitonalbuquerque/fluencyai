@@ -458,9 +458,15 @@ def test_uncomplete_lesson_item_removes_progress_and_xp(
 
 def test_chat_calls_knowledge_service(product_service, mock_knowledge_service):
     mock_knowledge_service.api_key = "valid-key"
-    mock_knowledge_service.ask_question.return_value = "AI Response"
-    
+    mock_knowledge_service.analyze_message.return_value = {
+        "reply": "AI Response",
+        "correction": "Use 'went' instead of 'go'.",
+        "suggested_vocabulary": ["went", "yesterday"],
+    }
+
     response = product_service.chat("How to say hello?")
-    
+
     assert response.reply == "AI Response"
-    mock_knowledge_service.ask_question.assert_called_once_with("How to say hello?")
+    assert response.correction == "Use 'went' instead of 'go'."
+    assert response.suggested_vocabulary == ["went", "yesterday"]
+    mock_knowledge_service.analyze_message.assert_called_once_with("How to say hello?")

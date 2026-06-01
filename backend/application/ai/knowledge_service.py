@@ -1,13 +1,22 @@
+import json
 import subprocess
 import tempfile
 from datetime import datetime
 from pathlib import Path
 from typing import Callable, ClassVar, List
 
-import google.generativeai as genai
+from groq import Groq
 from pypdf import PdfReader
 
 from domain.entities.knowledge import KnowledgeSource, KnowledgeSourceType
+
+_GROQ_MODEL = "llama-3.3-70b-versatile"
+
+_FALLBACK_CHAT_RESPONSE = {
+    "reply": "I don't have that information in my current knowledge base.",
+    "correction": "",
+    "suggested_vocabulary": [],
+}
 
 
 class KnowledgeService:
@@ -28,20 +37,17 @@ class KnowledgeService:
         self.caveman_bin = caveman_bin
         self.caveman_timeout_seconds = caveman_timeout_seconds
         self._caveman_compressor = caveman_compressor
-        if api_key and api_key != "fake-key":
-            genai.configure(api_key=api_key)
+        self._client = Groq(api_key=api_key) if api_key else None
 
     def list_sources(self) -> List[KnowledgeSource]:
         sources = []
         if not self.kb_dir.exists():
             return sources
-
         for file_path in self.kb_dir.iterdir():
             if file_path.suffix.lower() == ".md":
                 sources.append(self._load_markdown(file_path))
             elif file_path.suffix.lower() == ".pdf":
                 sources.append(self._load_pdf(file_path))
-        
         return sources
 
     def get_consolidated_context(self, compress: bool = False) -> str:
@@ -50,7 +56,6 @@ class KnowledgeService:
         for src in sources:
             content = self._compressed_source_content(src) if compress else src.content
             context_parts.append(f"--- DOCUMENT: {src.name} ({src.type}) ---\n{content}")
-        
         return "\n\n".join(context_parts)
 
     @classmethod
@@ -59,24 +64,62 @@ class KnowledgeService:
 
     def ask_question(self, question: str) -> str:
         context = self.get_consolidated_context(compress=self.caveman_enabled)
-        
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        
-        prompt = f"""
-You are an assistant for FluencyAI. Your primary goal is to answer questions strictly based on the provided knowledge base.
-If the answer is not in the context, say exactly: "I don't have that information in my current knowledge base."
-The knowledge base may be in caveman-compressed format. Missing grammar/connectives are intentional; preserve and use only the factual content present there.
+        prompt = (
+            "You are an assistant for FluencyAI. Answer strictly based on the provided knowledge base.\n"
+            "If the answer is not in the context, say exactly: "
+            "\"I don't have that information in my current knowledge base.\"\n"
+            "The knowledge base may be in caveman-compressed format. "
+            "Missing grammar/connectives are intentional; preserve and use only the factual content.\n\n"
+            f"KNOWLEDGE BASE:\n{context}\n\n"
+            f"USER QUESTION:\n{question}\n\n"
+            "ANSWER:"
+        )
+        return self._chat(prompt)
 
-KNOWLEDGE BASE:
-{context}
+    def analyze_message(self, message: str) -> dict:
+        context = self.get_consolidated_context(compress=self.caveman_enabled)
+        prompt = (
+            "You are Sofia, an AI language tutor for FluencyAI. "
+            "A student sent you the message below. "
+            "Use the Knowledge Base context to ground your reply when relevant.\n\n"
+            f"KNOWLEDGE BASE:\n{context}\n\n"
+            f"STUDENT MESSAGE:\n{message}\n\n"
+            "Respond ONLY with a valid JSON object — no markdown, no code fences — in this exact format:\n"
+            '{"reply": "<your friendly response in English>", '
+            '"correction": "<grammar correction if needed, or empty string>", '
+            '"suggested_vocabulary": ["word1", "word2", "word3"]}'
+        )
+        raw = self._chat(prompt)
+        return self._parse_structured_response(raw)
 
-USER QUESTION:
-{question}
+    def _chat(self, prompt: str) -> str:
+        completion = self._client.chat.completions.create(
+            model=_GROQ_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        return completion.choices[0].message.content
 
-ANSWER:
-"""
-        response = model.generate_content(prompt)
-        return response.text
+    @staticmethod
+    def _parse_structured_response(raw: str) -> dict:
+        text = raw.strip()
+        if text.startswith("```"):
+            text = text.split("```")[1]
+            if text.startswith("json"):
+                text = text[4:]
+            text = text.strip()
+        try:
+            parsed = json.loads(text)
+            return {
+                "reply": str(parsed.get("reply", "")),
+                "correction": str(parsed.get("correction", "")),
+                "suggested_vocabulary": list(parsed.get("suggested_vocabulary", [])),
+            }
+        except (json.JSONDecodeError, ValueError):
+            return {
+                "reply": raw,
+                "correction": "",
+                "suggested_vocabulary": [],
+            }
 
     def _compress_text(self, text: str) -> str:
         if not text.strip():
@@ -105,14 +148,7 @@ ANSWER:
                 output_path = output_file.name
 
             subprocess.run(
-                [
-                    str(caveman_path),
-                    "compress",
-                    "-f",
-                    input_path,
-                    "-o",
-                    output_path,
-                ],
+                [str(caveman_path), "compress", "-f", input_path, "-o", output_path],
                 check=True,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
@@ -141,7 +177,6 @@ ANSWER:
         cached_content = self._compression_cache.get(cache_key)
         if cached_content is not None:
             return cached_content
-
         compressed_content = self._compress_text(source.content)
         self._compression_cache[cache_key] = compressed_content
         return compressed_content
@@ -154,7 +189,7 @@ ANSWER:
             name=path.name,
             type=KnowledgeSourceType.MARKDOWN,
             content=content,
-            last_updated=datetime.fromtimestamp(path.stat().st_mtime)
+            last_updated=datetime.fromtimestamp(path.stat().st_mtime),
         )
 
     def _load_pdf(self, path: Path) -> KnowledgeSource:
@@ -168,7 +203,7 @@ ANSWER:
                 name=path.name,
                 type=KnowledgeSourceType.PDF,
                 content=text,
-                last_updated=datetime.fromtimestamp(path.stat().st_mtime)
+                last_updated=datetime.fromtimestamp(path.stat().st_mtime),
             )
         except Exception as e:
             return KnowledgeSource(
@@ -176,5 +211,5 @@ ANSWER:
                 name=path.name,
                 type=KnowledgeSourceType.PDF,
                 content=f"ERROR READING PDF: {str(e)}",
-                last_updated=datetime.fromtimestamp(path.stat().st_mtime)
+                last_updated=datetime.fromtimestamp(path.stat().st_mtime),
             )
