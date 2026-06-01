@@ -164,35 +164,53 @@ class ProductService:
             calendar_week_start + timedelta(days=index)
             for index in range(7)
         ]
-        base_week_start = ((current_day - 1) // 7) * 7 + 1
-        week_start_day = max(1, base_week_start + (week_offset * 7))
-        week_end_day = week_start_day + 6
-        week_days = [
+        calendar_lesson_days = [
+            self._lesson_day_for_calendar_date(current_day, today, calendar_day)
+            for calendar_day in calendar_days
+        ]
+        lesson_days = [
+            lesson_day
+            for lesson_day in calendar_lesson_days
+            if lesson_day is not None
+        ]
+        week_start_day = min(lesson_days) if lesson_days else current_day
+        week_end_day = max(lesson_days) if lesson_days else current_day
+        roadmap_day_numbers = [
             week_start_day + index
             for index in range(7)
         ]
         week_lessons = {
             lesson.day: lesson
             for lesson in self._lesson_repository.list_summaries(track.slug)
-            if lesson.day in week_days
+            if lesson.day in lesson_days
         }
         section_progress = self._section_progress_repository.list_for_user_and_days(
             user.id,
-            week_days,
+            lesson_days,
             track_slug=track.slug,
         )
         completed_by_day = self._group_completed_sections(section_progress)
 
         roadmap_days = [
             self._build_roadmap_day(
-                day=day,
+                day=roadmap_day,
+                lesson_day=lesson_day,
                 calendar_date=calendar_day,
-                lesson=week_lessons.get(day),
+                lesson=week_lessons.get(lesson_day),
                 progress=progress,
-                completed_sections=completed_by_day.get(day, set()),
+                completed_sections=(
+                    completed_by_day.get(lesson_day, set())
+                    if lesson_day is not None
+                    else set()
+                ),
                 today=today,
             )
-            for day, calendar_day in zip(week_days, calendar_days, strict=True)
+            for roadmap_day, lesson_day, calendar_day in zip(
+                roadmap_day_numbers,
+                calendar_lesson_days,
+                calendar_days,
+                strict=True,
+            )
         ]
         focus = self.get_lesson_plan_for_day(user, current_day)
 
@@ -768,24 +786,26 @@ class ProductService:
     def _build_roadmap_day(
         self,
         day: int,
+        lesson_day: int | None,
         calendar_date: date,
         lesson: Lesson | LessonSummary | None,
         progress: UserProgress | UserTrackProgress,
         completed_sections: set[str],
         today: date,
     ) -> WeeklyRoadmapDay:
-        is_completed = lesson is not None and (
-            day in progress.lessons_completed or day < progress.current_day
+        is_completed = lesson is not None and lesson_day is not None and (
+            lesson_day in progress.lessons_completed or lesson_day < progress.current_day
         )
         progress_percent = 100 if is_completed else self._section_progress_percent(completed_sections)
         return WeeklyRoadmapDay(
             day=day,
+            lesson_day=lesson_day,
             weekday_label=WEEKDAY_LABELS[calendar_date.weekday()],
             calendar_date=calendar_date,
             calendar_day=calendar_date.day,
             title=lesson.title if lesson else "No lesson",
             is_current=calendar_date == today,
-            is_locked=day > progress.current_day or lesson is None,
+            is_locked=lesson_day is None or lesson_day > progress.current_day or lesson is None,
             is_completed=is_completed,
             has_lesson=lesson is not None,
             progress_percent=progress_percent,
@@ -793,6 +813,15 @@ class ProductService:
 
     def _today(self) -> date:
         return self._today_provider()
+
+    @staticmethod
+    def _lesson_day_for_calendar_date(
+        current_day: int,
+        today: date,
+        calendar_date: date,
+    ) -> int | None:
+        lesson_day = current_day + (calendar_date - today).days
+        return lesson_day if lesson_day >= 1 else None
 
     def _build_section_statuses(
         self,

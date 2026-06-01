@@ -22,6 +22,12 @@ def test_daily_immersion_plan_contains_required_learning_blocks():
     assert payload["day"] == 1
     assert len(payload["essential_phrases"]) == 20
     assert len(payload["vocabulary_words"]) == 15
+    assert len({word["word"] for word in payload["vocabulary_words"]}) == 15
+    assert len({word["example_sentence"] for word in payload["vocabulary_words"]}) == 15
+    assert all(
+        "A useful word for" not in word["definition"]
+        for word in payload["vocabulary_words"]
+    )
     assert len(payload["grammar_points"]) == 5
     assert len(payload["grammar_practice_items"]) == 5
     assert payload["speaking_exercise"]
@@ -37,19 +43,24 @@ def test_weekly_immersion_plan_returns_roadmap_and_focus_progress():
 
     assert response.status_code == 200
     payload = response.json()
+    current_index = today.weekday()
     assert payload["week_start_day"] == 1
-    assert payload["week_end_day"] == 7
+    assert payload["week_end_day"] == 7 - current_index
     assert payload["week_start_date"] == week_start.isoformat()
     assert payload["week_end_date"] == (week_start + timedelta(days=6)).isoformat()
     assert payload["current_day"] == 1
     assert len(payload["days"]) == 7
-    current_index = today.weekday()
     assert payload["days"][0]["calendar_day"] == week_start.day
     assert [day["day"] for day in payload["days"]] == list(range(1, 8))
     assert payload["days"][current_index]["calendar_day"] == today.day
+    assert payload["days"][current_index]["lesson_day"] == 1
     assert payload["days"][current_index]["is_current"] is True
-    assert payload["days"][0]["is_locked"] is False
+    assert payload["days"][current_index]["is_locked"] is False
+    assert payload["days"][current_index]["has_lesson"] is True
+    assert all(day["lesson_day"] is None for day in payload["days"][:current_index])
+    assert all(day["is_locked"] is True for day in payload["days"][:current_index])
     if current_index < 6:
+        assert payload["days"][current_index + 1]["lesson_day"] == 2
         assert payload["days"][current_index + 1]["is_locked"] is True
     assert payload["focus"]["day"] == 1
     assert payload["focus"]["progress_percent"] == 0

@@ -122,7 +122,11 @@ export function ImmersionPlanPage() {
       previousWeekOffset.current !== null &&
       previousWeekOffset.current !== data.week_offset;
     previousWeekOffset.current = data.week_offset;
-    const weekDays = new Set(data.days.map((day) => day.day));
+    const weekDays = new Set(
+      data.days
+        .map(getRoadmapLessonDay)
+        .filter((day): day is number => day !== null),
+    );
 
     setActivePlan((currentPlan) => {
       if (weekChanged || !currentPlan || !weekDays.has(currentPlan.day)) {
@@ -148,7 +152,7 @@ export function ImmersionPlanPage() {
   }, [activePlan]);
 
   const activeRoadmapDay = weeklyPlan.data?.days.find(
-    (day) => day.day === activePlan?.day,
+    (day) => getRoadmapLessonDay(day) === activePlan?.day,
   );
   const isActiveDayLocked = activeRoadmapDay?.is_locked ?? false;
   const isReviewOnly =
@@ -190,15 +194,16 @@ export function ImmersionPlanPage() {
   }, [activePlan, isActiveDayLocked, isReviewOnly, sectionStatuses]);
 
   async function selectRoadmapDay(day: WeeklyRoadmapDay) {
-    if (day.is_locked || !weeklyPlan.session) {
+    const lessonDay = getRoadmapLessonDay(day);
+    if (day.is_locked || !weeklyPlan.session || lessonDay === null) {
       return;
     }
 
-    setLoadingDay(day.day);
+    setLoadingDay(lessonDay);
     setDetailError(null);
     setSuccessMessage(null);
     try {
-      const plan = await getImmersionPlanDay(weeklyPlan.session.accessToken, day.day);
+      const plan = await getImmersionPlanDay(weeklyPlan.session.accessToken, lessonDay);
       setActivePlan(plan);
       setActiveSection(null);
     } catch (cause) {
@@ -322,7 +327,10 @@ export function ImmersionPlanPage() {
     }
 
     const nextAvailableDay = weeklyPlan.data.days.find(
-      (day) => day.day > activePlan.day && !day.is_locked && day.has_lesson,
+      (day) => {
+        const lessonDay = getRoadmapLessonDay(day);
+        return lessonDay !== null && lessonDay > activePlan.day && !day.is_locked && day.has_lesson;
+      },
     );
     if (!nextAvailableDay) {
       setSuccessMessage("Parabéns! Esta lição já está 100% concluída.");
@@ -402,9 +410,9 @@ export function ImmersionPlanPage() {
               {weeklyPlan.data.days.map((day) => (
                 <RoadmapDayCard
                   day={day}
-                  isSelected={activePlan.day === day.day}
-                  isLoading={loadingDay === day.day}
-                  key={`${day.calendar_date}-${day.day}`}
+                  isSelected={activePlan.day === getRoadmapLessonDay(day)}
+                  isLoading={loadingDay === getRoadmapLessonDay(day)}
+                  key={`${day.calendar_date}-${getRoadmapLessonDay(day) ?? "none"}`}
                   onSelect={() => selectRoadmapDay(day)}
                   trackLabel={activePlan.track_label}
                 />
@@ -655,6 +663,10 @@ function RoadmapDayCard({
       </span>
     </button>
   );
+}
+
+function getRoadmapLessonDay(day: WeeklyRoadmapDay): number | null {
+  return day.lesson_day ?? (day.has_lesson ? day.day : null);
 }
 
 function LearningSectionCard({

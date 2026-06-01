@@ -131,17 +131,64 @@ def test_get_weekly_plan_builds_roadmap_from_user_progress(
     weekly_plan = product_service.get_weekly_plan(user)
 
     assert weekly_plan.week_start_day == 1
+    assert weekly_plan.week_end_day == 6
     assert weekly_plan.week_start_date == date(2026, 4, 27)
     assert weekly_plan.week_end_date == date(2026, 5, 3)
     assert len(weekly_plan.days) == 7
     assert [day.day for day in weekly_plan.days] == [1, 2, 3, 4, 5, 6, 7]
     assert weekly_plan.days[0].calendar_day == 27
+    assert weekly_plan.days[0].lesson_day is None
+    assert weekly_plan.days[0].is_locked is True
     assert weekly_plan.days[1].calendar_day == 28
+    assert weekly_plan.days[1].lesson_day == 1
     assert weekly_plan.days[1].is_current is True
-    assert weekly_plan.days[0].is_locked is False
-    assert weekly_plan.days[1].is_locked is True
+    assert weekly_plan.days[1].is_locked is False
+    assert weekly_plan.days[1].has_lesson is True
+    assert weekly_plan.days[2].lesson_day == 2
     assert weekly_plan.days[2].is_locked is True
     assert weekly_plan.focus.progress_percent == 0
+
+def test_get_weekly_plan_anchors_current_lesson_progress_on_today(
+    product_service,
+    mock_lesson_repo,
+    mock_progress_repo,
+    mock_section_progress_repo,
+    mock_item_progress_repo,
+):
+    product_service._today_provider = lambda: date(2026, 5, 1)
+    user = User(id="user-1", email="test@example.com", password_hash="hash")
+    lesson = Lesson(
+        id="lesson-1", day=1, title="Day 1",
+        essential_phrases=[], vocabulary_words=[], grammar_points=[],
+        speaking_exercise="Speak", quiz=Quiz("Q", [])
+    )
+    mock_progress_repo.get_by_user_id.return_value = UserProgress(
+        user_id="user-1", current_day=1, lessons_completed=[],
+        xp_total=0, streak_days=0
+    )
+    mock_lesson_repo.list_summaries.return_value = [lesson]
+    mock_lesson_repo.get_by_day.return_value = lesson
+    mock_section_progress_repo.list_for_user_and_days.return_value = [
+        LessonSectionProgress("user-1", 1, "phrases"),
+    ]
+    mock_section_progress_repo.list_for_user_and_day.return_value = [
+        LessonSectionProgress("user-1", 1, "phrases"),
+    ]
+    mock_item_progress_repo.list_for_user_and_day.return_value = []
+
+    weekly_plan = product_service.get_weekly_plan(user)
+
+    monday = weekly_plan.days[0]
+    friday = weekly_plan.days[4]
+    assert monday.calendar_day == 27
+    assert monday.lesson_day is None
+    assert monday.progress_percent == 0
+    assert monday.is_locked is True
+    assert friday.calendar_day == 1
+    assert friday.lesson_day == 1
+    assert friday.is_current is True
+    assert friday.is_locked is False
+    assert friday.progress_percent == 17
 
 def test_get_weekly_plan_does_not_emit_invalid_lesson_days(
     product_service,
@@ -169,9 +216,11 @@ def test_get_weekly_plan_does_not_emit_invalid_lesson_days(
     weekly_plan = product_service.get_weekly_plan(user)
 
     assert weekly_plan.week_start_day == 1
-    assert weekly_plan.week_end_day == 7
+    assert weekly_plan.week_end_day == 6
     assert [day.day for day in weekly_plan.days] == list(range(1, 8))
     assert all(day.day >= 1 for day in weekly_plan.days)
+    assert weekly_plan.days[0].lesson_day is None
+    assert weekly_plan.days[1].lesson_day == 1
 
 def test_lesson_history_lists_available_lessons(
     product_service,

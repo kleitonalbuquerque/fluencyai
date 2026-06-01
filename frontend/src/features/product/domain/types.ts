@@ -171,6 +171,7 @@ export type DailyImmersionPlanWithProgress = {
 
 export type WeeklyRoadmapDay = {
   day: number;
+  lesson_day?: number | null;
   weekday_label: string;
   calendar_date: string;
   calendar_day: number;

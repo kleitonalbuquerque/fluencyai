@@ -310,6 +310,7 @@ class LessonHistoryResponse(BaseModel):
 
 class WeeklyRoadmapDayResponse(BaseModel):
     day: int
+    lesson_day: int | None = None
     weekday_label: str
     calendar_date: date
     calendar_day: int
