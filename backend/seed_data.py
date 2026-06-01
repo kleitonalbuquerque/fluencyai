@@ -97,6 +97,221 @@ TRACKS = [
 ]
 
 
+VOCABULARY_BY_TRACK = {
+    "work": [
+        (
+            "deadline",
+            "the latest time or date when work should be finished",
+            "The deadline for the report is Friday.",
+            "A deadline draws a line in time.",
+        ),
+        (
+            "agenda",
+            "a list of topics for a meeting or discussion",
+            "Could you send the meeting agenda before the call?",
+            "An agenda guides what happens next.",
+        ),
+        (
+            "update",
+            "new information about progress or status",
+            "I will give a quick project update after lunch.",
+            "An update brings the status up to now.",
+        ),
+        (
+            "feedback",
+            "comments that help someone improve their work",
+            "Thank you for your feedback on my presentation.",
+            "Feedback feeds your next improvement.",
+        ),
+        (
+            "proposal",
+            "a formal suggestion or plan for someone to consider",
+            "Our proposal includes a clearer timeline.",
+            "A proposal proposes a next step.",
+        ),
+        (
+            "client",
+            "a person or company that receives a professional service",
+            "The client asked for a short summary.",
+            "A client is the customer you serve.",
+        ),
+        (
+            "priority",
+            "the most important thing to do first",
+            "My priority today is the budget review.",
+            "A priority comes before other tasks.",
+        ),
+        (
+            "summary",
+            "a short version of the most important information",
+            "Please send a summary after the meeting.",
+            "A summary sums up the main points.",
+        ),
+        (
+            "meeting",
+            "a planned conversation with other people at work",
+            "The meeting starts at 10 in the conference room.",
+            "A meeting is when people meet for a purpose.",
+        ),
+        (
+            "report",
+            "a document that explains information, progress, or results",
+            "I finished the weekly report this morning.",
+            "A report reports what happened.",
+        ),
+        (
+            "schedule",
+            "a plan that shows when activities will happen",
+            "The schedule changed because the client is traveling.",
+            "A schedule shows when things are scheduled.",
+        ),
+        (
+            "task",
+            "one piece of work that needs to be done",
+            "This task should take about one hour.",
+            "A task is one thing on your to-do list.",
+        ),
+        (
+            "target",
+            "a goal, number, or result you want to reach",
+            "Our target is to finish the first version today.",
+            "A target is what you aim at.",
+        ),
+        (
+            "interview",
+            "a formal conversation where someone asks questions",
+            "I have a job interview next week.",
+            "An interview is built around questions and answers.",
+        ),
+        (
+            "follow-up",
+            "a message or action after a previous conversation",
+            "I will send a follow-up email tomorrow.",
+            "A follow-up follows the first contact.",
+        ),
+    ],
+    "study": [
+        ("assignment", "a task given by a teacher", "The assignment is due on Monday.", "Assignments assign practice."),
+        ("lesson", "a period of learning about a topic", "Today's lesson is about routines.", "A lesson helps you learn one point."),
+        ("notes", "short written information to remember something", "I review my notes before class.", "Notes help you notice key ideas."),
+        ("practice", "repeated activity to improve a skill", "Speaking practice helps me feel confident.", "Practice makes language more automatic."),
+        ("question", "something you ask when you need information", "I have a question about the example.", "Questions open answers."),
+        ("review", "study something again to remember it better", "I review new words every morning.", "Review means view it again."),
+        ("topic", "the subject of a lesson or discussion", "The topic today is travel English.", "A topic is what you talk about."),
+        ("example", "one case that shows how something works", "Can you give me another example?", "Examples make rules visible."),
+        ("lecture", "a talk that teaches a subject", "The lecture starts at nine.", "A lecture is a learning talk."),
+        ("exam", "a test of knowledge or skill", "The exam has ten questions.", "An exam examines what you know."),
+        ("answer", "a response to a question", "Please write your answer in English.", "An answer answers a question."),
+        ("chapter", "one section of a book or course", "We finished chapter three today.", "A chapter is one part of a larger book."),
+        ("course", "a series of classes about a subject", "This course improves my listening.", "A course is a path through learning."),
+        ("research", "careful study to find information", "My research is about language habits.", "Research means search again, deeply."),
+        ("paragraph", "a group of sentences about one idea", "Write one paragraph about your goal.", "A paragraph packages one idea."),
+    ],
+    "travel": [
+        ("reservation", "a booking made before you arrive", "I have a hotel reservation for tonight.", "Reserve means keep a place for you."),
+        ("ticket", "proof that you paid for travel or entry", "My train ticket is on my phone.", "A ticket lets you take the trip."),
+        ("luggage", "bags you take when traveling", "My luggage is too heavy.", "Luggage is what you lug around."),
+        ("gate", "the place where passengers board a plane", "Our flight leaves from gate twelve.", "A gate is the entry point."),
+        ("address", "the details of where a place is", "Can you write the address for me?", "An address helps you arrive."),
+        ("passport", "an official document for international travel", "Please show your passport at the desk.", "A passport lets you pass between countries."),
+        ("delay", "a situation when something happens later than planned", "There is a delay because of the weather.", "Delay means later than expected."),
+        ("arrival", "the moment when you reach a place", "Our arrival time is 8 p.m.", "Arrival is when you arrive."),
+        ("departure", "the moment when you leave", "The departure time changed to 6 a.m.", "Departure is when you depart."),
+        ("boarding", "getting onto a plane, train, or bus", "Boarding starts in twenty minutes.", "Boarding means going on board."),
+        ("hotel", "a place where travelers sleep", "The hotel is near the station.", "A hotel hosts travelers."),
+        ("map", "a drawing or app that shows places", "I use a map to find the museum.", "A map helps you move."),
+        ("taxi", "a car you pay to take you somewhere", "Let's take a taxi to the airport.", "A taxi takes you directly."),
+        ("platform", "the area where you wait for a train", "The train leaves from platform five.", "A platform is where passengers stand."),
+        ("itinerary", "a plan for a trip with times and places", "Our itinerary includes two museums.", "An itinerary is your trip plan."),
+    ],
+    "dining": [
+        ("menu", "a list of food and drinks", "Could I see the menu, please?", "The menu shows what you may choose."),
+        ("table", "a place where people sit to eat", "We need a table for four.", "A table is where the meal happens."),
+        ("receipt", "paper or digital proof of payment", "Can I have the receipt, please?", "A receipt records what you paid."),
+        ("starter", "a small dish before the main meal", "I will order soup as a starter.", "A starter starts the meal."),
+        ("bill", "the total amount to pay", "Could we have the bill?", "The bill tells what you owe."),
+        ("water", "a basic drink often ordered with meals", "Still water is fine for me.", "Water is the safest drink word."),
+        ("dessert", "sweet food after the main meal", "The chocolate cake is my dessert.", "Dessert is the sweet ending."),
+        ("recommendation", "a suggestion about what to choose", "Do you have a recommendation?", "A recommendation recommends an option."),
+        ("reservation", "a booking for a table", "We have a reservation at seven.", "Reserve a table before you arrive."),
+        ("waiter", "a person who serves food in a restaurant", "The waiter brought our drinks.", "A waiter waits on the table."),
+        ("order", "a request for food or drink", "I would like to order the pasta.", "Order means choose and request."),
+        ("appetizer", "a small dish before the main course", "Let's share an appetizer.", "An appetizer opens your appetite."),
+        ("main course", "the largest or central dish of a meal", "The fish is my main course.", "Main course means main dish."),
+        ("tip", "extra money for service", "We left a tip for the server.", "A tip thanks good service."),
+        ("allergy", "a bad physical reaction to some food", "I have a peanut allergy.", "Allergy is important for safe ordering."),
+    ],
+    "sports": [
+        ("match", "a sports game between players or teams", "The match starts at three.", "A match matches two sides."),
+        ("score", "the number of points in a game", "The score is two to one.", "Score shows who is ahead."),
+        ("coach", "a person who trains a player or team", "The coach gave clear instructions.", "A coach coaches performance."),
+        ("training", "practice to improve sport ability", "Training is hard this week.", "Training trains the body."),
+        ("team", "a group that plays together", "Our team played very well.", "A team works together."),
+        ("goal", "a point scored or something you want to achieve", "She scored a goal in the first half.", "Goal means score or objective."),
+        ("season", "the period when games are played", "The season ends in June.", "A season is a sports time period."),
+        ("practice", "repeated training to improve", "We have practice after work.", "Practice builds performance."),
+        ("player", "a person who plays a sport", "He is the best player on the team.", "A player plays."),
+        ("strategy", "a plan to win or perform better", "The strategy worked in the second half.", "Strategy is the game plan."),
+        ("tournament", "a competition with several games", "The tournament lasts all weekend.", "A tournament turns many matches into one event."),
+        ("warm-up", "light exercise before harder activity", "Do a warm-up before the match.", "Warm-up warms the body."),
+        ("defense", "actions to stop the other team scoring", "Our defense was strong today.", "Defense defends the goal."),
+        ("victory", "a win in a game or competition", "The victory made the fans happy.", "Victory means winning."),
+        ("performance", "how well someone plays or acts", "Her performance improved this season.", "Performance is how you perform."),
+    ],
+    "leisure": [
+        ("movie", "a story shown on a screen", "We watched a movie on Saturday.", "Movie means moving pictures."),
+        ("music", "sounds arranged for listening or singing", "I listen to music after work.", "Music changes the mood."),
+        ("weekend", "Saturday and Sunday", "My weekend was quiet.", "Weekend is the end of the work week."),
+        ("plan", "an idea for what you will do", "Do you have a plan for tonight?", "A plan points to the future."),
+        ("relax", "rest and feel calm", "I like to relax at home.", "Relax means release tension."),
+        ("concert", "a live music event", "The concert starts at eight.", "A concert is music in person."),
+        ("series", "a TV story with many episodes", "This series has great dialogue.", "A series is a sequence."),
+        ("invite", "ask someone to join an activity", "I want to invite my friends.", "Invite brings people in."),
+        ("museum", "a place with art, history, or objects", "The museum is free today.", "A museum preserves interesting things."),
+        ("picnic", "a meal outside", "We had a picnic in the park.", "A picnic is food plus outdoors."),
+        ("game", "an activity played for fun", "Let's play a game after dinner.", "A game is structured fun."),
+        ("book", "written pages you read", "I started a new book yesterday.", "A book is a portable story or idea."),
+        ("hobby", "an activity you enjoy in your free time", "Cooking is my favorite hobby.", "A hobby is chosen, not required."),
+        ("ticket", "proof that you can enter an event", "I bought a ticket for the show.", "A ticket gives access."),
+        ("playlist", "a list of songs to play", "This playlist is perfect for relaxing.", "A playlist plays songs in order."),
+    ],
+    "fitness": [
+        ("workout", "a period of physical exercise", "My workout takes forty minutes.", "Workout means work the body out."),
+        ("routine", "a regular set of actions", "My morning routine includes stretching.", "Routine repeats."),
+        ("strength", "physical power", "This exercise builds leg strength.", "Strength makes you stronger."),
+        ("stretch", "extend muscles gently", "I stretch before running.", "Stretch makes muscles longer."),
+        ("coach", "a person who guides training", "The coach corrected my posture.", "A coach helps you improve safely."),
+        ("recovery", "rest after effort or injury", "Recovery is part of training.", "Recovery lets the body recover."),
+        ("energy", "the ability to be active", "I have more energy after breakfast.", "Energy powers activity."),
+        ("habit", "something you do regularly", "Drinking water is a healthy habit.", "Habit happens often."),
+        ("cardio", "exercise for heart and lungs", "Cardio helps my endurance.", "Cardio connects to the heart."),
+        ("set", "a group of repeated exercises", "Do three sets of ten push-ups.", "A set is one exercise block."),
+        ("reps", "short for repetitions", "I did twelve reps with light weights.", "Reps repeat the movement."),
+        ("posture", "the position of your body", "Good posture protects your back.", "Posture is how you position yourself."),
+        ("balance", "control that keeps you steady", "Yoga improves balance.", "Balance keeps you from falling."),
+        ("nutrition", "food choices that support health", "Nutrition affects my energy.", "Nutrition nourishes the body."),
+        ("rest", "time without effort so the body recovers", "Rest is important after hard training.", "Rest resets the body."),
+    ],
+    "hobbies": [
+        ("project", "a planned activity with a result", "My weekend project is a small shelf.", "A project has steps and an outcome."),
+        ("collection", "a group of similar things kept together", "Her coin collection is impressive.", "A collection collects items."),
+        ("painting", "art made with paint", "I finished a small painting yesterday.", "Painting means creating with paint."),
+        ("camera", "a device for taking photos or videos", "I bought a camera for travel photos.", "A camera captures moments."),
+        ("skill", "an ability learned through practice", "Drawing is a skill I want to improve.", "A skill grows with practice."),
+        ("creative", "using imagination to make something new", "This is a creative idea for a gift.", "Creative means creating with imagination."),
+        ("practice", "repeated activity to improve", "Guitar practice helps my timing.", "Practice turns effort into ability."),
+        ("favorite", "the one you like most", "My favorite hobby is photography.", "Favorite means most liked."),
+        ("sketch", "a quick simple drawing", "I made a sketch before painting.", "A sketch is a first visual idea."),
+        ("craft", "an activity that makes things by hand", "This craft uses paper and glue.", "Craft connects hands and creativity."),
+        ("guitar", "a musical instrument with strings", "I play guitar after dinner.", "Guitar practice builds rhythm."),
+        ("garden", "an area where plants grow", "I work in the garden on Sundays.", "Garden is a place and an activity."),
+        ("recipe", "instructions for cooking food", "This recipe needs fresh tomatoes.", "A recipe is a cooking roadmap."),
+        ("photo", "a picture taken with a camera", "This photo reminds me of my trip.", "Photo captures one moment."),
+        ("workshop", "a class or event for practical learning", "I joined a weekend photography workshop.", "A workshop is where you work on a skill."),
+    ],
+}
+
+
 PHRASE_PATTERNS = [
     ("I am practicing English for {context}.", "Estou praticando ingles para {context}."),
     ("Could you help me with this {theme} sentence?", "Voce poderia me ajudar com esta frase de {theme}?"),
@@ -279,7 +494,7 @@ def _ensure_lesson(db: Session, track: dict[str, object], day: int) -> None:
         lesson.speaking_exercise = speaking
 
     _replace_phrases(db, lesson, track, day)
-    _replace_vocabulary(db, lesson, track, day)
+    _replace_vocabulary(db, lesson, track)
     _replace_grammar(db, lesson, day)
     _replace_grammar_practice(db, lesson)
     _replace_quiz(db, lesson, day)
@@ -303,22 +518,24 @@ def _replace_phrases(db: Session, lesson: LessonModel, track: dict[str, object],
     )
 
 
-def _replace_vocabulary(db: Session, lesson: LessonModel, track: dict[str, object], day: int) -> None:
+def _replace_vocabulary(db: Session, lesson: LessonModel, track: dict[str, object]) -> None:
     db.query(VocabularyWordModel).filter(VocabularyWordModel.lesson_id == lesson.id).delete()
-    words = list(track["words"])
-    repeated_words = (words * 2)[:15]
+    vocabulary = VOCABULARY_BY_TRACK[str(track["slug"])]
     db.add_all(
         [
             VocabularyWordModel(
                 lesson_id=lesson.id,
-                word=str(word),
+                word=word,
                 theme=str(track["theme"]),
-                definition=f"A useful word for {track['context']} conversations.",
-                example_sentence=f"I can use {word} when I talk about {track['context']}.",
-                memory_tip=f"Connect '{word}' to your {track['theme']} goal for day {day}.",
+                definition=definition,
+                example_sentence=example_sentence,
+                memory_tip=memory_tip,
                 position=index,
             )
-            for index, word in enumerate(repeated_words, start=1)
+            for index, (word, definition, example_sentence, memory_tip) in enumerate(
+                vocabulary,
+                start=1,
+            )
         ]
     )
 

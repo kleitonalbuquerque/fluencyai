@@ -6,6 +6,7 @@ from sqlalchemy.pool import StaticPool
 from infrastructure.database.base import Base
 from infrastructure.database.session import get_db_session
 from presentation.api.main import create_app
+from seed_data import VOCABULARY_BY_TRACK
 
 
 def build_test_client() -> TestClient:
@@ -45,10 +46,18 @@ def build_test_client() -> TestClient:
     db.flush()
     for i in range(1, 21):
         db.add(LearningPhraseModel(lesson_id=lesson.id, text=f"Phrase {i}", translation=f"T {i}", position=i))
-    for i in range(1, 16):
+    for i, (word, definition, example_sentence, memory_tip) in enumerate(
+        VOCABULARY_BY_TRACK["study"],
+        start=1,
+    ):
         db.add(VocabularyWordModel(
-            lesson_id=lesson.id, word=f"word{i}", theme="T", 
-            definition="D", example_sentence="E", memory_tip="M", position=i
+            lesson_id=lesson.id,
+            word=word,
+            theme="study",
+            definition=definition,
+            example_sentence=example_sentence,
+            memory_tip=memory_tip,
+            position=i,
         ))
     for i in range(1, 6):
         db.add(GrammarPointModel(lesson_id=lesson.id, title=f"G {i}", explanation="E", example="EX", position=i))

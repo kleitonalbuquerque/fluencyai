@@ -23,6 +23,7 @@ Build a complete language learning platform featuring:
 - **SOLID Principles:** Apply to all backend and frontend logic.
 - **Modularization:** Organize code by feature.
 - **Fixed Versions:** Use exact versions for dependencies (no `^`).
+- **Engineering Guidelines:** Consult `docs/tdd-solid-maintainability-guidelines.md` before every new implementation.
 
 ### Stack
 - **Frontend:** Next.js 15.3.0 (App Router), React 19.2.5, TypeScript, Tailwind CSS.
