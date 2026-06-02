@@ -75,7 +75,7 @@ export function AiConversationPage() {
                   <div className="max-w-[80%]">
                     <div className="bg-surface-container-lowest border border-tertiary-container/20 p-4 rounded-2xl rounded-tl-none">
                       <p className="text-tertiary font-semibold text-sm mb-2 italic">
-                        Isso soa bem! Só uma coisinha pequena...
+                        Good try! Here&apos;s a small correction...
                       </p>
                       <p className="text-body-md text-on-surface">{msg.content}</p>
                     </div>

@@ -2,8 +2,6 @@ import logging
 from collections.abc import Callable
 from datetime import date, datetime, timedelta
 
-_logger = logging.getLogger(__name__)
-
 from application.ai.knowledge_service import KnowledgeService
 from application.repositories.learning_repository import (
     LearningTrackRepository,
@@ -55,6 +53,8 @@ from domain.exceptions import (
     LessonNotFound,
     LessonSectionIncomplete,
 )
+
+_logger = logging.getLogger(__name__)
 
 WEEKDAY_LABELS = ("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
 LEVEL_XP = 100
@@ -1044,8 +1044,8 @@ class ProductService:
                 correction=result["correction"],
                 suggested_vocabulary=result["suggested_vocabulary"],
             )
-        except Exception as exc:
-            _logger.error("AI chat error: %s", exc)
+        except Exception:
+            _logger.exception("AI chat error")
             return AiChatFeedback(
                 reply="AI service is temporarily unavailable. Please try again later.",
                 correction="",

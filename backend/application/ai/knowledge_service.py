@@ -100,6 +100,8 @@ class KnowledgeService:
         return self._parse_structured_response(raw)
 
     def _chat(self, prompt: str) -> str:
+        if self._client is None:
+            raise RuntimeError("Groq client not initialized — check GROQ_API_KEY.")
         completion = self._client.chat.completions.create(
             model=_GROQ_MODEL,
             messages=[{"role": "user", "content": prompt}],

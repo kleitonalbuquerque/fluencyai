@@ -350,7 +350,7 @@ export function useAiConversation() {
       setFeedback(response);
       return response;
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Não foi possível responder.");
+      setError(cause instanceof Error ? cause.message : "Unable to get a response. Please try again.");
       return null;
     } finally {
       setIsPending(false);
