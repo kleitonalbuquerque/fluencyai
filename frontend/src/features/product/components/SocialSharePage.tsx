@@ -25,7 +25,7 @@ export function SocialSharePage() {
           <div className="relative z-10 space-y-8">
             <div className="p-6 bg-[#121217] border border-white/10 rounded-xl">
               <p className="text-xl text-white font-medium leading-relaxed italic">
-                "{data.share_text}"
+                &ldquo;{data.share_text}&rdquo;
               </p>
               <div className="mt-4 pt-4 border-t border-white/5 text-sm text-neutral-500">
                 {data.share_url}

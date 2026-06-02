@@ -3,24 +3,24 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
+from application.ai.knowledge_service import KnowledgeService
 from application.auth.service import AuthService
 from application.product.service import ProductService
-from application.ai.knowledge_service import KnowledgeService
 from domain.entities.user import User
 from infrastructure.config.settings import Settings, get_settings
 from infrastructure.database.session import get_db_session
-from infrastructure.repositories.sqlalchemy_password_reset_token_repository import (
-    SQLAlchemyPasswordResetTokenRepository,
-)
-from infrastructure.repositories.sqlalchemy_user_repository import SQLAlchemyUserRepository
 from infrastructure.repositories.sqlalchemy_learning_repository import (
     SqlAlchemyLearningTrackRepository,
     SqlAlchemyLessonItemProgressRepository,
     SqlAlchemyLessonRepository,
     SqlAlchemyLessonSectionProgressRepository,
-    SqlAlchemyUserTrackProgressRepository,
     SqlAlchemyUserProgressRepository,
+    SqlAlchemyUserTrackProgressRepository,
 )
+from infrastructure.repositories.sqlalchemy_password_reset_token_repository import (
+    SQLAlchemyPasswordResetTokenRepository,
+)
+from infrastructure.repositories.sqlalchemy_user_repository import SQLAlchemyUserRepository
 from infrastructure.security.bcrypt_password_hasher import BcryptPasswordHasher
 from infrastructure.security.jwt_token_service import JwtTokenService
 
@@ -46,7 +46,7 @@ def get_knowledge_service(
 ) -> KnowledgeService:
     return KnowledgeService(
         kb_dir=settings.knowledge_base_dir,
-        api_key=settings.gemini_api_key,
+        api_key=settings.groq_api_key,
         caveman_enabled=settings.caveman_enabled,
         caveman_bin=settings.caveman_bin,
         caveman_timeout_seconds=settings.caveman_timeout_seconds,

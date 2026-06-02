@@ -1,8 +1,17 @@
+import logging
 from collections.abc import Callable
 from datetime import date, datetime, timedelta
 
+from application.ai.knowledge_service import KnowledgeService
+from application.repositories.learning_repository import (
+    LearningTrackRepository,
+    LessonItemProgressRepository,
+    LessonRepository,
+    LessonSectionProgressRepository,
+    UserProgressRepository,
+    UserTrackProgressRepository,
+)
 from application.repositories.user_repository import UserRepository
-from domain.entities.user import User
 from domain.entities.learning import (
     DEFAULT_TRACK_SLUG,
     IMMERSION_SECTION_KEYS,
@@ -14,31 +23,29 @@ from domain.entities.learning import (
     GamificationSummary,
     GlobalRanking,
     GrammarPracticeItem,
-    GrammarPoint,
+    LearningItemStatus,
+    LearningSectionStatus,
+    LearningTrack,
+    Lesson,
     LessonHistory,
     LessonHistoryEntry,
-    LearningItemStatus,
-    LearningTrack,
-    LearningPhrase,
-    Lesson,
     LessonItemProgress,
     LessonSectionProgress,
     LessonSummary,
-    LearningSectionStatus,
-    Quiz,
+    MemorizationSession,
     QuizQuestion,
     RankingEntry,
     RolePlayFeedback,
     RolePlayScenario,
     RolePlayScenarioList,
-    MemorizationSession,
     SocialShare,
-    UserTrackProgress,
     UserProgress,
+    UserTrackProgress,
     VocabularyWord,
     WeeklyImmersionPlan,
     WeeklyRoadmapDay,
 )
+from domain.entities.user import User
 from domain.exceptions import (
     InvalidLearningItem,
     InvalidLearningSection,
@@ -46,16 +53,8 @@ from domain.exceptions import (
     LessonNotFound,
     LessonSectionIncomplete,
 )
-from application.repositories.learning_repository import (
-    LessonItemProgressRepository,
-    LessonRepository,
-    LessonSectionProgressRepository,
-    LearningTrackRepository,
-    UserTrackProgressRepository,
-    UserProgressRepository,
-)
-from application.ai.knowledge_service import KnowledgeService
 
+_logger = logging.getLogger(__name__)
 
 WEEKDAY_LABELS = ("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
 LEVEL_XP = 100
@@ -164,35 +163,53 @@ class ProductService:
             calendar_week_start + timedelta(days=index)
             for index in range(7)
         ]
-        base_week_start = ((current_day - 1) // 7) * 7 + 1
-        week_start_day = max(1, base_week_start + (week_offset * 7))
-        week_end_day = week_start_day + 6
-        week_days = [
+        calendar_lesson_days = [
+            self._lesson_day_for_calendar_date(current_day, today, calendar_day)
+            for calendar_day in calendar_days
+        ]
+        lesson_days = [
+            lesson_day
+            for lesson_day in calendar_lesson_days
+            if lesson_day is not None
+        ]
+        week_start_day = min(lesson_days) if lesson_days else current_day
+        week_end_day = max(lesson_days) if lesson_days else current_day
+        roadmap_day_numbers = [
             week_start_day + index
             for index in range(7)
         ]
         week_lessons = {
             lesson.day: lesson
             for lesson in self._lesson_repository.list_summaries(track.slug)
-            if lesson.day in week_days
+            if lesson.day in lesson_days
         }
         section_progress = self._section_progress_repository.list_for_user_and_days(
             user.id,
-            week_days,
+            lesson_days,
             track_slug=track.slug,
         )
         completed_by_day = self._group_completed_sections(section_progress)
 
         roadmap_days = [
             self._build_roadmap_day(
-                day=day,
+                day=roadmap_day,
+                lesson_day=lesson_day,
                 calendar_date=calendar_day,
-                lesson=week_lessons.get(day),
+                lesson=week_lessons.get(lesson_day),
                 progress=progress,
-                completed_sections=completed_by_day.get(day, set()),
+                completed_sections=(
+                    completed_by_day.get(lesson_day, set())
+                    if lesson_day is not None
+                    else set()
+                ),
                 today=today,
             )
-            for day, calendar_day in zip(week_days, calendar_days, strict=True)
+            for roadmap_day, lesson_day, calendar_day in zip(
+                roadmap_day_numbers,
+                calendar_lesson_days,
+                calendar_days,
+                strict=True,
+            )
         ]
         focus = self.get_lesson_plan_for_day(user, current_day)
 
@@ -768,24 +785,26 @@ class ProductService:
     def _build_roadmap_day(
         self,
         day: int,
+        lesson_day: int | None,
         calendar_date: date,
         lesson: Lesson | LessonSummary | None,
         progress: UserProgress | UserTrackProgress,
         completed_sections: set[str],
         today: date,
     ) -> WeeklyRoadmapDay:
-        is_completed = lesson is not None and (
-            day in progress.lessons_completed or day < progress.current_day
+        is_completed = lesson is not None and lesson_day is not None and (
+            lesson_day in progress.lessons_completed or lesson_day < progress.current_day
         )
         progress_percent = 100 if is_completed else self._section_progress_percent(completed_sections)
         return WeeklyRoadmapDay(
             day=day,
+            lesson_day=lesson_day,
             weekday_label=WEEKDAY_LABELS[calendar_date.weekday()],
             calendar_date=calendar_date,
             calendar_day=calendar_date.day,
             title=lesson.title if lesson else "No lesson",
             is_current=calendar_date == today,
-            is_locked=day > progress.current_day or lesson is None,
+            is_locked=lesson_day is None or lesson_day > progress.current_day or lesson is None,
             is_completed=is_completed,
             has_lesson=lesson is not None,
             progress_percent=progress_percent,
@@ -793,6 +812,15 @@ class ProductService:
 
     def _today(self) -> date:
         return self._today_provider()
+
+    @staticmethod
+    def _lesson_day_for_calendar_date(
+        current_day: int,
+        today: date,
+        calendar_date: date,
+    ) -> int | None:
+        lesson_day = current_day + (calendar_date - today).days
+        return lesson_day if lesson_day >= 1 else None
 
     def _build_section_statuses(
         self,
@@ -1009,21 +1037,19 @@ class ProductService:
     def chat(self, message: str) -> AiChatFeedback:
         try:
             if not self._knowledge_service.api_key:
-                raise ValueError("API Key missing")
-            
-            ai_response = self._knowledge_service.ask_question(message)
+                raise ValueError("Groq API key not configured")
+            result = self._knowledge_service.analyze_message(message)
             return AiChatFeedback(
-                reply=ai_response,
-                correction="Isso soa bem! Só uma coisinha pequena... (correção via IA pendente)",
-                suggested_vocabulary=["actually", "usually", "vocabulary"]
+                reply=result["reply"],
+                correction=result["correction"],
+                suggested_vocabulary=result["suggested_vocabulary"],
             )
-        except Exception as e:
-            # Fallback mock for development or errors
-            topic = message.strip() if message.strip() else "your sentence"
+        except Exception:
+            _logger.exception("AI chat error")
             return AiChatFeedback(
-                reply=f"AI Service currently offline. You asked about: {topic}. Error: {str(e)}",
-                correction=f"Isso soa bem! Só uma coisinha pequena... tente dizer '{topic}' melhor.",
-                suggested_vocabulary=["actually", "usually", "reservation"]
+                reply="AI service is temporarily unavailable. Please try again later.",
+                correction="",
+                suggested_vocabulary=[],
             )
 
     def get_memorization_session(self) -> MemorizationSession:

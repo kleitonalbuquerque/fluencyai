@@ -1,20 +1,20 @@
-from infrastructure.database.models.password_reset_token import PasswordResetTokenModel
-from infrastructure.database.models.user import UserModel
 from infrastructure.database.models.learning import (
-    GrammarPracticeItemModel,
-    LearningTrackModel,
-    LessonModel,
-    LearningPhraseModel,
-    VocabularyWordModel,
     GrammarPointModel,
+    GrammarPracticeItemModel,
+    LearningPhraseModel,
+    LearningTrackModel,
+    LessonItemProgressModel,
+    LessonModel,
+    LessonSectionProgressModel,
     QuizModel,
     QuizQuestionModel,
-    UserProgressModel,
     UserActiveTrackModel,
+    UserProgressModel,
     UserTrackProgressModel,
-    LessonSectionProgressModel,
-    LessonItemProgressModel,
+    VocabularyWordModel,
 )
+from infrastructure.database.models.password_reset_token import PasswordResetTokenModel
+from infrastructure.database.models.user import UserModel
 
 __all__ = [
     "PasswordResetTokenModel",

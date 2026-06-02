@@ -3,6 +3,7 @@ from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from application.product.service import ProductService
+from domain.entities.user import User
 from domain.exceptions import (
     InvalidLearningItem,
     InvalidLearningSection,
@@ -10,12 +11,11 @@ from domain.exceptions import (
     LessonNotFound,
     LessonSectionIncomplete,
 )
-from domain.entities.user import User
 from presentation.dependencies import get_current_user, get_product_service
 from presentation.schemas.product import (
+    ActiveLearningTrackRequest,
     AiChatRequest,
     AiChatResponse,
-    ActiveLearningTrackRequest,
     CompleteLessonItemRequest,
     CompleteLessonItemResponse,
     CompleteLessonSectionResponse,
@@ -23,8 +23,8 @@ from presentation.schemas.product import (
     DailyImmersionPlanWithProgressResponse,
     GamificationSummaryResponse,
     GlobalRankingResponse,
-    LessonHistoryResponse,
     LearningTrackResponse,
+    LessonHistoryResponse,
     MemorizationSessionResponse,
     RolePlayFeedbackResponse,
     RolePlayRequest,

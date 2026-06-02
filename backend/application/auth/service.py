@@ -1,7 +1,7 @@
-from dataclasses import dataclass
-from datetime import UTC, datetime, timedelta
 import hashlib
 import secrets
+from dataclasses import dataclass
+from datetime import UTC, datetime, timedelta
 
 from application.repositories.password_reset_token_repository import (
     PasswordResetTokenRepository,
@@ -11,7 +11,6 @@ from application.security.password_hasher import PasswordHasher
 from application.security.token_service import TokenPair, TokenService
 from domain.entities.user import User
 from domain.exceptions import EmailAlreadyRegistered, InvalidCredentials
-
 
 PASSWORD_RESET_REQUEST_MESSAGE = (
     "If this email exists, password reset instructions will be sent."

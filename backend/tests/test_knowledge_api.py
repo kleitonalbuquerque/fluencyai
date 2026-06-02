@@ -1,12 +1,13 @@
-import tempfile
 import os
+import tempfile
+
 from fastapi.testclient import TestClient
+
+from infrastructure.config.settings import get_settings
+from infrastructure.database.models.user import UserModel
+from infrastructure.database.session import get_db_session
 from tests.test_account import auth_headers
 from tests.test_auth import build_test_client
-from infrastructure.config.settings import get_settings
-from infrastructure.database.session import get_db_session
-from infrastructure.database.models.user import UserModel
-
 
 AUTHORIZED_KNOWLEDGE_EMAIL = "kleiton2102@gmail.com"
 

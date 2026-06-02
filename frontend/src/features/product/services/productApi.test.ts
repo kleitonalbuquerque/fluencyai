@@ -15,6 +15,7 @@ import {
   getImmersionPlanHistoryDay,
   getWeeklyImmersionPlan,
   getKnowledgeSource,
+  sendAiMessage,
   uncompleteImmersionPlanItem,
   uploadKnowledgeDocument,
 } from "./productApi";
@@ -261,6 +262,34 @@ describe("productApi", () => {
       "http://localhost:8000/knowledge/sources/rules.md",
       expect.objectContaining({
         method: "DELETE",
+        headers: {
+          Authorization: "Bearer access-token",
+          "Content-Type": "application/json",
+        },
+      }),
+    );
+  });
+
+  it("sends an AI chat message and returns structured feedback", async () => {
+    const feedback = {
+      reply: "Great effort! Just one small thing.",
+      correction: "Say 'I went to the cafe' — 'went' is the past tense of 'go'.",
+      suggested_vocabulary: ["went", "yesterday", "actually"],
+    };
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: vi.fn().mockResolvedValue(feedback),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await sendAiMessage("access-token", "I go to cafe yesterday");
+
+    expect(result).toEqual(feedback);
+    expect(fetchMock).toHaveBeenCalledWith(
+      "http://localhost:8000/ai/chat",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({ message: "I go to cafe yesterday" }),
         headers: {
           Authorization: "Bearer access-token",
           "Content-Type": "application/json",

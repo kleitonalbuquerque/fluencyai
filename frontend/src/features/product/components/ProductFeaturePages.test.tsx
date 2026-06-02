@@ -651,7 +651,7 @@ describe("product feature pages", () => {
     const user = userEvent.setup();
     render(<AiConversationPage />);
 
-    await user.type(screen.getByPlaceholderText("Reply in Spanish..."), "I go cafe yesterday");
+    await user.type(screen.getByPlaceholderText("Reply in English…"), "I go cafe yesterday");
     await user.click(screen.getByText("send"));
 
     // We check that the message we typed is in the document
@@ -690,7 +690,7 @@ describe("product feature pages", () => {
   it("renders social share progress", async () => {
     render(<SocialSharePage />);
 
-    expect(await screen.findByText(/"Estou praticando no FluencyAI."/)).toBeInTheDocument();
+    expect(await screen.findByText(/Estou praticando no FluencyAI\./)).toBeInTheDocument();
     expect(screen.getByText("http://localhost:3000/app")).toBeInTheDocument();
   });
 });

@@ -337,10 +337,10 @@ export function useAiConversation() {
     }
   }, [router, session]);
 
-  async function sendMessage(message: string): Promise<boolean> {
+  async function sendMessage(message: string): Promise<AiChatFeedback | null> {
     if (!session) {
       router.replace("/login");
-      return false;
+      return null;
     }
 
     setIsPending(true);
@@ -348,10 +348,10 @@ export function useAiConversation() {
     try {
       const response = await sendAiMessage(session.accessToken, message);
       setFeedback(response);
-      return true;
+      return response;
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Não foi possível responder.");
-      return false;
+      setError(cause instanceof Error ? cause.message : "Unable to get a response. Please try again.");
+      return null;
     } finally {
       setIsPending(false);
     }
