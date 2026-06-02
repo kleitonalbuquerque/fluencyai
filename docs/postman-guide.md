@@ -338,7 +338,7 @@ Conteúdo de um dia anterior para revisão (somente leitura).
 Conversa com IA usando a knowledge base como contexto.
 
 - **Auth**: Bearer token
-- **Requer**: `GEMINI_API_KEY` configurado no `.env`
+- **Requer**: `GROQ_API_KEY` configurado no `.env`
 - **Body** (JSON):
 ```json
 {
@@ -346,7 +346,7 @@ Conversa com IA usando a knowledge base como contexto.
 }
 ```
 - **Respostas**:
-  - `200` — `{ "reply": "...", "correction": "...", "vocabulary_tip": "..." }`
+  - `200` — `{ "reply": "...", "correction": "...", "suggested_vocabulary": ["word1", "word2"] }`
 
 ---
 

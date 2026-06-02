@@ -43,9 +43,7 @@ export function AiConversationPage() {
           ? [{ role: "correction" as const, content: result.correction }]
           : []),
       ]);
-      if (result.suggested_vocabulary.length > 0) {
-        setVocabulary(result.suggested_vocabulary);
-      }
+      setVocabulary(result.suggested_vocabulary);
     }
   };
 

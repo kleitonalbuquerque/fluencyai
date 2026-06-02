@@ -118,10 +118,17 @@ class KnowledgeService:
             text = text.strip()
         try:
             parsed = json.loads(text)
+            if not isinstance(parsed, dict):
+                raise ValueError("Expected a JSON object")
+            vocab = parsed.get("suggested_vocabulary", [])
+            if not isinstance(vocab, list):
+                vocab = []
+            else:
+                vocab = [str(v) for v in vocab if isinstance(v, str)]
             return {
                 "reply": str(parsed.get("reply", "")),
                 "correction": str(parsed.get("correction", "")),
-                "suggested_vocabulary": list(parsed.get("suggested_vocabulary", [])),
+                "suggested_vocabulary": vocab,
             }
         except (json.JSONDecodeError, ValueError):
             return {
