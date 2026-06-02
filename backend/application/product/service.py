@@ -1,5 +1,8 @@
+import logging
 from collections.abc import Callable
 from datetime import date, datetime, timedelta
+
+_logger = logging.getLogger(__name__)
 
 from application.ai.knowledge_service import KnowledgeService
 from application.repositories.learning_repository import (
@@ -1041,7 +1044,8 @@ class ProductService:
                 correction=result["correction"],
                 suggested_vocabulary=result["suggested_vocabulary"],
             )
-        except Exception:
+        except Exception as exc:
+            _logger.error("AI chat error: %s", exc)
             return AiChatFeedback(
                 reply="AI service is temporarily unavailable. Please try again later.",
                 correction="",

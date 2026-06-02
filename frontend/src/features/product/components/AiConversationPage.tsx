@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAiConversation } from "../hooks/useProductFeatures";
 import { FeatureState } from "./FeatureState";
 
@@ -21,6 +21,11 @@ export function AiConversationPage() {
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [vocabulary, setVocabulary] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSend = async () => {
     const text = inputValue.trim();
@@ -125,6 +130,7 @@ export function AiConversationPage() {
               </div>
             </div>
           )}
+          <div ref={bottomRef} />
         </div>
 
         {/* Input Area */}

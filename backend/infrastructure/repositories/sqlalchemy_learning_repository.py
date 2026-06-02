@@ -2,43 +2,38 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
 from application.repositories.learning_repository import (
+    LearningTrackRepository,
     LessonItemProgressRepository,
     LessonRepository,
     LessonSectionProgressRepository,
-    LearningTrackRepository,
-    UserTrackProgressRepository,
     UserProgressRepository,
+    UserTrackProgressRepository,
 )
 from domain.entities.learning import (
     DEFAULT_TRACK_SLUG,
+    GrammarPoint,
     GrammarPracticeItem,
+    LearningPhrase,
+    LearningTrack,
     Lesson,
     LessonItemProgress,
-    LessonSummary,
-    LearningTrack,
-    LearningPhrase,
     LessonSectionProgress,
-    VocabularyWord,
-    GrammarPoint,
+    LessonSummary,
     Quiz,
     QuizQuestion,
-    UserTrackProgress,
     UserProgress,
+    UserTrackProgress,
+    VocabularyWord,
 )
 from infrastructure.database.models.learning import (
-    GrammarPracticeItemModel,
     LearningTrackModel,
-    LessonModel,
-    LearningPhraseModel,
-    VocabularyWordModel,
-    GrammarPointModel,
-    QuizModel,
-    QuizQuestionModel,
-    UserProgressModel,
-    UserActiveTrackModel,
-    UserTrackProgressModel,
-    LessonSectionProgressModel,
     LessonItemProgressModel,
+    LessonModel,
+    LessonSectionProgressModel,
+    QuizModel,
+    UserActiveTrackModel,
+    UserProgressModel,
+    UserTrackProgressModel,
 )
 
 

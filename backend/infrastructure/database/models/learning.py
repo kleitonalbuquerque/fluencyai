@@ -1,9 +1,18 @@
-from datetime import datetime
+from datetime import date, datetime
 from uuid import uuid4
 
-from datetime import date
-
-from sqlalchemy import Boolean, Date, DateTime, Integer, String, Text, UniqueConstraint, func, ForeignKey, JSON
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from infrastructure.database.base import Base
