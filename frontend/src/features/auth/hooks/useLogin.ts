@@ -14,14 +14,22 @@ type LoginState = {
 
 function toUserMessage(error: unknown): string {
   if (error instanceof HttpError && error.status === 401) {
-    return "Credenciais inválidas";
+    return "E-mail ou senha inválidos. Confira os dados e tente novamente.";
+  }
+
+  if (error instanceof HttpError && error.status === 422) {
+    return "Preencha um e-mail válido e uma senha com pelo menos 8 caracteres.";
   }
 
   if (error instanceof HttpError) {
     return error.message;
   }
 
-  return "Não foi possível entrar agora";
+  if (error instanceof TypeError) {
+    return "Não foi possível conectar ao servidor. Verifique se o backend está rodando na porta 8000.";
+  }
+
+  return "Não foi possível entrar agora. Tente novamente em instantes.";
 }
 
 export function useLogin() {

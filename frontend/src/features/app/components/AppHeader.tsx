@@ -1,7 +1,11 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { AuthUser } from "@/features/auth/domain/types";
+import {
+  START_LESSON_EVENT,
+  START_LESSON_STORAGE_KEY,
+} from "@/features/product/domain/immersionStart";
 import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 type AppHeaderProps = {
@@ -12,6 +16,8 @@ type AppHeaderProps = {
 
 export function AppHeader({ user, title = "Dashboard", onMenuToggle }: AppHeaderProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const flameClass = getStreakFlameClass(user?.streak ?? 0);
   
   // Map pathname to title if not provided
   const getTitle = () => {
@@ -25,6 +31,15 @@ export function AppHeader({ user, title = "Dashboard", onMenuToggle }: AppHeader
     if (pathname === "/app/social") return "Social";
     if (pathname === "/app/knowledge") return "Knowledge Base";
     return "Dashboard";
+  };
+
+  const handleStartLesson = () => {
+    window.sessionStorage.setItem(START_LESSON_STORAGE_KEY, "1");
+    window.dispatchEvent(new Event(START_LESSON_EVENT));
+
+    if (pathname !== "/app/plan") {
+      router.push("/app/plan");
+    }
   };
 
   return (
@@ -46,7 +61,14 @@ export function AppHeader({ user, title = "Dashboard", onMenuToggle }: AppHeader
             <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span> {user?.xp ?? 0} XP
           </span>
           <span className="text-[12px] font-bold tracking-[0.1em] uppercase flex items-center gap-1">
-            <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>local_fire_department</span> {user?.streak ?? 0} Day Streak
+            <span
+              aria-label="Day streak flame"
+              className={`material-symbols-outlined text-sm transition-colors ${flameClass}`}
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              local_fire_department
+            </span>{" "}
+            {user?.streak ?? 0} Day Streak
           </span>
         </div>
       </div>
@@ -55,10 +77,33 @@ export function AppHeader({ user, title = "Dashboard", onMenuToggle }: AppHeader
         <button className="p-2 text-on-surface/60 hover:text-on-surface transition-opacity opacity-80 hover:opacity-100">
           <span className="material-symbols-outlined">notifications</span>
         </button>
-        <button className="bg-primary text-on-primary px-3 py-1.5 lg:px-4 lg:py-2 rounded-lg font-bold text-xs lg:text-sm hover:opacity-90 transition-opacity whitespace-nowrap">
+        <button
+          className="bg-primary text-on-primary px-3 py-1.5 lg:px-4 lg:py-2 rounded-lg font-bold text-xs lg:text-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+          onClick={handleStartLesson}
+          type="button"
+        >
           Start Lesson
         </button>
       </div>
     </header>
   );
+}
+
+export function getStreakFlameClass(streak: number): string {
+  if (streak <= 1) {
+    return "text-primary";
+  }
+
+  const weekDay = ((streak - 1) % 7) + 1;
+  const scale: Record<number, string> = {
+    1: "text-primary",
+    2: "text-yellow-300",
+    3: "text-yellow-400",
+    4: "text-orange-300",
+    5: "text-orange-400",
+    6: "text-orange-500",
+    7: "text-red-500",
+  };
+
+  return scale[weekDay];
 }

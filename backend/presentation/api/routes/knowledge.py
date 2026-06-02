@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, status
-import shutil
 import os
+import shutil
 from pathlib import Path
+
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 
 from application.ai.knowledge_service import KnowledgeService
 from domain.entities.user import User

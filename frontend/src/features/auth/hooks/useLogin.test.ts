@@ -63,6 +63,24 @@ describe("useLogin", () => {
       });
     });
 
-    expect(result.current.error).toBe("Credenciais inválidas");
+    expect(result.current.error).toBe(
+      "E-mail ou senha inválidos. Confira os dados e tente novamente.",
+    );
+  });
+
+  it("maps network failures to a server connectivity message", async () => {
+    vi.mocked(loginWithEmail).mockRejectedValue(new TypeError("Failed to fetch"));
+    const { result } = renderHook(() => useLogin());
+
+    await act(async () => {
+      await result.current.login({
+        email: "ana@example.com",
+        password: "password123",
+      });
+    });
+
+    expect(result.current.error).toBe(
+      "Não foi possível conectar ao servidor. Verifique se o backend está rodando na porta 8000.",
+    );
   });
 });

@@ -1,6 +1,7 @@
 import type { AuthResponse, AuthUser } from "../domain/types";
 
 const TOKEN_STORAGE_KEY = "fluencyai.auth";
+export const AUTH_SESSION_UPDATED_EVENT = "fluencyai.auth.updated";
 
 export type AuthSession = {
   accessToken: string;
@@ -46,6 +47,7 @@ export function setAuthSession(session: AuthSession): void {
   }
 
   window.localStorage.setItem(TOKEN_STORAGE_KEY, JSON.stringify(session));
+  window.dispatchEvent(new Event(AUTH_SESSION_UPDATED_EVENT));
 }
 
 export function clearAuthSession(): void {
@@ -54,6 +56,7 @@ export function clearAuthSession(): void {
   }
 
   window.localStorage.removeItem(TOKEN_STORAGE_KEY);
+  window.dispatchEvent(new Event(AUTH_SESSION_UPDATED_EVENT));
 }
 
 export function updateStoredUser(user: AuthUser): void {

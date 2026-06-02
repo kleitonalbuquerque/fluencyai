@@ -1,7 +1,7 @@
-from dataclasses import dataclass
-from datetime import UTC, datetime, timedelta
 import hashlib
 import secrets
+from dataclasses import dataclass
+from datetime import UTC, datetime, timedelta
 
 from application.repositories.password_reset_token_repository import (
     PasswordResetTokenRepository,
@@ -11,7 +11,6 @@ from application.security.password_hasher import PasswordHasher
 from application.security.token_service import TokenPair, TokenService
 from domain.entities.user import User
 from domain.exceptions import EmailAlreadyRegistered, InvalidCredentials
-
 
 PASSWORD_RESET_REQUEST_MESSAGE = (
     "If this email exists, password reset instructions will be sent."
@@ -65,6 +64,21 @@ class AuthService:
             raise InvalidCredentials()
 
         if not self._password_hasher.verify(password, user.password_hash):
+            raise InvalidCredentials()
+
+        return self._build_auth_result(user)
+
+    def refresh(self, refresh_token: str) -> AuthResult:
+        try:
+            user_id = self._token_service.get_subject(
+                token=refresh_token,
+                expected_type="refresh",
+            )
+        except ValueError as exc:
+            raise InvalidCredentials() from exc
+
+        user = self._user_repository.get_by_id(user_id)
+        if user is None:
             raise InvalidCredentials()
 
         return self._build_auth_result(user)

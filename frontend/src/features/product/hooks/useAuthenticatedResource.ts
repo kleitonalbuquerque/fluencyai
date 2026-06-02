@@ -19,6 +19,7 @@ export function useAuthenticatedResource<TResource>(
 ): ResourceState<TResource> {
   const router = useRouter();
   const session = useAuthSession();
+  const token = session?.accessToken ?? null;
   const [data, setData] = useState<TResource | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +28,7 @@ export function useAuthenticatedResource<TResource>(
   const mutate = () => setVersion((v) => v + 1);
 
   useEffect(() => {
-    if (!session) {
+    if (!token) {
       router.replace("/login");
       setIsLoading(false);
       return;
@@ -37,7 +38,7 @@ export function useAuthenticatedResource<TResource>(
     setIsLoading(true);
     setError(null);
 
-    loadResource(session.accessToken)
+    loadResource(token)
       .then((resource) => {
         if (isCurrent) {
           setData(resource);
@@ -57,7 +58,7 @@ export function useAuthenticatedResource<TResource>(
     return () => {
       isCurrent = false;
     };
-  }, [loadResource, router, session, version]);
+  }, [loadResource, router, token, version]);
 
   return { data, error, isLoading, session, mutate };
 }

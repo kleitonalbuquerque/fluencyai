@@ -51,6 +51,21 @@ class SQLAlchemyUserRepository(UserRepository):
         self._session.refresh(model)
         return self._to_entity(model)
 
+    def update_learning_stats(
+        self,
+        user_id: str,
+        xp: int,
+        level: int,
+        streak: int,
+    ) -> User:
+        model = self._get_required_model(user_id)
+        model.xp = xp
+        model.level = level
+        model.streak = streak
+        self._session.commit()
+        self._session.refresh(model)
+        return self._to_entity(model)
+
     def _get_required_model(self, user_id: str) -> UserModel:
         model = self._session.get(UserModel, user_id)
         if model is None:

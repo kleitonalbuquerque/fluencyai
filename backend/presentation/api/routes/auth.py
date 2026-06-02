@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from application.auth.service import AuthService
+from domain.entities.user import User
 from domain.exceptions import EmailAlreadyRegistered, InvalidCredentials
-from presentation.dependencies import get_auth_service
-from presentation.dependencies import get_current_user
+from presentation.dependencies import get_auth_service, get_current_user
 from presentation.schemas.auth import (
     AuthResponse,
     AvatarUpdateRequest,
@@ -12,10 +12,10 @@ from presentation.schemas.auth import (
     MessageResponse,
     PasswordResetRequest,
     PasswordResetRequestResponse,
+    RefreshTokenRequest,
     SignupRequest,
     UserResponse,
 )
-from domain.entities.user import User
 
 router = APIRouter(tags=["auth"])
 
@@ -50,6 +50,21 @@ def login(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",
+        ) from exc
+    return AuthResponse.from_auth_result(result)
+
+
+@router.post("/refresh", response_model=AuthResponse)
+def refresh_session(
+    payload: RefreshTokenRequest,
+    auth_service: AuthService = Depends(get_auth_service),
+) -> AuthResponse:
+    try:
+        result = auth_service.refresh(refresh_token=payload.refresh_token)
+    except InvalidCredentials as exc:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid refresh token",
         ) from exc
     return AuthResponse.from_auth_result(result)
 
